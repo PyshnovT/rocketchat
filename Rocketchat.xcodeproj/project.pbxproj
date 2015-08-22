@@ -1,0 +1,479 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		09AD3FFA1B88C72600ED55AA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD3FF91B88C72600ED55AA /* main.m */; };
+		09AD3FFD1B88C72600ED55AA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD3FFC1B88C72600ED55AA /* AppDelegate.m */; };
+		09AD3FFF1B88C72600ED55AA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09AD3FFE1B88C72600ED55AA /* Images.xcassets */; };
+		09AD40021B88C72600ED55AA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09AD40001B88C72600ED55AA /* LaunchScreen.xib */; };
+		09AD400E1B88C72700ED55AA /* RocketchatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD400D1B88C72700ED55AA /* RocketchatTests.m */; };
+		09AD40191B88C7B100ED55AA /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40171B88C7B100ED55AA /* Bolts.framework */; };
+		09AD401A1B88C7B100ED55AA /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40181B88C7B100ED55AA /* Parse.framework */; };
+		09AD40251B88C80A00ED55AA /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD401B1B88C80A00ED55AA /* AudioToolbox.framework */; };
+		09AD40261B88C80A00ED55AA /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD401C1B88C80A00ED55AA /* CFNetwork.framework */; };
+		09AD40271B88C80A00ED55AA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD401D1B88C80A00ED55AA /* CoreGraphics.framework */; };
+		09AD40281B88C80A00ED55AA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD401E1B88C80A00ED55AA /* CoreLocation.framework */; };
+		09AD40291B88C80A00ED55AA /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD401F1B88C80A00ED55AA /* libsqlite3.dylib */; };
+		09AD402A1B88C80A00ED55AA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40201B88C80A00ED55AA /* libz.dylib */; };
+		09AD402B1B88C80A00ED55AA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40211B88C80A00ED55AA /* QuartzCore.framework */; };
+		09AD402C1B88C80A00ED55AA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40221B88C80A00ED55AA /* Security.framework */; };
+		09AD402D1B88C80A00ED55AA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40231B88C80A00ED55AA /* StoreKit.framework */; };
+		09AD402E1B88C80A00ED55AA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40241B88C80A00ED55AA /* SystemConfiguration.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		09AD40081B88C72700ED55AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 09AD3FEC1B88C72600ED55AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 09AD3FF31B88C72600ED55AA;
+			remoteInfo = Rocketchat;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		09AD3FF41B88C72600ED55AA /* Rocketchat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rocketchat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		09AD3FF81B88C72600ED55AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		09AD3FF91B88C72600ED55AA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		09AD3FFB1B88C72600ED55AA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		09AD3FFC1B88C72600ED55AA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		09AD3FFE1B88C72600ED55AA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		09AD40011B88C72600ED55AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		09AD40071B88C72700ED55AA /* RocketchatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RocketchatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		09AD400C1B88C72700ED55AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		09AD400D1B88C72700ED55AA /* RocketchatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RocketchatTests.m; sourceTree = "<group>"; };
+		09AD40171B88C7B100ED55AA /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		09AD40181B88C7B100ED55AA /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		09AD401B1B88C80A00ED55AA /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		09AD401C1B88C80A00ED55AA /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		09AD401D1B88C80A00ED55AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		09AD401E1B88C80A00ED55AA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		09AD401F1B88C80A00ED55AA /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		09AD40201B88C80A00ED55AA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		09AD40211B88C80A00ED55AA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		09AD40221B88C80A00ED55AA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		09AD40231B88C80A00ED55AA /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		09AD40241B88C80A00ED55AA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		09AD3FF11B88C72600ED55AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09AD40251B88C80A00ED55AA /* AudioToolbox.framework in Frameworks */,
+				09AD40261B88C80A00ED55AA /* CFNetwork.framework in Frameworks */,
+				09AD40271B88C80A00ED55AA /* CoreGraphics.framework in Frameworks */,
+				09AD40281B88C80A00ED55AA /* CoreLocation.framework in Frameworks */,
+				09AD40291B88C80A00ED55AA /* libsqlite3.dylib in Frameworks */,
+				09AD402A1B88C80A00ED55AA /* libz.dylib in Frameworks */,
+				09AD402B1B88C80A00ED55AA /* QuartzCore.framework in Frameworks */,
+				09AD402C1B88C80A00ED55AA /* Security.framework in Frameworks */,
+				09AD402D1B88C80A00ED55AA /* StoreKit.framework in Frameworks */,
+				09AD402E1B88C80A00ED55AA /* SystemConfiguration.framework in Frameworks */,
+				09AD401A1B88C7B100ED55AA /* Parse.framework in Frameworks */,
+				09AD40191B88C7B100ED55AA /* Bolts.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		09AD40041B88C72700ED55AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		09AD3FEB1B88C72600ED55AA = {
+			isa = PBXGroup;
+			children = (
+				09AD402F1B88C81A00ED55AA /* Frameworks and libs */,
+				09AD3FF61B88C72600ED55AA /* Rocketchat */,
+				09AD400A1B88C72700ED55AA /* RocketchatTests */,
+				09AD3FF51B88C72600ED55AA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		09AD3FF51B88C72600ED55AA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				09AD3FF41B88C72600ED55AA /* Rocketchat.app */,
+				09AD40071B88C72700ED55AA /* RocketchatTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		09AD3FF61B88C72600ED55AA /* Rocketchat */ = {
+			isa = PBXGroup;
+			children = (
+				09AD3FFB1B88C72600ED55AA /* AppDelegate.h */,
+				09AD3FFC1B88C72600ED55AA /* AppDelegate.m */,
+				09AD3FFE1B88C72600ED55AA /* Images.xcassets */,
+				09AD40001B88C72600ED55AA /* LaunchScreen.xib */,
+				09AD3FF71B88C72600ED55AA /* Supporting Files */,
+			);
+			path = Rocketchat;
+			sourceTree = "<group>";
+		};
+		09AD3FF71B88C72600ED55AA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				09AD3FF81B88C72600ED55AA /* Info.plist */,
+				09AD3FF91B88C72600ED55AA /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		09AD400A1B88C72700ED55AA /* RocketchatTests */ = {
+			isa = PBXGroup;
+			children = (
+				09AD400D1B88C72700ED55AA /* RocketchatTests.m */,
+				09AD400B1B88C72700ED55AA /* Supporting Files */,
+			);
+			path = RocketchatTests;
+			sourceTree = "<group>";
+		};
+		09AD400B1B88C72700ED55AA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				09AD400C1B88C72700ED55AA /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		09AD402F1B88C81A00ED55AA /* Frameworks and libs */ = {
+			isa = PBXGroup;
+			children = (
+				09AD401B1B88C80A00ED55AA /* AudioToolbox.framework */,
+				09AD401C1B88C80A00ED55AA /* CFNetwork.framework */,
+				09AD401D1B88C80A00ED55AA /* CoreGraphics.framework */,
+				09AD401E1B88C80A00ED55AA /* CoreLocation.framework */,
+				09AD401F1B88C80A00ED55AA /* libsqlite3.dylib */,
+				09AD40201B88C80A00ED55AA /* libz.dylib */,
+				09AD40211B88C80A00ED55AA /* QuartzCore.framework */,
+				09AD40221B88C80A00ED55AA /* Security.framework */,
+				09AD40231B88C80A00ED55AA /* StoreKit.framework */,
+				09AD40241B88C80A00ED55AA /* SystemConfiguration.framework */,
+				09AD40171B88C7B100ED55AA /* Bolts.framework */,
+				09AD40181B88C7B100ED55AA /* Parse.framework */,
+			);
+			name = "Frameworks and libs";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		09AD3FF31B88C72600ED55AA /* Rocketchat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 09AD40111B88C72700ED55AA /* Build configuration list for PBXNativeTarget "Rocketchat" */;
+			buildPhases = (
+				09AD3FF01B88C72600ED55AA /* Sources */,
+				09AD3FF11B88C72600ED55AA /* Frameworks */,
+				09AD3FF21B88C72600ED55AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Rocketchat;
+			productName = Rocketchat;
+			productReference = 09AD3FF41B88C72600ED55AA /* Rocketchat.app */;
+			productType = "com.apple.product-type.application";
+		};
+		09AD40061B88C72700ED55AA /* RocketchatTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 09AD40141B88C72700ED55AA /* Build configuration list for PBXNativeTarget "RocketchatTests" */;
+			buildPhases = (
+				09AD40031B88C72700ED55AA /* Sources */,
+				09AD40041B88C72700ED55AA /* Frameworks */,
+				09AD40051B88C72700ED55AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				09AD40091B88C72700ED55AA /* PBXTargetDependency */,
+			);
+			name = RocketchatTests;
+			productName = RocketchatTests;
+			productReference = 09AD40071B88C72700ED55AA /* RocketchatTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		09AD3FEC1B88C72600ED55AA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = Pyshnov;
+				TargetAttributes = {
+					09AD3FF31B88C72600ED55AA = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					09AD40061B88C72700ED55AA = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = 09AD3FF31B88C72600ED55AA;
+					};
+				};
+			};
+			buildConfigurationList = 09AD3FEF1B88C72600ED55AA /* Build configuration list for PBXProject "Rocketchat" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 09AD3FEB1B88C72600ED55AA;
+			productRefGroup = 09AD3FF51B88C72600ED55AA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				09AD3FF31B88C72600ED55AA /* Rocketchat */,
+				09AD40061B88C72700ED55AA /* RocketchatTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		09AD3FF21B88C72600ED55AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09AD40021B88C72600ED55AA /* LaunchScreen.xib in Resources */,
+				09AD3FFF1B88C72600ED55AA /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		09AD40051B88C72700ED55AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		09AD3FF01B88C72600ED55AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09AD3FFD1B88C72600ED55AA /* AppDelegate.m in Sources */,
+				09AD3FFA1B88C72600ED55AA /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		09AD40031B88C72700ED55AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09AD400E1B88C72700ED55AA /* RocketchatTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		09AD40091B88C72700ED55AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 09AD3FF31B88C72600ED55AA /* Rocketchat */;
+			targetProxy = 09AD40081B88C72700ED55AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		09AD40001B88C72600ED55AA /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				09AD40011B88C72600ED55AA /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		09AD400F1B88C72700ED55AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		09AD40101B88C72700ED55AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		09AD40121B88C72700ED55AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = Rocketchat/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		09AD40131B88C72700ED55AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = Rocketchat/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		09AD40151B88C72700ED55AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = RocketchatTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rocketchat.app/Rocketchat";
+			};
+			name = Debug;
+		};
+		09AD40161B88C72700ED55AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = RocketchatTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rocketchat.app/Rocketchat";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		09AD3FEF1B88C72600ED55AA /* Build configuration list for PBXProject "Rocketchat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				09AD400F1B88C72700ED55AA /* Debug */,
+				09AD40101B88C72700ED55AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		09AD40111B88C72700ED55AA /* Build configuration list for PBXNativeTarget "Rocketchat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				09AD40121B88C72700ED55AA /* Debug */,
+				09AD40131B88C72700ED55AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		09AD40141B88C72700ED55AA /* Build configuration list for PBXNativeTarget "RocketchatTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				09AD40151B88C72700ED55AA /* Debug */,
+				09AD40161B88C72700ED55AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 09AD3FEC1B88C72600ED55AA /* Project object */;
+}
