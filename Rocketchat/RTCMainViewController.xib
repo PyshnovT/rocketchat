@@ -42,7 +42,7 @@
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="xD8-Mq-b7U">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="425"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <collectionViewLayout key="collectionViewLayout" id="qfB-Md-fZo" customClass="RTCMessageCollectionViewFlowLayout"/>
+                    <collectionViewLayout key="collectionViewLayout" id="qfB-Md-fZo" customClass="RTCMessageCollectionViewLayout"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Keq-vZ-RNF"/>
                         <outlet property="delegate" destination="-1" id="YAa-AT-BY0"/>

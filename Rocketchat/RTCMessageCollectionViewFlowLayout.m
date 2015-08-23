@@ -8,6 +8,12 @@
 
 #import "RTCMessageCollectionViewFlowLayout.h"
 
+@interface RTCMessageCollectionViewFlowLayout ()
+
+//@property (nonatomic) NSDictionary *layoutInformation;
+
+@end
+
 @implementation RTCMessageCollectionViewFlowLayout 
 
 - (instancetype)init {
@@ -24,7 +30,12 @@
 
 - (void)setupLayout {
     self.minimumInteritemSpacing = 10000;
-    self.minimumLineSpacing = 20;
+    self.minimumLineSpacing = 8;
 }
+
+#pragma mark - Managing Layout Attributes
+
+
+
 
 @end

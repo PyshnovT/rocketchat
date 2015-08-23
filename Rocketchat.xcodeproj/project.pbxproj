@@ -24,8 +24,6 @@
 		09AD402C1B88C80A00ED55AA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40221B88C80A00ED55AA /* Security.framework */; };
 		09AD402D1B88C80A00ED55AA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40231B88C80A00ED55AA /* StoreKit.framework */; };
 		09AD402E1B88C80A00ED55AA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40241B88C80A00ED55AA /* SystemConfiguration.framework */; };
-		09AD40351B88D54A00ED55AA /* RTCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40331B88D54A00ED55AA /* RTCCollectionViewController.m */; };
-		09AD40361B88D54A00ED55AA /* RTCCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09AD40341B88D54A00ED55AA /* RTCCollectionViewController.xib */; };
 		09AD403A1B88D5BA00ED55AA /* RTCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40381B88D5BA00ED55AA /* RTCMainViewController.m */; };
 		09AD403B1B88D5BA00ED55AA /* RTCMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09AD40391B88D5BA00ED55AA /* RTCMainViewController.xib */; };
 		09AD40451B88EA9900ED55AA /* RTCMessagePhotoMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40441B88EA9900ED55AA /* RTCMessagePhotoMedia.m */; };
@@ -33,7 +31,7 @@
 		09AD404F1B88F76800ED55AA /* RTCMessageStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD404E1B88F76800ED55AA /* RTCMessageStore.m */; };
 		09AD40551B88FA1900ED55AA /* RTCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40541B88FA1900ED55AA /* RTCMessage.m */; };
 		09FD78191B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD78181B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m */; };
-		09FD781C1B89D62C00F2AEDC /* RTCMessageCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD781B1B89D62C00F2AEDC /* RTCMessageCollectionViewFlowLayout.m */; };
+		09FD78211B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD78201B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,9 +67,6 @@
 		09AD40221B88C80A00ED55AA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		09AD40231B88C80A00ED55AA /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		09AD40241B88C80A00ED55AA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		09AD40321B88D54A00ED55AA /* RTCCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCCollectionViewController.h; sourceTree = "<group>"; };
-		09AD40331B88D54A00ED55AA /* RTCCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCCollectionViewController.m; sourceTree = "<group>"; };
-		09AD40341B88D54A00ED55AA /* RTCCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RTCCollectionViewController.xib; sourceTree = "<group>"; };
 		09AD40371B88D5BA00ED55AA /* RTCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMainViewController.h; sourceTree = "<group>"; };
 		09AD40381B88D5BA00ED55AA /* RTCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMainViewController.m; sourceTree = "<group>"; };
 		09AD40391B88D5BA00ED55AA /* RTCMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RTCMainViewController.xib; sourceTree = "<group>"; };
@@ -86,8 +81,8 @@
 		09AD40541B88FA1900ED55AA /* RTCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessage.m; sourceTree = "<group>"; };
 		09FD78171B89C21B00F2AEDC /* RTCMessageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessageCollectionViewCell.h; sourceTree = "<group>"; };
 		09FD78181B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageCollectionViewCell.m; sourceTree = "<group>"; };
-		09FD781A1B89D62C00F2AEDC /* RTCMessageCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessageCollectionViewFlowLayout.h; sourceTree = "<group>"; };
-		09FD781B1B89D62C00F2AEDC /* RTCMessageCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		09FD781F1B8A154500F2AEDC /* RTCMessageCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessageCollectionViewLayout.h; sourceTree = "<group>"; };
+		09FD78201B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageCollectionViewLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,9 +205,6 @@
 		09AD40311B88CFFB00ED55AA /* Main Controller */ = {
 			isa = PBXGroup;
 			children = (
-				09AD40321B88D54A00ED55AA /* RTCCollectionViewController.h */,
-				09AD40331B88D54A00ED55AA /* RTCCollectionViewController.m */,
-				09AD40341B88D54A00ED55AA /* RTCCollectionViewController.xib */,
 				09AD40371B88D5BA00ED55AA /* RTCMainViewController.h */,
 				09AD40381B88D5BA00ED55AA /* RTCMainViewController.m */,
 				09AD40391B88D5BA00ED55AA /* RTCMainViewController.xib */,
@@ -249,8 +241,8 @@
 		09FD781E1B89E5E900F2AEDC /* Layout */ = {
 			isa = PBXGroup;
 			children = (
-				09FD781A1B89D62C00F2AEDC /* RTCMessageCollectionViewFlowLayout.h */,
-				09FD781B1B89D62C00F2AEDC /* RTCMessageCollectionViewFlowLayout.m */,
+				09FD781F1B8A154500F2AEDC /* RTCMessageCollectionViewLayout.h */,
+				09FD78201B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -336,7 +328,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				09AD40021B88C72600ED55AA /* LaunchScreen.xib in Resources */,
-				09AD40361B88D54A00ED55AA /* RTCCollectionViewController.xib in Resources */,
 				09AD3FFF1B88C72600ED55AA /* Images.xcassets in Resources */,
 				09AD403B1B88D5BA00ED55AA /* RTCMainViewController.xib in Resources */,
 			);
@@ -359,12 +350,11 @@
 				09AD3FFD1B88C72600ED55AA /* AppDelegate.m in Sources */,
 				09AD3FFA1B88C72600ED55AA /* main.m in Sources */,
 				09AD40481B88EAAD00ED55AA /* RTCMessageLocationMedia.m in Sources */,
-				09AD40351B88D54A00ED55AA /* RTCCollectionViewController.m in Sources */,
-				09FD781C1B89D62C00F2AEDC /* RTCMessageCollectionViewFlowLayout.m in Sources */,
 				09AD40451B88EA9900ED55AA /* RTCMessagePhotoMedia.m in Sources */,
 				09AD40551B88FA1900ED55AA /* RTCMessage.m in Sources */,
 				09AD403A1B88D5BA00ED55AA /* RTCMainViewController.m in Sources */,
 				09FD78191B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m in Sources */,
+				09FD78211B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m in Sources */,
 				09AD404F1B88F76800ED55AA /* RTCMessageStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

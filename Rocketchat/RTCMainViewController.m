@@ -77,7 +77,7 @@ static NSString * const reuseIdentifier = @"Cell";
     RTCMessageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     RTCMessage *message = [[[RTCMessageStore sharedStore] allMessages] objectAtIndex:indexPath.row];
     
-    cell.backgroundColor = [UIColor redColor];
+    cell.backgroundColor = [UIColor colorWithRed:0.04 green:0.51 blue:0.99 alpha:1];
     
     if (message.text) {
         cell.textLabel.text = message.text;
@@ -91,10 +91,5 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - <UICollectionViewDelegate>
 
-#pragma mark - <UICollectionViewDelegateFlowLayout>
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(100, 30);
-}
 
 @end
