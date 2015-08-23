@@ -6,26 +6,60 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTCMainViewController">
             <connections>
+                <outlet property="collectionView" destination="xD8-Mq-b7U" id="DuH-9n-zGV"/>
+                <outlet property="messageTextField" destination="RuS-rP-fl8" id="NM7-pS-EMo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="xD8-Mq-b7U">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="670"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="7Y5-7D-Z7O">
-                        <size key="itemSize" width="50" height="50"/>
-                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    </collectionViewFlowLayout>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFw-3C-IsR">
+                    <rect key="frame" x="0.0" y="425" width="320" height="55"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="14C-rI-6zj">
+                            <rect key="frame" x="271" y="13" width="41" height="30"/>
+                            <state key="normal" title="Отпр.">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="sendTextMessage:" destination="-1" eventType="touchUpInside" id="zgc-x9-gzX"/>
+                            </connections>
+                        </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Введите текст" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RuS-rP-fl8">
+                            <rect key="frame" x="8" y="13" width="243" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="55" id="ehc-om-sKT"/>
+                    </constraints>
+                </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="xD8-Mq-b7U">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="425"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <collectionViewLayout key="collectionViewLayout" id="qfB-Md-fZo" customClass="RTCMessageCollectionViewFlowLayout"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Keq-vZ-RNF"/>
+                        <outlet property="delegate" destination="-1" id="YAa-AT-BY0"/>
+                    </connections>
                 </collectionView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+            <constraints>
+                <constraint firstItem="xD8-Mq-b7U" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Gq1-C8-fPx"/>
+                <constraint firstItem="xD8-Mq-b7U" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="XzV-HQ-RZ9"/>
+                <constraint firstAttribute="trailing" secondItem="xD8-Mq-b7U" secondAttribute="trailing" id="Z7j-jb-BTb"/>
+                <constraint firstItem="ZFw-3C-IsR" firstAttribute="top" secondItem="xD8-Mq-b7U" secondAttribute="bottom" id="hTi-xp-Aan"/>
+                <constraint firstAttribute="bottom" secondItem="ZFw-3C-IsR" secondAttribute="bottom" id="hU4-rf-iGn"/>
+                <constraint firstItem="ZFw-3C-IsR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="oID-yV-2NL"/>
+                <constraint firstAttribute="trailing" secondItem="ZFw-3C-IsR" secondAttribute="trailing" id="y2Z-mx-qd3"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
 </document>

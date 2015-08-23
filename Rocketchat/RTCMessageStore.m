@@ -32,7 +32,7 @@
 }
 
 - (instancetype)init {
-    @throw [NSException exceptionWithName:@"Singleton" reason:@"Use +[SAWOnlineAnnotations sharedStore]" userInfo:nil];
+    @throw [NSException exceptionWithName:@"Singleton" reason:@"Use +[RTCMessageStore sharedStore]" userInfo:nil];
     return nil;
 }
 
