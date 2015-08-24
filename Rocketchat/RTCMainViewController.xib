@@ -14,6 +14,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTCMainViewController">
             <connections>
+                <outlet property="bottomTollbarViewConstraint" destination="GZx-wJ-2tl" id="CHr-3n-VmI"/>
                 <outlet property="collectionView" destination="xD8-Mq-b7U" id="DuH-9n-zGV"/>
                 <outlet property="messageTextField" destination="RuS-rP-fl8" id="NM7-pS-EMo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -72,7 +73,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="4Xd-1B-TsC" secondAttribute="trailing" id="Faf-me-N1f"/>
                         <constraint firstAttribute="bottom" secondItem="4Xd-1B-TsC" secondAttribute="bottom" id="GZx-wJ-2tl"/>

@@ -116,10 +116,12 @@ static NSInteger const tailHeight = 8;
     return self.layoutInfo[@"Cell"][indexPath];
 }
 
+/*
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
     return YES;
 }
-
+*/
+ 
 #pragma mark - Messages size and position
 
 - (CGRect)frameForMessageAtIndexPath:(NSIndexPath *)indexPath {

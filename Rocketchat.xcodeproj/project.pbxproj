@@ -25,7 +25,6 @@
 		09AD402A1B88C80A00ED55AA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40201B88C80A00ED55AA /* libz.dylib */; };
 		09AD402B1B88C80A00ED55AA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40211B88C80A00ED55AA /* QuartzCore.framework */; };
 		09AD402C1B88C80A00ED55AA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40221B88C80A00ED55AA /* Security.framework */; };
-		09AD402D1B88C80A00ED55AA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40231B88C80A00ED55AA /* StoreKit.framework */; };
 		09AD402E1B88C80A00ED55AA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40241B88C80A00ED55AA /* SystemConfiguration.framework */; };
 		09AD403A1B88D5BA00ED55AA /* RTCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40381B88D5BA00ED55AA /* RTCMainViewController.m */; };
 		09AD403B1B88D5BA00ED55AA /* RTCMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09AD40391B88D5BA00ED55AA /* RTCMainViewController.xib */; };
@@ -72,7 +71,6 @@
 		09AD40201B88C80A00ED55AA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		09AD40211B88C80A00ED55AA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		09AD40221B88C80A00ED55AA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		09AD40231B88C80A00ED55AA /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		09AD40241B88C80A00ED55AA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		09AD40371B88D5BA00ED55AA /* RTCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMainViewController.h; sourceTree = "<group>"; };
 		09AD40381B88D5BA00ED55AA /* RTCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMainViewController.m; sourceTree = "<group>"; };
@@ -106,7 +104,6 @@
 				09AD402A1B88C80A00ED55AA /* libz.dylib in Frameworks */,
 				09AD402B1B88C80A00ED55AA /* QuartzCore.framework in Frameworks */,
 				09AD402C1B88C80A00ED55AA /* Security.framework in Frameworks */,
-				09AD402D1B88C80A00ED55AA /* StoreKit.framework in Frameworks */,
 				09AD402E1B88C80A00ED55AA /* SystemConfiguration.framework in Frameworks */,
 				09AD401A1B88C7B100ED55AA /* Parse.framework in Frameworks */,
 				09AD40191B88C7B100ED55AA /* Bolts.framework in Frameworks */,
@@ -203,7 +200,6 @@
 				09AD40201B88C80A00ED55AA /* libz.dylib */,
 				09AD40211B88C80A00ED55AA /* QuartzCore.framework */,
 				09AD40221B88C80A00ED55AA /* Security.framework */,
-				09AD40231B88C80A00ED55AA /* StoreKit.framework */,
 				09AD40241B88C80A00ED55AA /* SystemConfiguration.framework */,
 				09AD40171B88C7B100ED55AA /* Bolts.framework */,
 				09AD40181B88C7B100ED55AA /* Parse.framework */,
@@ -317,6 +313,12 @@
 				TargetAttributes = {
 					09AD3FF31B88C72600ED55AA = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 2R4F9RC8DY;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
+						};
 					};
 					09AD40061B88C72700ED55AA = {
 						CreatedOnToolsVersion = 6.4;
@@ -498,6 +500,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -506,6 +509,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -513,6 +517,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -521,6 +526,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
