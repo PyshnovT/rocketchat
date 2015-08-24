@@ -11,8 +11,11 @@
 
 @interface RTCMessageCollectionViewLayout : UICollectionViewLayout
 
-@property (nonatomic) UIEdgeInsets itemInsets;
-@property (nonatomic) CGSize itemSize;
-@property (nonatomic) CGFloat interItemSpacingY;
+@property (nonatomic) UIEdgeInsets collectionViewInsets;
+@property (nonatomic) UIEdgeInsets messageBubbleInsets;
+@property (nonatomic) CGSize messageSize;
+@property (nonatomic) CGFloat interMessageSpacingY;
+
+@property (nonatomic, strong) UIFont *messageFont;
 
 @end

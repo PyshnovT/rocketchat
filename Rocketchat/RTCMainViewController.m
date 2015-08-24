@@ -28,8 +28,9 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"%@", [self.collectionView.collectionViewLayout class]);
-    [self.collectionView registerClass:[RTCMessageCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+
+    //[self.collectionView registerClass:[RTCMessageCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"RTCMessageCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"Cell"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,7 +48,7 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - Adding messages
 
 - (void)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media {
-    if ((text && media) || (!text && !media)) return;
+    if ((text && media) || (!text && !media) || [text isEqualToString:@""]) return;
     
     
     if (text) {
@@ -77,10 +78,13 @@ static NSString * const reuseIdentifier = @"Cell";
     RTCMessageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     RTCMessage *message = [[[RTCMessageStore sharedStore] allMessages] objectAtIndex:indexPath.row];
     
-    cell.backgroundColor = [UIColor colorWithRed:0.04 green:0.51 blue:0.99 alpha:1];
+  //  cell.backgroundColor = [UIColor colorWithRed:0.04 green:0.51 blue:0.99 alpha:1];
+    cell.isMediaCell = message.media ? YES : NO;
     
     if (message.text) {
+        
         cell.textLabel.text = message.text;
+        
     } else if (message.media) {
         
     }

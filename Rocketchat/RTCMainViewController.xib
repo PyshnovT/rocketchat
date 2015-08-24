@@ -3,6 +3,14 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="AgoraSansProMedium.ttf">
+            <string>PFAgoraSansPro-Medium</string>
+        </mutableArray>
+        <mutableArray key="AgoraSansProRegular.ttf">
+            <string>PFAgoraSansPro-Regular</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTCMainViewController">
             <connections>
@@ -16,31 +24,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFw-3C-IsR">
-                    <rect key="frame" x="0.0" y="425" width="320" height="55"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="14C-rI-6zj">
-                            <rect key="frame" x="271" y="13" width="41" height="30"/>
-                            <state key="normal" title="Отпр.">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="sendTextMessage:" destination="-1" eventType="touchUpInside" id="zgc-x9-gzX"/>
-                            </connections>
-                        </button>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Введите текст" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RuS-rP-fl8">
-                            <rect key="frame" x="8" y="13" width="243" height="30"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <textInputTraits key="textInputTraits"/>
-                        </textField>
-                    </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="55" id="ehc-om-sKT"/>
-                    </constraints>
-                </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="xD8-Mq-b7U">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="425"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="435"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <collectionViewLayout key="collectionViewLayout" id="qfB-Md-fZo" customClass="RTCMessageCollectionViewLayout"/>
                     <connections>
@@ -48,16 +33,63 @@
                         <outlet property="delegate" destination="-1" id="YAa-AT-BY0"/>
                     </connections>
                 </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFw-3C-IsR" userLabel="ToolbarView">
+                    <rect key="frame" x="0.0" y="435" width="320" height="45"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Xd-1B-TsC" userLabel="InputView">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                            <subviews>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Ваше сообщение..." adjustsFontSizeToFit="NO" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="RuS-rP-fl8" userLabel="TextField">
+                                    <rect key="frame" x="8" y="8" width="251" height="29"/>
+                                    <fontDescription key="fontDescription" name="PFAgoraSansPro-Regular" family="PF Agora Sans Pro" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="14C-rI-6zj">
+                                    <rect key="frame" x="267" y="8" width="45" height="29"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="45" id="idH-No-Bzh"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="PFAgoraSansPro-Medium" family="PF Agora Sans Pro" pointSize="16"/>
+                                    <state key="normal" title="Отпр.">
+                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="sendTextMessage:" destination="-1" eventType="touchUpInside" id="zgc-x9-gzX"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="RuS-rP-fl8" secondAttribute="bottom" constant="8" id="2Df-1t-fal"/>
+                                <constraint firstItem="14C-rI-6zj" firstAttribute="top" secondItem="4Xd-1B-TsC" secondAttribute="top" constant="8" id="3UW-yD-27u"/>
+                                <constraint firstAttribute="bottom" secondItem="14C-rI-6zj" secondAttribute="bottom" constant="8" id="CMz-xT-aUw"/>
+                                <constraint firstItem="RuS-rP-fl8" firstAttribute="leading" secondItem="4Xd-1B-TsC" secondAttribute="leading" constant="8" id="U7H-gh-Nmh"/>
+                                <constraint firstItem="RuS-rP-fl8" firstAttribute="top" secondItem="4Xd-1B-TsC" secondAttribute="top" constant="8" id="Urd-l9-MrA"/>
+                                <constraint firstAttribute="trailing" secondItem="14C-rI-6zj" secondAttribute="trailing" constant="8" id="dQb-hU-lqo"/>
+                                <constraint firstAttribute="height" constant="45" id="fcO-Yl-fmi"/>
+                                <constraint firstItem="14C-rI-6zj" firstAttribute="leading" secondItem="RuS-rP-fl8" secondAttribute="trailing" constant="8" id="xaM-SS-2vp"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="4Xd-1B-TsC" secondAttribute="trailing" id="Faf-me-N1f"/>
+                        <constraint firstAttribute="bottom" secondItem="4Xd-1B-TsC" secondAttribute="bottom" id="GZx-wJ-2tl"/>
+                        <constraint firstItem="4Xd-1B-TsC" firstAttribute="leading" secondItem="ZFw-3C-IsR" secondAttribute="leading" id="OSM-dY-e6U"/>
+                        <constraint firstItem="4Xd-1B-TsC" firstAttribute="top" secondItem="ZFw-3C-IsR" secondAttribute="top" id="c4v-O0-yi1"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="xD8-Mq-b7U" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Gq1-C8-fPx"/>
-                <constraint firstItem="xD8-Mq-b7U" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="XzV-HQ-RZ9"/>
-                <constraint firstAttribute="trailing" secondItem="xD8-Mq-b7U" secondAttribute="trailing" id="Z7j-jb-BTb"/>
-                <constraint firstItem="ZFw-3C-IsR" firstAttribute="top" secondItem="xD8-Mq-b7U" secondAttribute="bottom" id="hTi-xp-Aan"/>
-                <constraint firstAttribute="bottom" secondItem="ZFw-3C-IsR" secondAttribute="bottom" id="hU4-rf-iGn"/>
-                <constraint firstItem="ZFw-3C-IsR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="oID-yV-2NL"/>
-                <constraint firstAttribute="trailing" secondItem="ZFw-3C-IsR" secondAttribute="trailing" id="y2Z-mx-qd3"/>
+                <constraint firstItem="xD8-Mq-b7U" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="72T-Jq-lNi"/>
+                <constraint firstAttribute="bottom" secondItem="ZFw-3C-IsR" secondAttribute="bottom" id="AxU-cg-xY0"/>
+                <constraint firstItem="ZFw-3C-IsR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Upp-os-vOI"/>
+                <constraint firstAttribute="trailing" secondItem="ZFw-3C-IsR" secondAttribute="trailing" id="WlK-xy-jGN"/>
+                <constraint firstItem="ZFw-3C-IsR" firstAttribute="top" secondItem="xD8-Mq-b7U" secondAttribute="bottom" id="fb0-IP-blI"/>
+                <constraint firstItem="xD8-Mq-b7U" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mb0-Sx-992"/>
+                <constraint firstAttribute="trailing" secondItem="xD8-Mq-b7U" secondAttribute="trailing" id="y2y-Ns-oPG"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
