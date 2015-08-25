@@ -177,6 +177,13 @@ static NSString * const reuseIdentifier = @"Cell";
     return YES;
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    [self.textSendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    
+    return YES;
+}
+
 
 //- (void)textFieldDidEndEditing:(UITextField *)textField
 
