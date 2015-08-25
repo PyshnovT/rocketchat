@@ -90,7 +90,8 @@ static NSString * const reuseIdentifier = @"Cell";
     NSDictionary *userInfo = note.userInfo;
     NSLog(@"%@", userInfo);
     
-    NSInteger animationCurve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
+    NSInteger animationCurve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue] << 16;
+
     double animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     float keyboardHeight = CGRectGetMaxY(self.view.bounds) - CGRectGetMinY([self.view convertRect:[userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil]);
     
@@ -117,20 +118,6 @@ static NSString * const reuseIdentifier = @"Cell";
     // Надо будет подкорректировать эту функцию
     [self addMessageWithDate:[NSDate date] text:self.messageTextField.text media:nil];
     self.messageTextField.text = @"";
-    
-    if (self.collectionView.contentSize.height > self.collectionView.bounds.size.height) {
-    
-        NSInteger itemsCount = [[RTCMessageStore sharedStore] allMessages].count;
-        
-        NSIndexPath *indexPathForLastItem = [NSIndexPath indexPathForRow:itemsCount-1 inSection:0];
-        CGFloat newMessageHeight = [((RTCMessageCollectionViewLayout *)self.collectionView.collectionViewLayout) sizeForMessageAtIndexPath:indexPathForLastItem].height;
-        
-        CGFloat yOffset = MAX(0, self.collectionView.contentSize.height + newMessageHeight - self.collectionView.bounds.size.height); //MIN([self.collectionView.collectionViewLayout collectionViewContentSize].height, );
-
-        NSLog(@"%f", self.collectionView.contentSize.height);
-        
-        [self.collectionView setContentOffset:CGPointMake(0, yOffset) animated:YES];
-    }
 }
 
 
@@ -146,10 +133,31 @@ static NSString * const reuseIdentifier = @"Cell";
         
     }
     
-   // NSLog(@"%@", [[RTCMessageStore sharedStore] allMessages]);
-    
     [self.collectionView reloadData];
     
+    [self scrollToNewestMessage];
+    
+}
+
+- (void)scrollToNewestMessage {
+    //CGFloat bottomInset =((RTCMessageCollectionViewLayout *)self.collectionView.collectionViewLayout).collectionViewInsets.bottom;
+    NSInteger itemsCount = [[RTCMessageStore sharedStore] allMessages].count;
+    
+    NSIndexPath *indexPathForLastItem = [NSIndexPath indexPathForRow:itemsCount-1 inSection:0];
+    CGFloat newMessageHeight = [((RTCMessageCollectionViewLayout *)self.collectionView.collectionViewLayout) sizeForMessageAtIndexPath:indexPathForLastItem].height;
+    
+    CGFloat lastMessageBottomY = self.collectionView.contentSize.height + newMessageHeight;
+    
+    if (lastMessageBottomY > self.collectionView.bounds.size.height) {
+        
+
+        
+        CGFloat yOffset = MAX(0, self.collectionView.contentSize.height + newMessageHeight - self.collectionView.bounds.size.height); //MIN([self.collectionView.collectionViewLayout collectionViewContentSize].height, );
+        
+        //NSLog(@"%f", self.collectionView.contentSize.height);
+        
+        [self.collectionView setContentOffset:CGPointMake(0, yOffset) animated:YES];
+    }
 }
 
 #pragma mark - <UICollectionViewDataSource>

@@ -14,7 +14,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTCMainViewController">
             <connections>
-                <outlet property="bottomTollbarViewConstraint" destination="GZx-wJ-2tl" id="CHr-3n-VmI"/>
+                <outlet property="bottomTollbarViewConstraint" destination="AxU-cg-xY0" id="ga9-WQ-9HX"/>
                 <outlet property="collectionView" destination="xD8-Mq-b7U" id="DuH-9n-zGV"/>
                 <outlet property="messageTextField" destination="RuS-rP-fl8" id="NM7-pS-EMo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		090A28AD1B8C6FC100EBA5F6 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 090A28AC1B8C6FC100EBA5F6 /* CoreText.framework */; };
 		09236E761B8B807000F12618 /* AgoraSansProLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E741B8B807000F12618 /* AgoraSansProLight.ttf */; };
 		09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */; };
 		09236E791B8B821700F12618 /* AgoraSansProMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */; };
@@ -49,7 +48,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		090A28AC1B8C6FC100EBA5F6 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		09236E741B8B807000F12618 /* AgoraSansProLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProLight.ttf; sourceTree = "<group>"; };
 		09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProRegular.ttf; sourceTree = "<group>"; };
 		09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProMedium.ttf; sourceTree = "<group>"; };
@@ -98,7 +96,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				090A28AD1B8C6FC100EBA5F6 /* CoreText.framework in Frameworks */,
 				09AD40251B88C80A00ED55AA /* AudioToolbox.framework in Frameworks */,
 				09AD40261B88C80A00ED55AA /* CFNetwork.framework in Frameworks */,
 				09AD40271B88C80A00ED55AA /* CoreGraphics.framework in Frameworks */,
@@ -195,7 +192,6 @@
 		09AD402F1B88C81A00ED55AA /* Frameworks and libs */ = {
 			isa = PBXGroup;
 			children = (
-				090A28AC1B8C6FC100EBA5F6 /* CoreText.framework */,
 				09AD401B1B88C80A00ED55AA /* AudioToolbox.framework */,
 				09AD401C1B88C80A00ED55AA /* CFNetwork.framework */,
 				09AD401D1B88C80A00ED55AA /* CoreGraphics.framework */,
