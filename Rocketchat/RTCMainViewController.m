@@ -22,6 +22,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *textSendButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToBorderTextToolbarViewConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarContainerViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaPickerViewHeightConstraint;
 
 @end
 
@@ -93,16 +96,31 @@ static NSString * const reuseIdentifier = @"Cell";
     NSDictionary *userInfo = note.userInfo;
     NSLog(@"%@", userInfo);
     
-    NSInteger animationCurve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue] << 16;
+    NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curveValue.intValue;
 
     double animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     float keyboardHeight = CGRectGetMaxY(self.view.bounds) - CGRectGetMinY([self.view convertRect:[userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil]);
     
+    NSLog(@"%f", keyboardHeight);
+    
     [self.view layoutIfNeeded];
     
-    [UIView animateWithDuration:animationDuration delay:0.0 options:animationCurve animations:^{
+
+    
+    [UIView animateWithDuration:animationDuration delay:0.0 options:(animationCurve << 16) animations:^{
         //self.bottomTextToolbarViewConstraint.constant = keyboardHeight - self.mediaContainerViewHeightConstraint.constant - self.mediaToolbarViewHeightConstraint.constant;
-        self.bottomToBorderTextToolbarViewConstraint.constant = keyboardHeight;
+       // self.toolbarContainerViewHeightConstraint.constant = keyboardHeight + self.inputViewHeightConstraint.constant;
+        self.bottomToBorderTextToolbarViewConstraint.constant = MAX(keyboardHeight - self.mediaPickerViewHeightConstraint.constant, 0);
+        NSLog(@"between %f", self.bottomToBorderTextToolbarViewConstraint.constant);
+        
+        /*   if (keyboardHeight) { // выезжает клава
+            self.toolbarContainerViewHeightConstraint.constant = keyboardHeight + self.inputViewHeightConstraint.constant;
+        } else { // клава заезжает
+            self.toolbarContainerViewHeightConstraint.constant = 90; // потом поменять, тут высота всего тулбара
+        }*/
+        
+        
         [self.view layoutIfNeeded];
     } completion:nil];
 }
@@ -113,7 +131,6 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [self.collectionView.collectionViewLayout invalidateLayout];
-   // self.collectionView.la
 }
 
 #pragma mark - IBActions
@@ -184,8 +201,6 @@ static NSString * const reuseIdentifier = @"Cell";
     return YES;
 }
 
-
-//- (void)textFieldDidEndEditing:(UITextField *)textField
 
 #pragma mark - <UICollectionViewDataSource>
 
