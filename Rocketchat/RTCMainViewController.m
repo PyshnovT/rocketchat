@@ -12,15 +12,16 @@
 #import "RTCMessage.h"
 #import "RTCMessageCollectionViewLayout.h"
 
-@interface RTCMainViewController ()
+@interface RTCMainViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
+
 // Bottom View
 @property (weak, nonatomic) IBOutlet UITextField *messageTextField;
+@property (weak, nonatomic) IBOutlet UIButton *textSendButton;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomTollbarViewConstraint;
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToBorderTextToolbarViewConstraint;
 
 @end
 
@@ -35,6 +36,8 @@ static NSString * const reuseIdentifier = @"Cell";
 
     self.collectionView.alwaysBounceVertical = YES;
     [self.collectionView registerNib:[UINib nibWithNibName:@"RTCMessageCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"Cell"];
+    
+    self.messageTextField.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -98,7 +101,8 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.view layoutIfNeeded];
     
     [UIView animateWithDuration:animationDuration delay:0.0 options:animationCurve animations:^{
-        self.bottomTollbarViewConstraint.constant = keyboardHeight;
+        //self.bottomTextToolbarViewConstraint.constant = keyboardHeight - self.mediaContainerViewHeightConstraint.constant - self.mediaToolbarViewHeightConstraint.constant;
+        self.bottomToBorderTextToolbarViewConstraint.constant = keyboardHeight;
         [self.view layoutIfNeeded];
     } completion:nil];
 }
@@ -118,6 +122,8 @@ static NSString * const reuseIdentifier = @"Cell";
     // Надо будет подкорректировать эту функцию
     [self addMessageWithDate:[NSDate date] text:self.messageTextField.text media:nil];
     self.messageTextField.text = @"";
+    
+    [self.textSendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
 }
 
 
@@ -140,25 +146,39 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)scrollToNewestMessage {
-    //CGFloat bottomInset =((RTCMessageCollectionViewLayout *)self.collectionView.collectionViewLayout).collectionViewInsets.bottom;
     NSInteger itemsCount = [[RTCMessageStore sharedStore] allMessages].count;
-    
     NSIndexPath *indexPathForLastItem = [NSIndexPath indexPathForRow:itemsCount-1 inSection:0];
+
     CGFloat newMessageHeight = [((RTCMessageCollectionViewLayout *)self.collectionView.collectionViewLayout) sizeForMessageAtIndexPath:indexPathForLastItem].height;
     
     CGFloat lastMessageBottomY = self.collectionView.contentSize.height + newMessageHeight;
     
     if (lastMessageBottomY > self.collectionView.bounds.size.height) {
         
-
-        
-        CGFloat yOffset = MAX(0, self.collectionView.contentSize.height + newMessageHeight - self.collectionView.bounds.size.height); //MIN([self.collectionView.collectionViewLayout collectionViewContentSize].height, );
-        
-        //NSLog(@"%f", self.collectionView.contentSize.height);
+        CGFloat yOffset = MAX(0, self.collectionView.contentSize.height + newMessageHeight - self.collectionView.bounds.size.height);
         
         [self.collectionView setContentOffset:CGPointMake(0, yOffset) animated:YES];
     }
+    
 }
+
+#pragma mark - <UITextFieldDelegate>
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    NSString *newString = [[textField text] stringByReplacingCharactersInRange:range withString:string];
+    
+    if ([newString isEqualToString:@""]) {
+        [self.textSendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    } else {
+        [self.textSendButton setTitleColor:[UIColor colorWithRed:0 green:0.47 blue:1 alpha:1] forState:UIControlStateNormal];
+    }
+    
+    return YES;
+}
+
+
+//- (void)textFieldDidEndEditing:(UITextField *)textField
 
 #pragma mark - <UICollectionViewDataSource>
 

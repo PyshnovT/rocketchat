@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		090A28B61B8CBF5B00EBA5F6 /* RTCTextToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */; };
 		09236E761B8B807000F12618 /* AgoraSansProLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E741B8B807000F12618 /* AgoraSansProLight.ttf */; };
 		09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */; };
 		09236E791B8B821700F12618 /* AgoraSansProMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */; };
@@ -48,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		090A28B41B8CBF5B00EBA5F6 /* RTCTextToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCTextToolbarView.h; sourceTree = "<group>"; };
+		090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCTextToolbarView.m; sourceTree = "<group>"; };
 		09236E741B8B807000F12618 /* AgoraSansProLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProLight.ttf; sourceTree = "<group>"; };
 		09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProRegular.ttf; sourceTree = "<group>"; };
 		09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProMedium.ttf; sourceTree = "<group>"; };
@@ -224,6 +227,8 @@
 				09AD40371B88D5BA00ED55AA /* RTCMainViewController.h */,
 				09AD40381B88D5BA00ED55AA /* RTCMainViewController.m */,
 				09AD40391B88D5BA00ED55AA /* RTCMainViewController.xib */,
+				090A28B41B8CBF5B00EBA5F6 /* RTCTextToolbarView.h */,
+				090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */,
 			);
 			name = "Main Controller";
 			sourceTree = "<group>";
@@ -379,6 +384,7 @@
 				09AD40481B88EAAD00ED55AA /* RTCMessageLocationMedia.m in Sources */,
 				09AD40451B88EA9900ED55AA /* RTCMessagePhotoMedia.m in Sources */,
 				09AD40551B88FA1900ED55AA /* RTCMessage.m in Sources */,
+				090A28B61B8CBF5B00EBA5F6 /* RTCTextToolbarView.m in Sources */,
 				09AD403A1B88D5BA00ED55AA /* RTCMainViewController.m in Sources */,
 				09FD78191B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m in Sources */,
 				09FD78211B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m in Sources */,
@@ -509,7 +515,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -526,7 +532,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
