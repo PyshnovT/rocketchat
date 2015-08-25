@@ -10,6 +10,7 @@
 #import "RTCMessageStore.h"
 #import "RTCMessageCollectionViewCell.h"
 #import "RTCMessage.h"
+#import "RTCMessageCollectionViewLayout.h"
 
 @interface RTCMainViewController ()
 
@@ -31,7 +32,8 @@ static NSString * const reuseIdentifier = @"Cell";
     [super viewDidLoad];
 
     [self registerForKeyboardNotifications];
-    //[self.collectionView registerClass:[RTCMessageCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+
+    self.collectionView.alwaysBounceVertical = YES;
     [self.collectionView registerNib:[UINib nibWithNibName:@"RTCMessageCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"Cell"];
 }
 
@@ -112,12 +114,23 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - IBActions
 
 - (IBAction)sendTextMessage:(id)sender { // Нажатие кнопки
+    // Надо будет подкорректировать эту функцию
     [self addMessageWithDate:[NSDate date] text:self.messageTextField.text media:nil];
     self.messageTextField.text = @"";
     
-    CGFloat yOffset = [self.collectionView.collectionViewLayout collectionViewContentSize].height;
+    if (self.collectionView.contentSize.height > self.collectionView.bounds.size.height) {
+    
+        NSInteger itemsCount = [[RTCMessageStore sharedStore] allMessages].count;
+        
+        NSIndexPath *indexPathForLastItem = [NSIndexPath indexPathForRow:itemsCount-1 inSection:0];
+        CGFloat newMessageHeight = [((RTCMessageCollectionViewLayout *)self.collectionView.collectionViewLayout) sizeForMessageAtIndexPath:indexPathForLastItem].height;
+        
+        CGFloat yOffset = MAX(0, self.collectionView.contentSize.height + newMessageHeight - self.collectionView.bounds.size.height); //MIN([self.collectionView.collectionViewLayout collectionViewContentSize].height, );
 
-   // [self.collectionView setContentOffset:CGPointMake(0, yOffset) animated:YES];
+        NSLog(@"%f", self.collectionView.contentSize.height);
+        
+        [self.collectionView setContentOffset:CGPointMake(0, yOffset) animated:YES];
+    }
 }
 
 

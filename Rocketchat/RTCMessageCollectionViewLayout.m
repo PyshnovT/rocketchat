@@ -8,12 +8,12 @@
 
 #import "RTCMessageCollectionViewLayout.h"
 #import "RTCMessage.h"
+#import <CoreText/CoreText.h>
 
 
 @interface RTCMessageCollectionViewLayout ()
 
-@property (nonatomic, strong) NSDictionary *layoutInfo;
-@property (nonatomic, strong) NSMutableDictionary *cellBottomY;
+@property (nonatomic, strong) NSDictionary *layoutInfo; // Object for setting messages' frame
 
 @end
 
@@ -40,9 +40,9 @@ static NSInteger const tailHeight = 8;
     
     self.collectionViewInsets = UIEdgeInsetsMake(30, 0, 30, 8);
     self.messageBubbleInsets = UIEdgeInsetsMake(15, 15, 15, 15); // Данные из .xib
-    self.messageSize = CGSizeMake(240, 50); // Второй параметр здесь не имеет значения
+    self.messageSize = CGSizeMake(240, 240); // Второй параметр имеет значение только для медиа-сообщений
     self.interMessageSpacingY = 8;
-    self.messageFont = [UIFont fontWithName:@"PFAgoraSansPro-Regular" size:16];
+    self.messageFont = [UIFont fontWithName:@"PFAgoraSansPro-Regular" size:16]; 
 }
 
 #pragma mark - Layout
@@ -54,7 +54,7 @@ static NSInteger const tailHeight = 8;
     NSIndexPath *lastItemIndexPath = [NSIndexPath indexPathForRow:rowCount-1 inSection:sectionsCount-1];
     CGFloat totalMessagesHeight = self.collectionViewInsets.top + [self.cellBottomY[lastItemIndexPath] floatValue] + self.collectionViewInsets.bottom;
     
-    CGFloat height = MAX(self.collectionView.bounds.size.height + 10, totalMessagesHeight);
+    CGFloat height = totalMessagesHeight;
     return CGSizeMake(self.collectionView.bounds.size.width, height);
 }
 
@@ -70,7 +70,6 @@ static NSInteger const tailHeight = 8;
         
         for (NSInteger item = 0; item < itemCount; item++) {
             indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-
             
             NSIndexPath *previousIndexPath = [NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section];
             
@@ -146,17 +145,24 @@ static NSInteger const tailHeight = 8;
     } else if (message.text) {
         CGFloat textLabelWidth = self.messageSize.width - self.messageBubbleInsets.left - self.messageBubbleInsets.right;
         
-        CGRect textRect = [message.text boundingRectWithSize:CGSizeMake(textLabelWidth, CGFLOAT_MAX)
-                                                     options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
-                                                  attributes:@{ NSFontAttributeName : self.messageFont }
-                                                     context:nil];
-        CGSize textSize = CGRectIntegral(textRect).size;
+        NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                              self.messageFont, NSFontAttributeName,
+                                              nil];
         
-        height = self.messageBubbleInsets.top + textSize.height + self.messageBubbleInsets.bottom + tailHeight;
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:message.text attributes:attributesDictionary];
+        
+        CGRect textRect = [string boundingRectWithSize:CGSizeMake(textLabelWidth, CGFLOAT_MAX)
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+        CGSize textSize = CGRectIntegral(textRect).size;
+        CGFloat textHeight = MAX(21, textSize.height);
+        
+        height = self.messageBubbleInsets.top + textHeight + self.messageBubbleInsets.bottom + tailHeight;
     }
     
     return CGSizeMake(width, height);
 
 }
+
 
 @end

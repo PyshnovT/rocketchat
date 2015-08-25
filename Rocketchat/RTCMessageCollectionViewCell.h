@@ -11,7 +11,6 @@
 @interface RTCMessageCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, weak) IBOutlet UITextView *textLabel;
-@property (nonatomic) UIEdgeInsets messgeInsets;
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 
 @property (nonatomic) BOOL isMediaCell;

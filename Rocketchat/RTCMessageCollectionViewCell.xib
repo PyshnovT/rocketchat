@@ -12,23 +12,26 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="IPW-Tq-VLE" customClass="RTCMessageCollectionViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="240" height="59"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="240" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="240" height="59"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ex-fo-jfE" userLabel="BubbleView">
-                        <rect key="frame" x="0.0" y="0.0" width="240" height="42"/>
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="51"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gI7-hj-Ki1" userLabel="Text">
-                                <rect key="frame" x="15" y="15" width="210" height="12"/>
+                                <rect key="frame" x="15" y="15" width="210" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="0QK-Fo-ak3"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="PFAgoraSansPro-Regular" family="PF Agora Sans Pro" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lof-cA-RUI">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="42"/>
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="51"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -46,7 +49,7 @@
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bubble_tail" translatesAutoresizingMaskIntoConstraints="NO" id="yvN-oo-SqM">
-                        <rect key="frame" x="220" y="32" width="18" height="18"/>
+                        <rect key="frame" x="220" y="41" width="18" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="Cln-Nz-632"/>
                             <constraint firstAttribute="width" constant="18" id="rfi-ox-hCp"/>
@@ -61,13 +64,13 @@
                 <constraint firstItem="2ex-fo-jfE" firstAttribute="top" secondItem="IPW-Tq-VLE" secondAttribute="top" id="hHw-II-qYM"/>
                 <constraint firstAttribute="trailing" secondItem="2ex-fo-jfE" secondAttribute="trailing" id="ppP-C0-7fZ"/>
             </constraints>
-            <size key="customSize" width="244" height="50"/>
+            <size key="customSize" width="244" height="59"/>
             <connections>
                 <outlet property="bubbleView" destination="2ex-fo-jfE" id="cvU-GK-saa"/>
                 <outlet property="imageView" destination="Lof-cA-RUI" id="9w1-Di-Z8k"/>
                 <outlet property="textLabel" destination="gI7-hj-Ki1" id="uUZ-lQ-5Ar"/>
             </connections>
-            <point key="canvasLocation" x="360" y="294"/>
+            <point key="canvasLocation" x="373" y="93.5"/>
         </collectionViewCell>
     </objects>
     <resources>

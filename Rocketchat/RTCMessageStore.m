@@ -50,7 +50,7 @@
     return self.privateMessages;
 }
 
-#pragma mark - adding new message
+#pragma mark - Creating new message
 
 
 - (RTCMessage *)createMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media {
