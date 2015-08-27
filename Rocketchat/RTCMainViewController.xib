@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTCMainViewController">
             <connections>
-                <outlet property="collectionView" destination="xD8-Mq-b7U" id="DuH-9n-zGV"/>
+                <outlet property="controllerCollectionView" destination="mv9-OJ-l28" id="Ile-cF-g5s"/>
                 <outlet property="inputToolbarViewHeightConstraint" destination="cpK-vW-nX5" id="Qfg-za-iUr"/>
                 <outlet property="inputToolbarViewToMediaPickerToolbarViewConstraint" destination="jPe-py-1gi" id="UZp-SG-Ndb"/>
                 <outlet property="locationMediaButton" destination="S1L-fS-6Sa" id="7Ad-U1-3Qa"/>
@@ -32,15 +32,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="xD8-Mq-b7U">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="390"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <collectionViewLayout key="collectionViewLayout" id="qfB-Md-fZo" customClass="RTCMessageCollectionViewLayout"/>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="Keq-vZ-RNF"/>
-                        <outlet property="delegate" destination="-1" id="YAa-AT-BY0"/>
-                    </connections>
-                </collectionView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TpC-2m-4qn" userLabel="ToolbarContainer">
                     <rect key="frame" x="0.0" y="390" width="320" height="90"/>
                     <subviews>
@@ -172,17 +163,21 @@
                         <constraint firstAttribute="height" id="wuD-Hf-QkE"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mv9-OJ-l28" userLabel="Controller Collection View">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="390"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="TpC-2m-4qn" secondAttribute="trailing" id="7q5-oa-bWH"/>
+                <constraint firstItem="mv9-OJ-l28" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8eQ-DJ-li8"/>
                 <constraint firstItem="TpC-2m-4qn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Bcq-5v-apa"/>
-                <constraint firstItem="TpC-2m-4qn" firstAttribute="top" secondItem="xD8-Mq-b7U" secondAttribute="bottom" id="CN2-i6-5Ee"/>
+                <constraint firstItem="TpC-2m-4qn" firstAttribute="top" secondItem="mv9-OJ-l28" secondAttribute="bottom" id="HST-5Y-LUX"/>
+                <constraint firstItem="mv9-OJ-l28" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="InD-lz-gks"/>
                 <constraint firstAttribute="bottom" secondItem="6gq-2w-QiJ" secondAttribute="bottom" id="dHn-dl-4Yq"/>
-                <constraint firstAttribute="trailing" secondItem="xD8-Mq-b7U" secondAttribute="trailing" id="dYm-8j-DcF"/>
-                <constraint firstItem="xD8-Mq-b7U" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="eun-Z7-uQS"/>
                 <constraint firstItem="6gq-2w-QiJ" firstAttribute="top" secondItem="TpC-2m-4qn" secondAttribute="bottom" id="iQU-zl-JLX"/>
-                <constraint firstItem="xD8-Mq-b7U" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iUb-WI-KvY"/>
+                <constraint firstAttribute="trailing" secondItem="mv9-OJ-l28" secondAttribute="trailing" id="kwp-Du-Yyv"/>
                 <constraint firstAttribute="trailing" secondItem="6gq-2w-QiJ" secondAttribute="trailing" id="qjn-EH-aOy"/>
                 <constraint firstItem="6gq-2w-QiJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="xg6-mk-rbI"/>
             </constraints>

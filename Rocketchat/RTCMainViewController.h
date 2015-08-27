@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RTCMainViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface RTCMainViewController : UIViewController 
 
 @end

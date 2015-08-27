@@ -11,16 +11,14 @@
 #import "RTCMessageCollectionViewCell.h"
 #import "RTCMessage.h"
 #import "RTCMessageCollectionViewLayout.h"
+#import "RTCCollectionViewController.h"
 
-#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
-#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
-#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
-#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
-#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
 
 @interface RTCMainViewController () <UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIView *controllerCollectionView;
+@property (strong, nonatomic) RTCCollectionViewController *collectionViewController;
 @property (weak, nonatomic) IBOutlet UIView *mediaContainerView;
 @property (weak, nonatomic) IBOutlet UIView *mediaPickerToolbarView;
 
@@ -59,15 +57,20 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self registerForKeyboardNotifications];
-
-    self.collectionView.alwaysBounceVertical = YES;
-    [self.collectionView registerNib:[UINib nibWithNibName:@"RTCMessageCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"Cell"];
-    
+    RTCMessageCollectionViewLayout *messageLayout = [[RTCMessageCollectionViewLayout alloc] init];
+    self.collectionViewController = [[RTCCollectionViewController alloc] initWithCollectionViewLayout:messageLayout];
+    [self displayViewController:self.collectionViewController];
     self.messageTextField.delegate = self;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self registerForKeyboardNotifications];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     
     [self deregisterFromKeyboardNotifications];
     
@@ -104,14 +107,6 @@ static NSString * const reuseIdentifier = @"Cell";
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-    
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleRotation:)
-                                                     name:UIDeviceOrientationDidChangeNotification
-                                                   object:nil];
-        
-    }
     
 }
 
@@ -130,13 +125,6 @@ static NSString * const reuseIdentifier = @"Cell";
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidChangeFrameNotification                                                  object:nil];
     
-    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIKeyboardWillChangeFrameNotification
-                                                      object:nil];
-        
-    }
 }
 
 - (void)keyboardWillChangeFrame:(NSNotification *)note {
@@ -183,68 +171,43 @@ static NSString * const reuseIdentifier = @"Cell";
     } completion:nil];
 }
 
-#pragma mark - Rotation
+#pragma mark - Collection View Controller
 
-// Сделать нотификации для iOS 7
-
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-    [self handleRotation:nil];
+- (void)displayViewController:(UIViewController *)controller {
+    [self addChildViewController:controller];
+    
+    if (controller == self.collectionViewController) {
+    
+        [self.controllerCollectionView addSubview:controller.view];
+        [self setConstraintsForCollectionViewController];
+        
+    }
+    [controller didMoveToParentViewController:self];
 }
 
-- (void)handleRotation:(NSNotification *)note {
-    [self.collectionView.collectionViewLayout invalidateLayout];
-}
 
+- (void)setConstraintsForCollectionViewController {
+    if (![self.collectionViewController.view superview]) return;
+    
+    self.collectionViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSDictionary *nameMap = @{@"collectionView": self.collectionViewController.view,
+                              };
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[collectionView]-0-|" options:0 metrics:nil views:nameMap];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[collectionView]-0-|" options:0 metrics:nil views:nameMap];
+    
+    [self.controllerCollectionView addConstraints:horizontalConstraints];
+    [self.controllerCollectionView addConstraints:verticalConstraints];
+}
 
 #pragma mark - IBActions
 
 - (IBAction)sendTextMessage:(id)sender { // Нажатие кнопки
     // Надо будет подкорректировать эту функцию
-    [self addMessageWithDate:[NSDate date] text:self.messageTextField.text media:nil];
+    [self.collectionViewController addMessageWithDate:[NSDate date] text:self.messageTextField.text media:nil];
     self.messageTextField.text = @"";
     
     [self.textSendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-}
-
-
-#pragma mark - Adding messages
-
-- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media {
-    if ((text && media) || (!text && !media) || [text isEqualToString:@""]) return;
-    
-    
-    if (text) {
-        [[RTCMessageStore sharedStore] createMessageWithDate:date text:text];
-    } else if (media) {
-        
-    }
-    
-    [self.collectionView reloadData];
-    
-    [self scrollToNewestMessage];
-    
-}
-
-- (void)scrollToNewestMessage {
-    NSInteger itemsCount = [[RTCMessageStore sharedStore] allMessages].count;
-    
-    if (!itemsCount) return;
-    
-    NSIndexPath *indexPathForLastItem = [NSIndexPath indexPathForRow:itemsCount-1 inSection:0];
-
-    CGFloat newMessageHeight =  UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) ? [((RTCMessageCollectionViewLayout *)self.collectionView.collectionViewLayout) sizeForMessageAtIndexPath:indexPathForLastItem].height : 0;
-
-    
-    CGFloat lastMessageBottomY = self.collectionView.contentSize.height + newMessageHeight;
-    
-    if (lastMessageBottomY > self.collectionView.bounds.size.height) {
-        
-        CGFloat yOffset = MAX(0, self.collectionView.contentSize.height - self.collectionView.bounds.size.height);
-        
-        [self.collectionView setContentOffset:CGPointMake(0, yOffset) animated:YES];
-    }
-    
 }
 
 #pragma mark - <UITextFieldDelegate>
@@ -270,37 +233,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 
-#pragma mark - <UICollectionViewDataSource>
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
-}
-
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [[RTCMessageStore sharedStore] allMessages].count;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    RTCMessageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    RTCMessage *message = [[[RTCMessageStore sharedStore] allMessages] objectAtIndex:indexPath.row];
-    
-  //  cell.backgroundColor = [UIColor colorWithRed:0.04 green:0.51 blue:0.99 alpha:1];
-    cell.isMediaCell = message.media ? YES : NO;
-    
-    if (message.text) {
-        
-        cell.textLabel.text = message.text;
-        
-    } else if (message.media) {
-        
-    }
-    
-    return cell;
-}
-
-
-#pragma mark - <UICollectionViewDelegate>
 
 #pragma mark - Media Buttons
 
@@ -316,7 +249,6 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)pressMediaButton:(UIButton *)sender {
     if (sender.selected) { // Если уже был выбран, то закрыть
-        NSLog(@"Кнопка выбрана, закрыть");
         [self resetMediaButtonsAndMediaToolbarContainer];
     } else {
         self.mediaContainerView.hidden = NO;
@@ -337,25 +269,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
         } else if (sender == self.photoGalleryMediaButton) { // Add gallery view
             
-            //self.mediaContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-            self.photoPickerView.translatesAutoresizingMaskIntoConstraints = NO;
-            [self.mediaContainerView addSubview:self.photoPickerView];
-            
-            
-            CGFloat photoPickerViewHeigth = self.photoPickerView.bounds.size.height;
-            self.mediaContainerViewHeightConstraint.constant = photoPickerViewHeigth;
-            
-            
-            NSDictionary *nameMap = @{@"photoPickerView": self.photoPickerView,
-                                      @"mediaContainerView": self.mediaContainerView
-                                      };
-            
-            NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[photoPickerView]-0-|" options:0 metrics:nil views:nameMap];
-            NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[photoPickerView]-0-|" options:0 metrics:nil views:nameMap];
-            
-            [self.mediaContainerView addConstraints:horizontalConstraints];
-            [self.mediaContainerView addConstraints:verticalConstraints];
-
+            [self addPhotoPickerView];
             
         } else if (sender == self.locationMediaButton) {
 
@@ -369,14 +283,38 @@ static NSString * const reuseIdentifier = @"Cell";
     
     for (int i = 0; i < mediaButtons.count; i++) {
         if ([mediaButtons[i] isKindOfClass:[UIButton class]]) {
-            ((UIButton *)mediaButtons[i]).alpha = 1;
-            ((UIButton *)mediaButtons[i]).selected = NO;
+            UIButton *mediaButton = (UIButton *)mediaButtons[i];
+            
+            mediaButton.alpha = 1;
+            
+            if (i == 1 && mediaButton.selected) {
+                [self.photoPickerView removeFromSuperview];
+                self.mediaContainerViewHeightConstraint.constant = 0;
+               // self.mediaContainerView.hidden = YES;
+            }
+            
+            mediaButton.selected = NO;
         }
     }
+
+}
+
+- (void)addPhotoPickerView {
+    self.photoPickerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.mediaContainerView addSubview:self.photoPickerView];
     
-    [self.photoPickerView removeFromSuperview];
-    self.mediaContainerViewHeightConstraint.constant = 0;
-    self.mediaContainerView.hidden = YES;
+    CGFloat photoPickerViewHeigth = self.photoPickerView.bounds.size.height;
+    self.mediaContainerViewHeightConstraint.constant = photoPickerViewHeigth;
+    
+    
+    NSDictionary *nameMap = @{@"photoPickerView": self.photoPickerView,
+                              };
+    
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[photoPickerView]-0-|" options:0 metrics:nil views:nameMap];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[photoPickerView]-0-|" options:0 metrics:nil views:nameMap];
+    
+    [self.mediaContainerView addConstraints:horizontalConstraints];
+    [self.mediaContainerView addConstraints:verticalConstraints];
 }
 
 #pragma mark - Photo Picker
