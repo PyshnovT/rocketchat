@@ -12,19 +12,45 @@
 #import "RTCMessage.h"
 #import "RTCMessageCollectionViewLayout.h"
 
+/*
+typedef enum {
+    ButtonPhoto,
+    ButtonGallery,
+    ButtonLocation
+} ButtonType;
+*/
+ 
 @interface RTCMainViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIView *mediaContainerView;
+@property (weak, nonatomic) IBOutlet UIView *mediaPickerToolbarView;
 
 
-// Bottom View
 @property (weak, nonatomic) IBOutlet UITextField *messageTextField;
 @property (weak, nonatomic) IBOutlet UIButton *textSendButton;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomToBorderTextToolbarViewConstraint;
+// .ViewController xib
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewToMediaPickerToolbarViewConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarContainerViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaPickerViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaPickerToolbarViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaContainerViewHeightConstraint;
+
+
+// Media Buttons
+
+
+@property (weak, nonatomic) IBOutlet UIButton *photoTakingMediaButton;
+@property (weak, nonatomic) IBOutlet UIButton *photoGalleryMediaButton;
+@property (weak, nonatomic) IBOutlet UIButton *locationMediaButton;
+
+// PhotoPicker .xib
+
+@property (nonatomic, strong) IBOutlet UIView *photoPickerView;
+@property (weak, nonatomic) IBOutlet UIScrollView *photoPickerScrollView;
+
 
 @end
 
@@ -86,6 +112,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)keyboardWillBeShown:(NSNotification *)note {
     [self updateConstraintsForKeyboard:note];
+    [self scrollToNewestMessage];
 }
 
 - (void)keyboardWillBeHidden:(NSNotification *)note {
@@ -109,18 +136,9 @@ static NSString * const reuseIdentifier = @"Cell";
 
     
     [UIView animateWithDuration:animationDuration delay:0.0 options:(animationCurve << 16) animations:^{
-        //self.bottomTextToolbarViewConstraint.constant = keyboardHeight - self.mediaContainerViewHeightConstraint.constant - self.mediaToolbarViewHeightConstraint.constant;
-       // self.toolbarContainerViewHeightConstraint.constant = keyboardHeight + self.inputViewHeightConstraint.constant;
-        self.bottomToBorderTextToolbarViewConstraint.constant = MAX(keyboardHeight - self.mediaPickerViewHeightConstraint.constant, 0);
-        NSLog(@"between %f", self.bottomToBorderTextToolbarViewConstraint.constant);
-        
-        /*   if (keyboardHeight) { // выезжает клава
-            self.toolbarContainerViewHeightConstraint.constant = keyboardHeight + self.inputViewHeightConstraint.constant;
-        } else { // клава заезжает
-            self.toolbarContainerViewHeightConstraint.constant = 90; // потом поменять, тут высота всего тулбара
-        }*/
-        
-        
+
+        self.inputToolbarViewToMediaPickerToolbarViewConstraint.constant = MAX(keyboardHeight - self.mediaPickerToolbarViewHeightConstraint.constant, 0);
+
         [self.view layoutIfNeeded];
     } completion:nil];
 }
@@ -132,6 +150,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
+
 
 #pragma mark - IBActions
 
@@ -164,6 +183,9 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)scrollToNewestMessage {
     NSInteger itemsCount = [[RTCMessageStore sharedStore] allMessages].count;
+    
+    if (!itemsCount) return;
+    
     NSIndexPath *indexPathForLastItem = [NSIndexPath indexPathForRow:itemsCount-1 inSection:0];
 
     CGFloat newMessageHeight = [((RTCMessageCollectionViewLayout *)self.collectionView.collectionViewLayout) sizeForMessageAtIndexPath:indexPathForLastItem].height;
@@ -233,6 +255,84 @@ static NSString * const reuseIdentifier = @"Cell";
 
 
 #pragma mark - <UICollectionViewDelegate>
+
+#pragma mark - Media Buttons
+
+- (IBAction)openTakingPhotoContainer:(id)sender {
+    [self pressMediaButton:sender];
+}
+- (IBAction)openPhotoGalleryContainer:(id)sender {
+    [self pressMediaButton:sender];
+}
+- (IBAction)sendLocation:(id)sender {
+    [self pressMediaButton:sender];
+}
+
+- (void)pressMediaButton:(UIButton *)sender {
+    if (sender.selected) { // Если уже был выбран, то закрыть
+        NSLog(@"Кнопка выбрана, закрыть");
+        [self resetMediaButtonsAndMediaToolbarContainer];
+    } else {
+        self.mediaContainerView.hidden = NO;
+        
+        NSArray *mediaButtons = [self.mediaPickerToolbarView subviews];
+        
+        for (int i = 0; i < mediaButtons.count; i++) {
+            if ([mediaButtons[i] isKindOfClass:[UIButton class]] && (mediaButtons[i] != sender)) {
+                ((UIButton *)mediaButtons[i]).alpha = 0.5;
+                ((UIButton *)mediaButtons[i]).selected = NO;
+            }
+        }
+        
+        sender.selected = YES;
+        sender.alpha = 1.0;
+        
+        if (sender == self.photoTakingMediaButton) {
+
+        } else if (sender == self.photoGalleryMediaButton) { // Add gallery view
+            
+            [self.mediaContainerView addSubview:self.photoPickerView];
+            
+            CGFloat photoPickerViewHeigth = self.photoPickerView.bounds.size.height;
+            self.mediaContainerViewHeightConstraint.constant = photoPickerViewHeigth;
+            
+        } else if (sender == self.locationMediaButton) {
+
+        }
+        
+    }
+}
+
+- (void)resetMediaButtonsAndMediaToolbarContainer {
+    NSArray *mediaButtons = [self.mediaPickerToolbarView subviews];
+    
+    for (int i = 0; i < mediaButtons.count; i++) {
+        if ([mediaButtons[i] isKindOfClass:[UIButton class]]) {
+            ((UIButton *)mediaButtons[i]).alpha = 1;
+            ((UIButton *)mediaButtons[i]).selected = NO;
+        }
+    }
+    
+    self.mediaContainerViewHeightConstraint.constant = 0;
+    self.mediaContainerView.hidden = YES;
+}
+
+#pragma mark - Photo Picker
+
+- (UIView *)photoPickerView {
+    if (!_photoPickerView) {
+        [[NSBundle mainBundle] loadNibNamed:@"RTCPhotoPickerView" owner:self options:nil];
+        
+        
+      //  self.mediaContainerView addCon
+    }
+    
+    return _photoPickerView;
+}
+
+- (IBAction)addPhotoFromGallery:(id)sender {
+    NSLog(@"Add Photo!");
+}
 
 
 @end

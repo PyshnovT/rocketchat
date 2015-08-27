@@ -51,6 +51,7 @@ static NSInteger const tailHeight = 8;
     NSInteger rowCount = [[RTCMessageStore sharedStore] allMessages].count;
     NSInteger sectionsCount = [self.collectionView.dataSource numberOfSectionsInCollectionView:self.collectionView];
     
+    
     NSIndexPath *lastItemIndexPath = [NSIndexPath indexPathForRow:rowCount-1 inSection:sectionsCount-1];
     CGFloat totalMessagesHeight = self.collectionViewInsets.top + [self.cellBottomY[lastItemIndexPath] floatValue] + self.collectionViewInsets.bottom;
     

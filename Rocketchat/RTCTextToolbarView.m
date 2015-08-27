@@ -19,13 +19,18 @@
     CGContextMoveToPoint(context, CGRectGetMinX(rect), CGRectGetMinY(rect));
     CGContextAddLineToPoint(context, CGRectGetMaxX(rect), CGRectGetMinY(rect));
     
+    CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.9 alpha:1].CGColor);
+    CGContextSetLineWidth(context, 2.0);
+    CGContextStrokePath(context);
+    
     NSInteger inset = 8;
     
     CGContextMoveToPoint(context, CGRectGetMinX(rect) + inset, CGRectGetMaxY(rect));
     CGContextAddLineToPoint(context, CGRectGetMaxX(rect) - inset, CGRectGetMaxY(rect));
     
-    CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.9 alpha:1].CGColor);
-    CGContextSetLineWidth(context, 2.0);
+    CGContextSetLineWidth(context, 1.0);
+    CGContextStrokePath(context);
+
     CGContextStrokePath(context);
 }
 
