@@ -12,14 +12,12 @@
 #import "RTCMessage.h"
 #import "RTCMessageCollectionViewLayout.h"
 
-/*
-typedef enum {
-    ButtonPhoto,
-    ButtonGallery,
-    ButtonLocation
-} ButtonType;
-*/
- 
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
 @interface RTCMainViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -85,6 +83,16 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - Keyboard Notification
 
 - (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillChangeFrame:)
+                                                 name:UIKeyboardDidChangeFrameNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillChangeFrame:)
+                                                 name:UIKeyboardWillChangeFrameNotification
+                                               object:nil];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeShown:)
@@ -96,9 +104,20 @@ static NSString * const reuseIdentifier = @"Cell";
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+    
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleRotation:)
+                                                     name:UIDeviceOrientationDidChangeNotification
+                                                   object:nil];
+        
+    }
+    
 }
 
 - (void)deregisterFromKeyboardNotifications {
+    
+    
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidHideNotification
@@ -108,18 +127,35 @@ static NSString * const reuseIdentifier = @"Cell";
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidChangeFrameNotification                                                  object:nil];
+    
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:UIKeyboardWillChangeFrameNotification
+                                                      object:nil];
+        
+    }
+}
+
+- (void)keyboardWillChangeFrame:(NSNotification *)note {
+    [self updateConstraintsForKeyboardNotification:note];
+}
+
+- (void)keyboardDidChangeFrame:(NSNotification *)note {
+    [self updateConstraintsForKeyboardNotification:note];
 }
 
 - (void)keyboardWillBeShown:(NSNotification *)note {
-    [self updateConstraintsForKeyboard:note];
-    [self scrollToNewestMessage];
+    [self updateConstraintsForKeyboardNotification:note];
 }
 
 - (void)keyboardWillBeHidden:(NSNotification *)note {
-    [self updateConstraintsForKeyboard:note];
+    [self updateConstraintsForKeyboardNotification:note];
 }
 
-- (void)updateConstraintsForKeyboard:(NSNotification*)note {
+- (void)updateConstraintsForKeyboardNotification:(NSNotification*)note {
     NSDictionary *userInfo = note.userInfo;
     NSLog(@"%@", userInfo);
     
@@ -137,7 +173,11 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [UIView animateWithDuration:animationDuration delay:0.0 options:(animationCurve << 16) animations:^{
 
-        self.inputToolbarViewToMediaPickerToolbarViewConstraint.constant = MAX(keyboardHeight - self.mediaPickerToolbarViewHeightConstraint.constant, 0);
+        if (self.mediaContainerViewHeightConstraint.constant > 0) {
+           // self.mediaContainerViewHeightConstraint.constant = 0;
+        }
+        
+        self.inputToolbarViewToMediaPickerToolbarViewConstraint.constant = MAX(keyboardHeight - self.mediaPickerToolbarViewHeightConstraint.constant - self.mediaContainerViewHeightConstraint.constant, 0);
 
         [self.view layoutIfNeeded];
     } completion:nil];
@@ -147,7 +187,12 @@ static NSString * const reuseIdentifier = @"Cell";
 
 // Сделать нотификации для iOS 7
 
+
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [self handleRotation:nil];
+}
+
+- (void)handleRotation:(NSNotification *)note {
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
@@ -188,13 +233,14 @@ static NSString * const reuseIdentifier = @"Cell";
     
     NSIndexPath *indexPathForLastItem = [NSIndexPath indexPathForRow:itemsCount-1 inSection:0];
 
-    CGFloat newMessageHeight = [((RTCMessageCollectionViewLayout *)self.collectionView.collectionViewLayout) sizeForMessageAtIndexPath:indexPathForLastItem].height;
+    CGFloat newMessageHeight =  UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) ? [((RTCMessageCollectionViewLayout *)self.collectionView.collectionViewLayout) sizeForMessageAtIndexPath:indexPathForLastItem].height : 0;
+
     
     CGFloat lastMessageBottomY = self.collectionView.contentSize.height + newMessageHeight;
     
     if (lastMessageBottomY > self.collectionView.bounds.size.height) {
         
-        CGFloat yOffset = MAX(0, self.collectionView.contentSize.height + newMessageHeight - self.collectionView.bounds.size.height);
+        CGFloat yOffset = MAX(0, self.collectionView.contentSize.height - self.collectionView.bounds.size.height);
         
         [self.collectionView setContentOffset:CGPointMake(0, yOffset) animated:YES];
     }
@@ -291,10 +337,25 @@ static NSString * const reuseIdentifier = @"Cell";
 
         } else if (sender == self.photoGalleryMediaButton) { // Add gallery view
             
+            //self.mediaContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+            self.photoPickerView.translatesAutoresizingMaskIntoConstraints = NO;
             [self.mediaContainerView addSubview:self.photoPickerView];
+            
             
             CGFloat photoPickerViewHeigth = self.photoPickerView.bounds.size.height;
             self.mediaContainerViewHeightConstraint.constant = photoPickerViewHeigth;
+            
+            
+            NSDictionary *nameMap = @{@"photoPickerView": self.photoPickerView,
+                                      @"mediaContainerView": self.mediaContainerView
+                                      };
+            
+            NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[photoPickerView]-0-|" options:0 metrics:nil views:nameMap];
+            NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[photoPickerView]-0-|" options:0 metrics:nil views:nameMap];
+            
+            [self.mediaContainerView addConstraints:horizontalConstraints];
+            [self.mediaContainerView addConstraints:verticalConstraints];
+
             
         } else if (sender == self.locationMediaButton) {
 
@@ -313,6 +374,7 @@ static NSString * const reuseIdentifier = @"Cell";
         }
     }
     
+    [self.photoPickerView removeFromSuperview];
     self.mediaContainerViewHeightConstraint.constant = 0;
     self.mediaContainerView.hidden = YES;
 }
@@ -322,9 +384,6 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UIView *)photoPickerView {
     if (!_photoPickerView) {
         [[NSBundle mainBundle] loadNibNamed:@"RTCPhotoPickerView" owner:self options:nil];
-        
-        
-      //  self.mediaContainerView addCon
     }
     
     return _photoPickerView;
