@@ -11,7 +11,6 @@
 		09236E761B8B807000F12618 /* AgoraSansProLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E741B8B807000F12618 /* AgoraSansProLight.ttf */; };
 		09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */; };
 		09236E791B8B821700F12618 /* AgoraSansProMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */; };
-		0928A8701B8E0B9C00BE086A /* RTCImagePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0928A86F1B8E0B9C00BE086A /* RTCImagePickerView.xib */; };
 		096D71041B8F6C140026A2CE /* RTCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 096D71031B8F6C140026A2CE /* RTCCollectionViewController.m */; };
 		09A15CEA1B90714D000B663C /* RTCMediaStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 09A15CE91B90714D000B663C /* RTCMediaStore.m */; };
 		09A15CEE1B909A0C000B663C /* RTCImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09A15CEC1B909A0C000B663C /* RTCImagePickerViewController.m */; };
@@ -59,7 +58,6 @@
 		09236E741B8B807000F12618 /* AgoraSansProLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProLight.ttf; sourceTree = "<group>"; };
 		09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProRegular.ttf; sourceTree = "<group>"; };
 		09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProMedium.ttf; sourceTree = "<group>"; };
-		0928A86F1B8E0B9C00BE086A /* RTCImagePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RTCImagePickerView.xib; sourceTree = "<group>"; };
 		096D71021B8F6C140026A2CE /* RTCCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCCollectionViewController.h; sourceTree = "<group>"; };
 		096D71031B8F6C140026A2CE /* RTCCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCCollectionViewController.m; sourceTree = "<group>"; };
 		09A15CE81B90714D000B663C /* RTCMediaStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMediaStore.h; sourceTree = "<group>"; };
@@ -244,7 +242,6 @@
 				096D71031B8F6C140026A2CE /* RTCCollectionViewController.m */,
 				090A28B41B8CBF5B00EBA5F6 /* RTCTextToolbarView.h */,
 				090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */,
-				0928A86F1B8E0B9C00BE086A /* RTCImagePickerView.xib */,
 				09A15CEB1B909A0C000B663C /* RTCImagePickerViewController.h */,
 				09A15CEC1B909A0C000B663C /* RTCImagePickerViewController.m */,
 				09A15CED1B909A0C000B663C /* RTCImagePickerViewController.xib */,
@@ -379,7 +376,6 @@
 				09236E791B8B821700F12618 /* AgoraSansProMedium.ttf in Resources */,
 				09236E761B8B807000F12618 /* AgoraSansProLight.ttf in Resources */,
 				09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */,
-				0928A8701B8E0B9C00BE086A /* RTCImagePickerView.xib in Resources */,
 				09FD78281B8A4AEA00F2AEDC /* RTCMessageCollectionViewCell.xib in Resources */,
 				09A15CEF1B909A0C000B663C /* RTCImagePickerViewController.xib in Resources */,
 				09AD40021B88C72600ED55AA /* LaunchScreen.xib in Resources */,

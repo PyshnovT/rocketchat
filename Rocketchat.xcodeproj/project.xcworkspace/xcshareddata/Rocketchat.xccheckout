@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>04050441-E03D-443A-A51D-16A67D6FA637</string>
 	<key>IDESourceControlProjectName</key>
-	<string>Rocketchat</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>D79C41939E2F1DE5C591B6321ADEBFFE09B4DC8E</key>
 		<string>github.com:PyshnovT/rocketchat.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Rocketchat.xcodeproj</string>
+	<string>Rocketchat.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>D79C41939E2F1DE5C591B6321ADEBFFE09B4DC8E</key>

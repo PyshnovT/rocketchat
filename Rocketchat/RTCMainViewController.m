@@ -13,8 +13,9 @@
 #import "RTCMessageCollectionViewLayout.h"
 #import "RTCCollectionViewController.h"
 #import "RTCMediaStore.h"
+#import "RTCImagePickerViewController.h"
 
-@interface RTCMainViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface RTCMainViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *controllerCollectionView;
 @property (strong, nonatomic) RTCCollectionViewController *collectionViewController;
@@ -36,16 +37,13 @@
 
 // Media Buttons
 
-
 @property (weak, nonatomic) IBOutlet UIButton *photoTakingMediaButton;
-@property (weak, nonatomic) IBOutlet UIButton *photoGalleryMediaButton;
+@property (weak, nonatomic) IBOutlet UIButton *imageGalleryMediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *locationMediaButton;
 
-// PhotoPicker .xib
+// Image Picker
 
-@property (nonatomic, strong) IBOutlet UIView *imagePickerView;
-@property (weak, nonatomic) IBOutlet UIScrollView *imagePickerScrollView;
-
+@property (strong, nonatomic) RTCImagePickerViewController *imagePickerViewController;
 
 @end
 
@@ -55,9 +53,11 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     RTCMessageCollectionViewLayout *messageLayout = [[RTCMessageCollectionViewLayout alloc] init];
-    self.collectionViewController = [[RTCCollectionViewController alloc] initWithCollectionViewLayout:messageLayout];
+    self.collectionViewController = [[RTCCollectionViewController alloc]
+                                     initWithCollectionViewLayout:messageLayout];
+    
     [self displayViewController:self.collectionViewController];
     self.messageTextField.delegate = self;
 }
@@ -176,15 +176,36 @@ static NSString * const reuseIdentifier = @"Cell";
     [self addChildViewController:controller];
     
     if (controller == self.collectionViewController) {
-    
+
         [self.controllerCollectionView addSubview:controller.view];
         [self setConstraintsForCollectionViewController];
         
+    } else if (controller == self.imagePickerViewController) {
+        
+        [self.mediaContainerView addSubview:self.imagePickerViewController.view];
+        [self setConstraintsForImagePickerViewController];
+
     }
+    
     [controller didMoveToParentViewController:self];
 }
 
-
+- (void)setConstraintsForImagePickerViewController {
+    if (![self.imagePickerViewController.view superview]) return;
+    
+    self.imagePickerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    self.mediaContainerViewHeightConstraint.constant = self.imagePickerViewController.view.bounds.size.height;
+    
+    NSDictionary *nameMap = @{@"imagePickerView": self.imagePickerViewController.view,
+                              };
+    
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[imagePickerView]-0-|" options:0 metrics:nil views:nameMap];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[imagePickerView]-0-|" options:0 metrics:nil views:nameMap];
+    
+    [self.mediaContainerView addConstraints:horizontalConstraints];
+    [self.mediaContainerView addConstraints:verticalConstraints];
+    
+}
 - (void)setConstraintsForCollectionViewController {
     if (![self.collectionViewController.view superview]) return;
     
@@ -266,9 +287,13 @@ static NSString * const reuseIdentifier = @"Cell";
         
         if (sender == self.photoTakingMediaButton) {
 
-        } else if (sender == self.photoGalleryMediaButton) { // Add gallery view
+        } else if (sender == self.imageGalleryMediaButton) { // Add gallery view
             
-            [self addPhotoPickerView];
+            if (!self.imagePickerViewController) {
+                self.imagePickerViewController = [[RTCImagePickerViewController alloc] init];
+            }
+            
+            [self displayViewController:self.imagePickerViewController];
             
         } else if (sender == self.locationMediaButton) {
 
@@ -287,8 +312,7 @@ static NSString * const reuseIdentifier = @"Cell";
             mediaButton.alpha = 1;
             
             if (mediaButton.selected) {
-                NSLog(@"HERE!");
-                [self.photoPickerView removeFromSuperview];
+                [self.imagePickerViewController.view removeFromSuperview];
                 self.mediaContainerViewHeightConstraint.constant = 0;
                 self.mediaContainerView.hidden = YES;
             }
@@ -299,94 +323,5 @@ static NSString * const reuseIdentifier = @"Cell";
 
 }
 
-- (void)addPhotoPickerView {
-    self.photoPickerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.mediaContainerView addSubview:self.photoPickerView];
-    
-    CGFloat photoPickerViewHeigth = self.photoPickerView.bounds.size.height;
-    self.mediaContainerViewHeightConstraint.constant = photoPickerViewHeigth;
-    
-    
-    NSDictionary *nameMap = @{@"photoPickerView": self.photoPickerView,
-                              };
-    
-    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[photoPickerView]-0-|" options:0 metrics:nil views:nameMap];
-    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[photoPickerView]-0-|" options:0 metrics:nil views:nameMap];
-    
-    [self.mediaContainerView addConstraints:horizontalConstraints];
-    [self.mediaContainerView addConstraints:verticalConstraints];
-}
-
-#pragma mark - Photo Picker
-
-- (UIView *)photoPickerView {
-    if (!_imagePickerView) {
-        [[NSBundle mainBundle] loadNibNamed:@"RTCImagePickerView" owner:self options:nil];
-        self.imagePickerScrollView.alwaysBounceHorizontal = YES;
-    }
-    
-    return _imagePickerView;
-}
-
-- (IBAction)addPhotoFromGallery:(id)sender {
-    NSLog(@"Add Photo!");
-    
-    if ([[RTCMediaStore sharedStore] imageGalleryItems].count == 8) {
-        NSLog(@"No more photos");
-        
-        
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Количество фотографий" message:@"Нельзя отсылать больше 8 фотографий" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action) {}];
-            
-            [alertController addAction:defaultAction];
-            [self presentViewController:alertController animated:YES completion:nil];
-        } else {
-            UIAlertView* finalCheck = [[UIAlertView alloc]
-                                       initWithTitle:@"Количество фотографий"
-                                       message:@"Нельзя отсылать больше 8 фотографий"
-                                       delegate:self
-                                       cancelButtonTitle:@"OK"
-                                       otherButtonTitles:nil];
-            
-            [finalCheck show];
-        }
-    } else {
-    
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        imagePicker.delegate = self;
-        
-        [self presentViewController:imagePicker animated:YES completion:nil];
-    }
-}
-
-#pragma mark - <UIImagePickerControllerDelegate>
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:originalImage];
-    
-    CGFloat sideLength = self.imagePickerScrollView.bounds.size.height;
-    CGFloat interImageY = 5;
-    
-    NSInteger uploadedImages = [[RTCMediaStore sharedStore] imageGalleryItems].count;
-
-    CGFloat x = uploadedImages * (interImageY + sideLength);
-    imageView.frame = CGRectMake(x, 0, sideLength, sideLength);
-    
-    [[RTCMediaStore sharedStore] addImageFromGallery:originalImage];
-    
-    self.imagePickerScrollView.contentSize = CGSizeMake([[RTCMediaStore sharedStore] imageGalleryItems].count * (interImageY + sideLength), sideLength);
-    [self.imagePickerScrollView addSubview:imageView];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 @end

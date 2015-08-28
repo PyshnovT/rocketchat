@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTCMainViewController">
             <connections>
                 <outlet property="controllerCollectionView" destination="mv9-OJ-l28" id="Ile-cF-g5s"/>
+                <outlet property="imageGalleryMediaButton" destination="VTk-8X-XKc" id="Pcx-G2-lsc"/>
                 <outlet property="inputToolbarViewHeightConstraint" destination="cpK-vW-nX5" id="Qfg-za-iUr"/>
                 <outlet property="inputToolbarViewToMediaPickerToolbarViewConstraint" destination="jPe-py-1gi" id="UZp-SG-Ndb"/>
                 <outlet property="locationMediaButton" destination="S1L-fS-6Sa" id="7Ad-U1-3Qa"/>
@@ -21,7 +22,6 @@
                 <outlet property="mediaPickerToolbarView" destination="BAF-sc-RVB" id="Xqj-eb-qIQ"/>
                 <outlet property="mediaPickerToolbarViewHeightConstraint" destination="GJ2-1s-ncs" id="mC2-ag-ghu"/>
                 <outlet property="messageTextField" destination="RuS-rP-fl8" id="NM7-pS-EMo"/>
-                <outlet property="photoGalleryMediaButton" destination="VTk-8X-XKc" id="rhv-C0-SqR"/>
                 <outlet property="photoTakingMediaButton" destination="h9O-Aa-DW6" id="Yyw-Ch-fjp"/>
                 <outlet property="textSendButton" destination="14C-rI-6zj" id="mfQ-CF-i83"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
