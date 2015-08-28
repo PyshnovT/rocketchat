@@ -12,10 +12,9 @@
 #import "RTCMessage.h"
 #import "RTCMessageCollectionViewLayout.h"
 #import "RTCCollectionViewController.h"
+#import "RTCMediaStore.h"
 
-
-
-@interface RTCMainViewController () <UITextFieldDelegate>
+@interface RTCMainViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *controllerCollectionView;
 @property (strong, nonatomic) RTCCollectionViewController *collectionViewController;
@@ -44,8 +43,8 @@
 
 // PhotoPicker .xib
 
-@property (nonatomic, strong) IBOutlet UIView *photoPickerView;
-@property (weak, nonatomic) IBOutlet UIScrollView *photoPickerScrollView;
+@property (nonatomic, strong) IBOutlet UIView *imagePickerView;
+@property (weak, nonatomic) IBOutlet UIScrollView *imagePickerScrollView;
 
 
 @end
@@ -287,10 +286,11 @@ static NSString * const reuseIdentifier = @"Cell";
             
             mediaButton.alpha = 1;
             
-            if (i == 1 && mediaButton.selected) {
+            if (mediaButton.selected) {
+                NSLog(@"HERE!");
                 [self.photoPickerView removeFromSuperview];
                 self.mediaContainerViewHeightConstraint.constant = 0;
-               // self.mediaContainerView.hidden = YES;
+                self.mediaContainerView.hidden = YES;
             }
             
             mediaButton.selected = NO;
@@ -320,16 +320,73 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - Photo Picker
 
 - (UIView *)photoPickerView {
-    if (!_photoPickerView) {
-        [[NSBundle mainBundle] loadNibNamed:@"RTCPhotoPickerView" owner:self options:nil];
+    if (!_imagePickerView) {
+        [[NSBundle mainBundle] loadNibNamed:@"RTCImagePickerView" owner:self options:nil];
+        self.imagePickerScrollView.alwaysBounceHorizontal = YES;
     }
     
-    return _photoPickerView;
+    return _imagePickerView;
 }
 
 - (IBAction)addPhotoFromGallery:(id)sender {
     NSLog(@"Add Photo!");
+    
+    if ([[RTCMediaStore sharedStore] imageGalleryItems].count == 8) {
+        NSLog(@"No more photos");
+        
+        
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Количество фотографий" message:@"Нельзя отсылать больше 8 фотографий" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+            
+            [alertController addAction:defaultAction];
+            [self presentViewController:alertController animated:YES completion:nil];
+        } else {
+            UIAlertView* finalCheck = [[UIAlertView alloc]
+                                       initWithTitle:@"Количество фотографий"
+                                       message:@"Нельзя отсылать больше 8 фотографий"
+                                       delegate:self
+                                       cancelButtonTitle:@"OK"
+                                       otherButtonTitles:nil];
+            
+            [finalCheck show];
+        }
+    } else {
+    
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePicker.delegate = self;
+        
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
 }
 
+#pragma mark - <UIImagePickerControllerDelegate>
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:originalImage];
+    
+    CGFloat sideLength = self.imagePickerScrollView.bounds.size.height;
+    CGFloat interImageY = 5;
+    
+    NSInteger uploadedImages = [[RTCMediaStore sharedStore] imageGalleryItems].count;
+
+    CGFloat x = uploadedImages * (interImageY + sideLength);
+    imageView.frame = CGRectMake(x, 0, sideLength, sideLength);
+    
+    [[RTCMediaStore sharedStore] addImageFromGallery:originalImage];
+    
+    self.imagePickerScrollView.contentSize = CGSizeMake([[RTCMediaStore sharedStore] imageGalleryItems].count * (interImageY + sideLength), sideLength);
+    [self.imagePickerScrollView addSubview:imageView];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Pyshnov. All rights reserved.
 //
 
-#import "RTCMessageLocationMedia.h"
+#import "RTCMessageLocationMediaItem.h"
 
-@implementation RTCMessageLocationMedia
+@implementation RTCMessageLocationMediaItem
 
 @end

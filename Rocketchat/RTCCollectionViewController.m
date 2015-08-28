@@ -125,7 +125,6 @@ static NSString * const reuseIdentifier = @"Cell";
     RTCMessageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     RTCMessage *message = [[[RTCMessageStore sharedStore] allMessages] objectAtIndex:indexPath.row];
     
-    //  cell.backgroundColor = [UIColor colorWithRed:0.04 green:0.51 blue:0.99 alpha:1];
     cell.isMediaCell = message.media ? YES : NO;
     
     if (message.text) {

@@ -11,8 +11,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTCMainViewController">
             <connections>
-                <outlet property="photoPickerScrollView" destination="leP-cj-wyO" id="aQi-XA-ZBi"/>
-                <outlet property="photoPickerView" destination="P4N-Qn-kZR" id="tgR-oR-xgt"/>
+                <outlet property="imagePickerScrollView" destination="leP-cj-wyO" id="aQB-lq-Fdk"/>
+                <outlet property="imagePickerView" destination="P4N-Qn-kZR" id="yoL-86-kgD"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

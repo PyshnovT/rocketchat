@@ -11,8 +11,11 @@
 		09236E761B8B807000F12618 /* AgoraSansProLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E741B8B807000F12618 /* AgoraSansProLight.ttf */; };
 		09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */; };
 		09236E791B8B821700F12618 /* AgoraSansProMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */; };
-		0928A8701B8E0B9C00BE086A /* RTCPhotoPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0928A86F1B8E0B9C00BE086A /* RTCPhotoPickerView.xib */; };
+		0928A8701B8E0B9C00BE086A /* RTCImagePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0928A86F1B8E0B9C00BE086A /* RTCImagePickerView.xib */; };
 		096D71041B8F6C140026A2CE /* RTCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 096D71031B8F6C140026A2CE /* RTCCollectionViewController.m */; };
+		09A15CEA1B90714D000B663C /* RTCMediaStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 09A15CE91B90714D000B663C /* RTCMediaStore.m */; };
+		09A15CEE1B909A0C000B663C /* RTCImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09A15CEC1B909A0C000B663C /* RTCImagePickerViewController.m */; };
+		09A15CEF1B909A0C000B663C /* RTCImagePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09A15CED1B909A0C000B663C /* RTCImagePickerViewController.xib */; };
 		09AD3FFA1B88C72600ED55AA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD3FF91B88C72600ED55AA /* main.m */; };
 		09AD3FFD1B88C72600ED55AA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD3FFC1B88C72600ED55AA /* AppDelegate.m */; };
 		09AD3FFF1B88C72600ED55AA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09AD3FFE1B88C72600ED55AA /* Images.xcassets */; };
@@ -31,8 +34,8 @@
 		09AD402E1B88C80A00ED55AA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AD40241B88C80A00ED55AA /* SystemConfiguration.framework */; };
 		09AD403A1B88D5BA00ED55AA /* RTCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40381B88D5BA00ED55AA /* RTCMainViewController.m */; };
 		09AD403B1B88D5BA00ED55AA /* RTCMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09AD40391B88D5BA00ED55AA /* RTCMainViewController.xib */; };
-		09AD40451B88EA9900ED55AA /* RTCMessagePhotoMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40441B88EA9900ED55AA /* RTCMessagePhotoMedia.m */; };
-		09AD40481B88EAAD00ED55AA /* RTCMessageLocationMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40471B88EAAD00ED55AA /* RTCMessageLocationMedia.m */; };
+		09AD40451B88EA9900ED55AA /* RTCMessageimageMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40441B88EA9900ED55AA /* RTCMessageimageMediaItem.m */; };
+		09AD40481B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40471B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m */; };
 		09AD404F1B88F76800ED55AA /* RTCMessageStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD404E1B88F76800ED55AA /* RTCMessageStore.m */; };
 		09AD40551B88FA1900ED55AA /* RTCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40541B88FA1900ED55AA /* RTCMessage.m */; };
 		09FD78191B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD78181B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m */; };
@@ -56,9 +59,14 @@
 		09236E741B8B807000F12618 /* AgoraSansProLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProLight.ttf; sourceTree = "<group>"; };
 		09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProRegular.ttf; sourceTree = "<group>"; };
 		09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProMedium.ttf; sourceTree = "<group>"; };
-		0928A86F1B8E0B9C00BE086A /* RTCPhotoPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RTCPhotoPickerView.xib; sourceTree = "<group>"; };
+		0928A86F1B8E0B9C00BE086A /* RTCImagePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RTCImagePickerView.xib; sourceTree = "<group>"; };
 		096D71021B8F6C140026A2CE /* RTCCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCCollectionViewController.h; sourceTree = "<group>"; };
 		096D71031B8F6C140026A2CE /* RTCCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCCollectionViewController.m; sourceTree = "<group>"; };
+		09A15CE81B90714D000B663C /* RTCMediaStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMediaStore.h; sourceTree = "<group>"; };
+		09A15CE91B90714D000B663C /* RTCMediaStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMediaStore.m; sourceTree = "<group>"; };
+		09A15CEB1B909A0C000B663C /* RTCImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCImagePickerViewController.h; sourceTree = "<group>"; };
+		09A15CEC1B909A0C000B663C /* RTCImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCImagePickerViewController.m; sourceTree = "<group>"; };
+		09A15CED1B909A0C000B663C /* RTCImagePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RTCImagePickerViewController.xib; sourceTree = "<group>"; };
 		09AD3FF41B88C72600ED55AA /* Rocketchat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rocketchat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09AD3FF81B88C72600ED55AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09AD3FF91B88C72600ED55AA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -83,10 +91,10 @@
 		09AD40371B88D5BA00ED55AA /* RTCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMainViewController.h; sourceTree = "<group>"; };
 		09AD40381B88D5BA00ED55AA /* RTCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMainViewController.m; sourceTree = "<group>"; };
 		09AD40391B88D5BA00ED55AA /* RTCMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RTCMainViewController.xib; sourceTree = "<group>"; };
-		09AD40431B88EA9900ED55AA /* RTCMessagePhotoMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessagePhotoMedia.h; sourceTree = "<group>"; };
-		09AD40441B88EA9900ED55AA /* RTCMessagePhotoMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessagePhotoMedia.m; sourceTree = "<group>"; };
-		09AD40461B88EAAD00ED55AA /* RTCMessageLocationMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessageLocationMedia.h; sourceTree = "<group>"; };
-		09AD40471B88EAAD00ED55AA /* RTCMessageLocationMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageLocationMedia.m; sourceTree = "<group>"; };
+		09AD40431B88EA9900ED55AA /* RTCMessageImageMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessageImageMediaItem.h; sourceTree = "<group>"; };
+		09AD40441B88EA9900ED55AA /* RTCMessageimageMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageimageMediaItem.m; sourceTree = "<group>"; };
+		09AD40461B88EAAD00ED55AA /* RTCMessageLocationMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessageLocationMediaItem.h; sourceTree = "<group>"; };
+		09AD40471B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageLocationMediaItem.m; sourceTree = "<group>"; };
 		09AD40491B88EBCE00ED55AA /* RTCMessageMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessageMedia.h; sourceTree = "<group>"; };
 		09AD404D1B88F76800ED55AA /* RTCMessageStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessageStore.h; sourceTree = "<group>"; };
 		09AD404E1B88F76800ED55AA /* RTCMessageStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageStore.m; sourceTree = "<group>"; };
@@ -236,7 +244,10 @@
 				096D71031B8F6C140026A2CE /* RTCCollectionViewController.m */,
 				090A28B41B8CBF5B00EBA5F6 /* RTCTextToolbarView.h */,
 				090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */,
-				0928A86F1B8E0B9C00BE086A /* RTCPhotoPickerView.xib */,
+				0928A86F1B8E0B9C00BE086A /* RTCImagePickerView.xib */,
+				09A15CEB1B909A0C000B663C /* RTCImagePickerViewController.h */,
+				09A15CEC1B909A0C000B663C /* RTCImagePickerViewController.m */,
+				09A15CED1B909A0C000B663C /* RTCImagePickerViewController.xib */,
 			);
 			name = "Main Controller";
 			sourceTree = "<group>";
@@ -248,11 +259,13 @@
 				09AD404E1B88F76800ED55AA /* RTCMessageStore.m */,
 				09AD40531B88FA1900ED55AA /* RTCMessage.h */,
 				09AD40541B88FA1900ED55AA /* RTCMessage.m */,
-				09AD40431B88EA9900ED55AA /* RTCMessagePhotoMedia.h */,
-				09AD40441B88EA9900ED55AA /* RTCMessagePhotoMedia.m */,
-				09AD40461B88EAAD00ED55AA /* RTCMessageLocationMedia.h */,
-				09AD40471B88EAAD00ED55AA /* RTCMessageLocationMedia.m */,
+				09AD40431B88EA9900ED55AA /* RTCMessageImageMediaItem.h */,
+				09AD40441B88EA9900ED55AA /* RTCMessageimageMediaItem.m */,
+				09AD40461B88EAAD00ED55AA /* RTCMessageLocationMediaItem.h */,
+				09AD40471B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m */,
 				09AD40491B88EBCE00ED55AA /* RTCMessageMedia.h */,
+				09A15CE81B90714D000B663C /* RTCMediaStore.h */,
+				09A15CE91B90714D000B663C /* RTCMediaStore.m */,
 				09FD781D1B89D63100F2AEDC /* View */,
 			);
 			name = Messages;
@@ -366,8 +379,9 @@
 				09236E791B8B821700F12618 /* AgoraSansProMedium.ttf in Resources */,
 				09236E761B8B807000F12618 /* AgoraSansProLight.ttf in Resources */,
 				09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */,
-				0928A8701B8E0B9C00BE086A /* RTCPhotoPickerView.xib in Resources */,
+				0928A8701B8E0B9C00BE086A /* RTCImagePickerView.xib in Resources */,
 				09FD78281B8A4AEA00F2AEDC /* RTCMessageCollectionViewCell.xib in Resources */,
+				09A15CEF1B909A0C000B663C /* RTCImagePickerViewController.xib in Resources */,
 				09AD40021B88C72600ED55AA /* LaunchScreen.xib in Resources */,
 				09AD3FFF1B88C72600ED55AA /* Images.xcassets in Resources */,
 				09AD403B1B88D5BA00ED55AA /* RTCMainViewController.xib in Resources */,
@@ -390,12 +404,14 @@
 			files = (
 				09AD3FFD1B88C72600ED55AA /* AppDelegate.m in Sources */,
 				09AD3FFA1B88C72600ED55AA /* main.m in Sources */,
-				09AD40481B88EAAD00ED55AA /* RTCMessageLocationMedia.m in Sources */,
-				09AD40451B88EA9900ED55AA /* RTCMessagePhotoMedia.m in Sources */,
+				09A15CEE1B909A0C000B663C /* RTCImagePickerViewController.m in Sources */,
+				09AD40481B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m in Sources */,
+				09AD40451B88EA9900ED55AA /* RTCMessageimageMediaItem.m in Sources */,
 				09AD40551B88FA1900ED55AA /* RTCMessage.m in Sources */,
 				096D71041B8F6C140026A2CE /* RTCCollectionViewController.m in Sources */,
 				090A28B61B8CBF5B00EBA5F6 /* RTCTextToolbarView.m in Sources */,
 				09AD403A1B88D5BA00ED55AA /* RTCMainViewController.m in Sources */,
+				09A15CEA1B90714D000B663C /* RTCMediaStore.m in Sources */,
 				09FD78191B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m in Sources */,
 				09FD78211B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m in Sources */,
 				09AD404F1B88F76800ED55AA /* RTCMessageStore.m in Sources */,

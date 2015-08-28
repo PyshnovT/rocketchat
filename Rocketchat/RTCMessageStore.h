@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "RTCMessageMedia.h"
 
+//
+//
+// This object manages all data that responsible for displaying messages (text, photo, location) in collection view
+//
+//
+
 @class RTCMessage;
 
 @interface RTCMessageStore : NSObject

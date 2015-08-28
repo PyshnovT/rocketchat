@@ -7,7 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @protocol RTCMessageMedia <NSObject>
+
+@required
+
+@property (nonatomic, strong) UIImage *image;
+
+@optional
+
++ (instancetype)itemWithImage:(UIImage *)image;
+- (instancetype)initWithImage:(UIImage *)image;
 
 @end

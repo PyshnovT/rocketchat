@@ -25,6 +25,7 @@
         self.date = date;
         self.text = text;
         self.media = media;
+        
     }
     return self;
     
