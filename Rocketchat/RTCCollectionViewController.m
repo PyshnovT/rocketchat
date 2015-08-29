@@ -7,10 +7,18 @@
 //
 
 #import "RTCCollectionViewController.h"
+#import "RTCMainViewController.h"
+
 #import "RTCMessageStore.h"
-#import "RTCMessageCollectionViewCell.h"
 #import "RTCMessage.h"
+
+#import "RTCMessageCollectionViewCell.h"
 #import "RTCMessageCollectionViewLayout.h"
+
+#import "RTCMediaStore.h"
+#import "RTCMessageMedia.h"
+
+#import "UIImage+Scale.h"
 
 @interface RTCCollectionViewController ()
 
@@ -89,7 +97,7 @@ static NSString * const reuseIdentifier = @"Cell";
     if (text) {
         [[RTCMessageStore sharedStore] createMessageWithDate:date text:text];
     } else if (media) {
-        
+        [[RTCMessageStore sharedStore] createMessageWithDate:date media:media];
     }
     
     [self.collectionView reloadData];
@@ -97,6 +105,16 @@ static NSString * const reuseIdentifier = @"Cell";
     [self scrollToNewestMessage];
     
 }
+
+- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text {
+    [self addMessageWithDate:date text:text media:nil];
+}
+
+- (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media {
+    [self addMessageWithDate:date text:nil media:media];
+}
+
+#pragma mark - Scrolling
 
 - (void)scrollToNewestMessage {
     [self.collectionView.collectionViewLayout prepareLayout];
@@ -132,7 +150,9 @@ static NSString * const reuseIdentifier = @"Cell";
         cell.textLabel.text = message.text;
         
     } else if (message.media) {
-        
+     
+        cell.imageView.image = [message.media.image scaleImageToFillWidth:cell.bounds.size.width];
+        NSLog(@"%f", cell.bounds.size.height);
     }
     
     return cell;

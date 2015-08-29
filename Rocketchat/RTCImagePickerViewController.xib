@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTCImagePickerViewController">
             <connections>
-                <outlet property="imagePickerScrollView" destination="TOo-20-Mgv" id="B7x-I8-bvD"/>
+                <outlet property="scrollView" destination="TOo-20-Mgv" id="Rq7-AY-7Jb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -39,7 +39,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="addPhotoFromGallery:" destination="-1" eventType="touchUpInside" id="bGc-KU-VeN"/>
+                        <action selector="addImageFromGallery:" destination="-1" eventType="touchUpInside" id="WMY-9t-uXb"/>
                     </connections>
                 </button>
             </subviews>

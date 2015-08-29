@@ -9,19 +9,32 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class RTCMessageImageMediaItem;
+@class RTCMessageLocationMediaItem;
+
 //
 //
 // This object manages data for media messages that haven't been sent yet for easy retrieving 
 //
 //
 
+
+typedef enum {
+    MediaTypePhoto,
+    MediaTypeImage,
+    MediaTypeLocation,
+    MediaTypeNone
+} MediaType;
+
 @interface RTCMediaStore : NSObject
 
 @property (nonatomic, readonly) NSDictionary *allMediaData;
+@property (nonatomic) MediaType currentMediaType;
 
 + (instancetype)sharedStore;
-- (void)addImageFromGallery:(UIImage *)image;
 
+- (void)addImageFromGallery:(UIImage *)image;
+- (void)cleanImageGallery;
 - (NSArray *)imageGalleryItems;
 
 @end

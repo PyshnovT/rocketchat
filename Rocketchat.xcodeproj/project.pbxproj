@@ -11,6 +11,7 @@
 		09236E761B8B807000F12618 /* AgoraSansProLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E741B8B807000F12618 /* AgoraSansProLight.ttf */; };
 		09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */; };
 		09236E791B8B821700F12618 /* AgoraSansProMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */; };
+		0964F6861B91E8140074AB33 /* UIImage+Scale.m in Sources */ = {isa = PBXBuildFile; fileRef = 0964F6851B91E8140074AB33 /* UIImage+Scale.m */; };
 		096D71041B8F6C140026A2CE /* RTCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 096D71031B8F6C140026A2CE /* RTCCollectionViewController.m */; };
 		09A15CEA1B90714D000B663C /* RTCMediaStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 09A15CE91B90714D000B663C /* RTCMediaStore.m */; };
 		09A15CEE1B909A0C000B663C /* RTCImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09A15CEC1B909A0C000B663C /* RTCImagePickerViewController.m */; };
@@ -58,6 +59,8 @@
 		09236E741B8B807000F12618 /* AgoraSansProLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProLight.ttf; sourceTree = "<group>"; };
 		09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProRegular.ttf; sourceTree = "<group>"; };
 		09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProMedium.ttf; sourceTree = "<group>"; };
+		0964F6841B91E8140074AB33 /* UIImage+Scale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Scale.h"; sourceTree = "<group>"; };
+		0964F6851B91E8140074AB33 /* UIImage+Scale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Scale.m"; sourceTree = "<group>"; };
 		096D71021B8F6C140026A2CE /* RTCCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCCollectionViewController.h; sourceTree = "<group>"; };
 		096D71031B8F6C140026A2CE /* RTCCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCCollectionViewController.m; sourceTree = "<group>"; };
 		09A15CE81B90714D000B663C /* RTCMediaStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMediaStore.h; sourceTree = "<group>"; };
@@ -245,6 +248,8 @@
 				09A15CEB1B909A0C000B663C /* RTCImagePickerViewController.h */,
 				09A15CEC1B909A0C000B663C /* RTCImagePickerViewController.m */,
 				09A15CED1B909A0C000B663C /* RTCImagePickerViewController.xib */,
+				0964F6841B91E8140074AB33 /* UIImage+Scale.h */,
+				0964F6851B91E8140074AB33 /* UIImage+Scale.m */,
 			);
 			name = "Main Controller";
 			sourceTree = "<group>";
@@ -398,6 +403,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0964F6861B91E8140074AB33 /* UIImage+Scale.m in Sources */,
 				09AD3FFD1B88C72600ED55AA /* AppDelegate.m in Sources */,
 				09AD3FFA1B88C72600ED55AA /* main.m in Sources */,
 				09A15CEE1B909A0C000B663C /* RTCImagePickerViewController.m in Sources */,

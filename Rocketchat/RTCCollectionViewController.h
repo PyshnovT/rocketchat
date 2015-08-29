@@ -17,7 +17,9 @@
 
 @interface RTCCollectionViewController : UICollectionViewController
 
-- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media;
+- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text;
+- (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media;
+
 - (void)scrollToNewestMessage;
 
 @end

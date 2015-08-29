@@ -12,6 +12,7 @@
 @interface RTCMessageImageMediaItem : NSObject <RTCMessageMedia>
 
 @property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) UIImage *thumbnailImage;
 
 + (instancetype)itemWithImage:(UIImage *)image;
 - (instancetype)initWithImage:(UIImage *)image;

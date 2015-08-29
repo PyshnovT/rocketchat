@@ -10,4 +10,6 @@
 
 @interface RTCImagePickerViewController : UIViewController
 
+- (void)updateScrollView;
+
 @end

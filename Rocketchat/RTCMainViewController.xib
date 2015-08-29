@@ -53,7 +53,7 @@
                                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="sendTextMessage:" destination="-1" eventType="touchUpInside" id="zgc-x9-gzX"/>
+                                        <action selector="sendMessages:" destination="-1" eventType="touchUpInside" id="iuu-1m-hM2"/>
                                     </connections>
                                 </button>
                             </subviews>

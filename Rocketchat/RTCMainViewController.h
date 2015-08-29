@@ -10,4 +10,6 @@
 
 @interface RTCMainViewController : UIViewController 
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaContainerViewHeightConstraint;
+
 @end

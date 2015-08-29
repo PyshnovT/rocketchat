@@ -57,6 +57,10 @@ static NSString * const photoGalleryIdentifier = @"photoGalleryMediaItems";
     return self.privateMediaData[photoGalleryIdentifier];
 }
 
+- (void)cleanImageGallery {
+    [self.privateMediaData[photoGalleryIdentifier] removeAllObjects];
+}
+
 #pragma mark - Adding Media Items
 
 - (void)addImageFromGallery:(UIImage *)image {

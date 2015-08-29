@@ -14,6 +14,7 @@
 #import "RTCCollectionViewController.h"
 #import "RTCMediaStore.h"
 #import "RTCImagePickerViewController.h"
+#import "RTCMessageImageMediaItem.h"
 
 @interface RTCMainViewController () <UITextFieldDelegate>
 
@@ -29,10 +30,8 @@
 // .ViewController xib
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewToMediaPickerToolbarViewConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarContainerViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaPickerToolbarViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaContainerViewHeightConstraint;
 
 
 // Media Buttons
@@ -182,8 +181,15 @@ static NSString * const reuseIdentifier = @"Cell";
         
     } else if (controller == self.imagePickerViewController) {
         
-        [self.mediaContainerView addSubview:self.imagePickerViewController.view];
-        [self setConstraintsForImagePickerViewController];
+
+        
+        [self.view layoutIfNeeded];
+        [UIView animateWithDuration:0.2 animations:^{
+                    [self.mediaContainerView addSubview:self.imagePickerViewController.view];
+            [self setConstraintsForImagePickerViewController];
+            [self.view layoutIfNeeded];
+        }];
+        
 
     }
     
@@ -222,12 +228,27 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - IBActions
 
-- (IBAction)sendTextMessage:(id)sender { // Нажатие кнопки
-    // Надо будет подкорректировать эту функцию
-    [self.collectionViewController addMessageWithDate:[NSDate date] text:self.messageTextField.text media:nil];
-    self.messageTextField.text = @"";
+- (IBAction)sendMessages:(id)sender { // Нажатие кнопки
     
-    [self.textSendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    if (![self.messageTextField.text isEqualToString:@""]) {
+        [self.collectionViewController addMessageWithDate:[NSDate date] text:self.messageTextField.text];
+        self.messageTextField.text = @"";
+    }
+    
+    NSArray *uploadedImages = [[RTCMediaStore sharedStore] imageGalleryItems];
+    
+    if (uploadedImages.count) {
+        for (int i = 0; i < uploadedImages.count; i++) {
+            [self.collectionViewController addMessageWithDate:[NSDate date] media:uploadedImages[i]];
+        }
+    }
+    
+    [[RTCMediaStore sharedStore] cleanImageGallery];
+    [self.imagePickerViewController updateScrollView];
+    
+    [self resetMediaButtonsAndMediaToolbarContainer];
+    
+    [self.textSendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal]; // надо сделать так, чтобы при добавлении отки в скролл вью кнопка делалась синей
 }
 
 #pragma mark - <UITextFieldDelegate>
@@ -286,8 +307,9 @@ static NSString * const reuseIdentifier = @"Cell";
         sender.alpha = 1.0;
         
         if (sender == self.photoTakingMediaButton) {
-
+            [RTCMediaStore sharedStore].currentMediaType = MediaTypePhoto;
         } else if (sender == self.imageGalleryMediaButton) { // Add gallery view
+            [RTCMediaStore sharedStore].currentMediaType = MediaTypeImage;
             
             if (!self.imagePickerViewController) {
                 self.imagePickerViewController = [[RTCImagePickerViewController alloc] init];
@@ -296,13 +318,14 @@ static NSString * const reuseIdentifier = @"Cell";
             [self displayViewController:self.imagePickerViewController];
             
         } else if (sender == self.locationMediaButton) {
-
+            [RTCMediaStore sharedStore].currentMediaType = MediaTypeLocation;
         }
         
     }
 }
 
 - (void)resetMediaButtonsAndMediaToolbarContainer {
+    
     NSArray *mediaButtons = [self.mediaPickerToolbarView subviews];
     
     for (int i = 0; i < mediaButtons.count; i++) {
@@ -312,14 +335,34 @@ static NSString * const reuseIdentifier = @"Cell";
             mediaButton.alpha = 1;
             
             if (mediaButton.selected) {
-                [self.imagePickerViewController.view removeFromSuperview];
-                self.mediaContainerViewHeightConstraint.constant = 0;
-                self.mediaContainerView.hidden = YES;
+                [self closeImagePickerController];
             }
             
             mediaButton.selected = NO;
         }
     }
+
+}
+
+- (void)closeImagePickerController {
+    [self.imagePickerViewController.view removeFromSuperview];
+    
+    [self.view layoutIfNeeded];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.mediaContainerViewHeightConstraint.constant = 0;
+        
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        self.mediaContainerView.hidden = YES;
+  
+    }];
+    /*
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        <#code#>
+    } completion:^(BOOL finished) {
+        <#code#>
+    }];
+*/
 
 }
 

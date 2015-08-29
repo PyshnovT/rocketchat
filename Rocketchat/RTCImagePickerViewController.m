@@ -9,10 +9,14 @@
 #import "RTCImagePickerViewController.h"
 #import "RTCMediaStore.h"
 #import "RTCCollectionViewController.h"
+#import "RTCImagePickerViewController.h"
+#import "RTCMessageImageMediaItem.h"
+
+#import "UIImage+Scale.h"
 
 @interface RTCImagePickerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIScrollView *imagePickerScrollView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
 
@@ -21,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.imagePickerScrollView.contentInset = UIEdgeInsetsMake(5, 5, 5, 5);
+    self.scrollView.contentInset = UIEdgeInsetsMake(5, 5, 5, 5);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -29,7 +33,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)addPhotoFromGallery:(id)sender {
+#pragma mark - IBAction
+
+- (IBAction)addImageFromGallery:(id)sender {
     if ([[RTCMediaStore sharedStore] imageGalleryItems].count == 8) {
         
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
@@ -62,53 +68,57 @@
     }
 }
 
-#pragma mark - Image Magic
+#pragma mark - Image Scaling (magic)
 
-- (UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)newSize {
-    CGRect scaledImageRect = CGRectZero;
+
+
+#pragma mark - Scroll View
+
+- (void)cleanScrollView {
+    NSArray *scrollViewSubviews = [self.scrollView subviews];
     
-    CGFloat aspectWidth = newSize.width / image.size.width;
-    CGFloat aspectHeight = newSize.height / image.size.height;
-    CGFloat aspectRatio = MAX( aspectWidth, aspectHeight );
+    for (int i = 0; i < scrollViewSubviews.count; i++) {
+        if ([scrollViewSubviews[i] isKindOfClass:[UIImageView class]]) {
+            [scrollViewSubviews[i] removeFromSuperview];
+        }
+    }
+}
+
+- (void)updateScrollView {
     
-    scaledImageRect.size.width = image.size.width * aspectRatio;
-    scaledImageRect.size.height = image.size.height * aspectRatio;
-    scaledImageRect.origin.x = (newSize.width - scaledImageRect.size.width) / 2.0f;
-    scaledImageRect.origin.y = (newSize.height - scaledImageRect.size.height) / 2.0f;
+    [self cleanScrollView];
     
-    UIGraphicsBeginImageContextWithOptions( newSize, NO, 0 );
+    CGFloat sideLength = self.scrollView.bounds.size.height - self.scrollView.contentInset.top - self.scrollView.contentInset.bottom;
+    CGFloat interImageY = 5;
     
-    [image drawInRect:scaledImageRect];
-    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    NSArray *uploadedImages = [[RTCMediaStore sharedStore] imageGalleryItems];
     
-    UIGraphicsEndImageContext();
+    for (int i = 0; i < uploadedImages.count; i++) {
+
+        UIImage *originalImage = ((RTCMessageImageMediaItem *)uploadedImages[i]).image;
+        
+        UIImage *scaledImage = [originalImage scaleImageToFillWithSize:CGSizeMake(sideLength, sideLength)];//[originalImage scaleImageToSize:CGSizeMake(sideLength, sideLength)];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:scaledImage];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        CGFloat x = i * (interImageY + sideLength);
+        imageView.frame = CGRectMake(x, 0, sideLength, sideLength);
+
+        [self.scrollView addSubview:imageView];
+    }
     
-    return scaledImage;
+    CGFloat scrollViewContentWidth = uploadedImages.count * (interImageY + sideLength);
+    self.scrollView.contentSize = CGSizeMake(scrollViewContentWidth, sideLength);
+    
 }
 
 #pragma mark - <UIImagePickerControllerDelegate>
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
-    
-    CGFloat sideLength = self.imagePickerScrollView.bounds.size.height - self.imagePickerScrollView.contentInset.top - self.imagePickerScrollView.contentInset.bottom;
-    CGFloat interImageY = 5;
-    NSInteger uploadedImages = [[RTCMediaStore sharedStore] imageGalleryItems].count;
-    
-    UIImage *scaledImage = [self scaleImage:originalImage toSize:CGSizeMake(sideLength, sideLength)];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:scaledImage];
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    
-    CGFloat x = uploadedImages * (interImageY + sideLength);
-    imageView.frame = CGRectMake(x, 0, sideLength, sideLength);
-    
-    
-    
-    CGFloat scrollViewContentWidth = (uploadedImages + 1) * (interImageY + sideLength);
-    self.imagePickerScrollView.contentSize = CGSizeMake(scrollViewContentWidth, sideLength);
-    [self.imagePickerScrollView addSubview:imageView];
-    
     [[RTCMediaStore sharedStore] addImageFromGallery:originalImage];
+    
+    [self updateScrollView];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }

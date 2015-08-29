@@ -17,6 +17,8 @@
 
 @optional
 
+@property (nonatomic, strong) UIImage *thumbnailImage;
+
 + (instancetype)itemWithImage:(UIImage *)image;
 - (instancetype)initWithImage:(UIImage *)image;
 
