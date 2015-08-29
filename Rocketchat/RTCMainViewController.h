@@ -12,4 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaContainerViewHeightConstraint;
 
+
+- (void)setSendButtonColor;
+
 @end

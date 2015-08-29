@@ -143,10 +143,9 @@ static NSInteger const tailHeight = 8;
     CGFloat height;
     
     if (message.media) {
-        CGFloat imageHeight = message.media.thumbnailImage.size.height;// [message.media.image imageSizeToFitSize:self.messageSize].height;
+        CGFloat imageHeight = [message.media.image imageSizeToFitWidth:self.messageSize.width].height;// message.media.thumbnailImage.size.height;// [message.media.image imageSizeToFitSize:self.messageSize].height;
         
         height = imageHeight + tailHeight;
-        NSLog(@"message height with image %f", height);
     } else if (message.text) {
         CGFloat textLabelWidth = self.messageSize.width - self.messageBubbleInsets.left - self.messageBubbleInsets.right;
         

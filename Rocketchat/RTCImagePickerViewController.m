@@ -11,6 +11,7 @@
 #import "RTCCollectionViewController.h"
 #import "RTCImagePickerViewController.h"
 #import "RTCMessageImageMediaItem.h"
+#import "RTCMainViewController.h"
 
 #import "UIImage+Scale.h"
 
@@ -68,9 +69,6 @@
     }
 }
 
-#pragma mark - Image Scaling (magic)
-
-
 
 #pragma mark - Scroll View
 
@@ -97,7 +95,7 @@
 
         UIImage *originalImage = ((RTCMessageImageMediaItem *)uploadedImages[i]).image;
         
-        UIImage *scaledImage = [originalImage scaleImageToFillWithSize:CGSizeMake(sideLength, sideLength)];//[originalImage scaleImageToSize:CGSizeMake(sideLength, sideLength)];
+        UIImage *scaledImage = [originalImage scaleImageToFillWithSize:CGSizeMake(sideLength, sideLength)];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:scaledImage];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         
@@ -117,6 +115,8 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     [[RTCMediaStore sharedStore] addImageFromGallery:originalImage];
+    
+    [self.mvc setSendButtonColor];
     
     [self updateScrollView];
     

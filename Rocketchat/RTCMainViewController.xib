@@ -23,7 +23,7 @@
                 <outlet property="mediaPickerToolbarViewHeightConstraint" destination="GJ2-1s-ncs" id="mC2-ag-ghu"/>
                 <outlet property="messageTextField" destination="RuS-rP-fl8" id="NM7-pS-EMo"/>
                 <outlet property="photoTakingMediaButton" destination="h9O-Aa-DW6" id="Yyw-Ch-fjp"/>
-                <outlet property="textSendButton" destination="14C-rI-6zj" id="mfQ-CF-i83"/>
+                <outlet property="sendButton" destination="14C-rI-6zj" id="0Sr-5W-kGZ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

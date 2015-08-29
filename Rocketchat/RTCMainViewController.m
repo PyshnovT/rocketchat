@@ -25,7 +25,7 @@
 
 
 @property (weak, nonatomic) IBOutlet UITextField *messageTextField;
-@property (weak, nonatomic) IBOutlet UIButton *textSendButton;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 // .ViewController xib
 
@@ -147,7 +147,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curveValue.intValue;
-
+    
     double animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     float keyboardHeight = CGRectGetMaxY(self.view.bounds) - CGRectGetMinY([self.view convertRect:[userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil]);
     
@@ -155,16 +155,16 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [self.view layoutIfNeeded];
     
-
+    
     
     [UIView animateWithDuration:animationDuration delay:0.0 options:(animationCurve << 16) animations:^{
-
+        
         if (self.mediaContainerViewHeightConstraint.constant > 0) {
-           // self.mediaContainerViewHeightConstraint.constant = 0;
+            // self.mediaContainerViewHeightConstraint.constant = 0;
         }
         
         self.inputToolbarViewToMediaPickerToolbarViewConstraint.constant = MAX(keyboardHeight - self.mediaPickerToolbarViewHeightConstraint.constant - self.mediaContainerViewHeightConstraint.constant, 0);
-
+        
         [self.view layoutIfNeeded];
     } completion:nil];
 }
@@ -175,22 +175,30 @@ static NSString * const reuseIdentifier = @"Cell";
     [self addChildViewController:controller];
     
     if (controller == self.collectionViewController) {
-
+        
+        self.collectionViewController.mvc = self;
         [self.controllerCollectionView addSubview:controller.view];
         [self setConstraintsForCollectionViewController];
         
     } else if (controller == self.imagePickerViewController) {
         
-
+        if ([[RTCMediaStore sharedStore] imageGalleryItems].count) {
+            [self setActiveSendButtonColor];
+        }
+        
+        self.imagePickerViewController.mvc = self;
         
         [self.view layoutIfNeeded];
+        
+        [self.mediaContainerView addSubview:self.imagePickerViewController.view];
+        
         [UIView animateWithDuration:0.2 animations:^{
-                    [self.mediaContainerView addSubview:self.imagePickerViewController.view];
             [self setConstraintsForImagePickerViewController];
             [self.view layoutIfNeeded];
+            
         }];
         
-
+        
     }
     
     [controller didMoveToParentViewController:self];
@@ -235,20 +243,22 @@ static NSString * const reuseIdentifier = @"Cell";
         self.messageTextField.text = @"";
     }
     
-    NSArray *uploadedImages = [[RTCMediaStore sharedStore] imageGalleryItems];
-    
-    if (uploadedImages.count) {
-        for (int i = 0; i < uploadedImages.count; i++) {
-            [self.collectionViewController addMessageWithDate:[NSDate date] media:uploadedImages[i]];
+    if (self.imageGalleryMediaButton.selected) {
+        NSArray *uploadedImages = [[RTCMediaStore sharedStore] imageGalleryItems];
+        
+        if (uploadedImages.count) {
+            for (int i = 0; i < uploadedImages.count; i++) {
+                [self.collectionViewController addMessageWithDate:[NSDate date] media:uploadedImages[i]];
+            }
         }
+        
+        [[RTCMediaStore sharedStore] cleanImageGallery];
+        [self.imagePickerViewController updateScrollView];
+        
+        [self resetMediaButtonsAndMediaToolbarContainer];
     }
     
-    [[RTCMediaStore sharedStore] cleanImageGallery];
-    [self.imagePickerViewController updateScrollView];
-    
-    [self resetMediaButtonsAndMediaToolbarContainer];
-    
-    [self.textSendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal]; // надо сделать так, чтобы при добавлении отки в скролл вью кнопка делалась синей
+    [self setSendButtonColor];
 }
 
 #pragma mark - <UITextFieldDelegate>
@@ -258,9 +268,10 @@ static NSString * const reuseIdentifier = @"Cell";
     NSString *newString = [[textField text] stringByReplacingCharactersInRange:range withString:string];
     
     if ([newString isEqualToString:@""]) {
-        [self.textSendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        self.messageTextField.text = @"";
+        [self setSendButtonColor];
     } else {
-        [self.textSendButton setTitleColor:[UIColor colorWithRed:0 green:0.47 blue:1 alpha:1] forState:UIControlStateNormal];
+        [self setActiveSendButtonColor];
     }
     
     return YES;
@@ -268,13 +279,25 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
-    [self.textSendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self setSendButtonColor];
     
     return YES;
 }
 
+#pragma mark - Text Send Button
 
+- (void)setSendButtonColor {
+    if ((self.imageGalleryMediaButton.selected && ([[RTCMediaStore sharedStore] imageGalleryItems].count > 0)) || ![self.messageTextField.text isEqualToString:@""]) {
+        NSLog(@"Activate");
+        [self setActiveSendButtonColor];
+    } else {
+        [self.sendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    }
+}
 
+- (void)setActiveSendButtonColor {
+    [self.sendButton setTitleColor:[UIColor colorWithRed:0 green:0.47 blue:1 alpha:1] forState:UIControlStateNormal];
+}
 
 #pragma mark - Media Buttons
 
@@ -335,16 +358,19 @@ static NSString * const reuseIdentifier = @"Cell";
             mediaButton.alpha = 1;
             
             if (mediaButton.selected) {
+                mediaButton.selected = NO;
                 [self closeImagePickerController];
             }
             
-            mediaButton.selected = NO;
         }
     }
-
+    
 }
 
 - (void)closeImagePickerController {
+
+    [self setSendButtonColor];
+    
     [self.imagePickerViewController.view removeFromSuperview];
     
     [self.view layoutIfNeeded];
@@ -354,16 +380,9 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         self.mediaContainerView.hidden = YES;
-  
+       // [self.collectionViewController scrollToNewestMessage];
     }];
-    /*
-    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-        <#code#>
-    } completion:^(BOOL finished) {
-        <#code#>
-    }];
-*/
-
+  //  [self.collectionViewController scrollToNewestMessage];
 }
 
 

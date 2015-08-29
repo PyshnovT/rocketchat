@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class RTCMainViewController;
+
 @interface RTCImagePickerViewController : UIViewController
+
+@property (nonatomic, weak) RTCMainViewController *mvc;
 
 - (void)updateScrollView;
 

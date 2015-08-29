@@ -62,36 +62,22 @@
         aspectRatio = MIN(aspectWidth, aspectHeight);
     }
     
-    return CGSizeMake(self.size.width * aspectRatio, self.size.height * aspectRatio);
+    NSInteger newWidth = lroundf(aspectRatio * self.size.width);
+    NSInteger newHeight = lroundf(aspectRatio * self.size.height);
+    
+    return CGSizeMake(newWidth, newHeight);
 }
 
 
-#pragma mark - Width
+#pragma mark Width Method
 
-- (UIImage *)scaleImageToFillWidth:(CGFloat)width {
-    CGRect scaledImageRect = CGRectZero;
-    
-    CGSize scaledImageSize = [self imageSizeToFillWidth:width];
-    
-    scaledImageRect.size.width = scaledImageSize.width;
-    scaledImageRect.size.height = scaledImageSize.height;
-    scaledImageRect.origin.x = 0;
-    scaledImageRect.origin.y = 0;
-    
-    UIGraphicsBeginImageContextWithOptions(scaledImageSize, NO, 0 );
-    
-    [self drawInRect:scaledImageRect];
-    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return scaledImage;
-}
+- (CGSize)imageSizeToFitWidth:(CGFloat)width {
+    CGFloat aspectRatio = (width / self.size.width);
 
-- (CGSize)imageSizeToFillWidth:(CGFloat)width {
-    CGFloat aspectRatio = width / self.size.width;
+    NSInteger newWidth = lroundf(aspectRatio * self.size.width);
+    NSInteger newHeight = lroundf(aspectRatio * self.size.height);
     
-    return CGSizeMake(aspectRatio * self.size.width, aspectRatio * self.size.height);
+    return CGSizeMake(newWidth, newHeight);
 }
 
 @end

@@ -121,7 +121,8 @@ static NSString * const reuseIdentifier = @"Cell";
 
     if (self.collectionViewLayout.collectionViewContentSize.height > self.collectionView.bounds.size.height) {
         
-        CGFloat yOffset = MAX(0, self.collectionViewLayout.collectionViewContentSize.height - self.collectionView.bounds.size.height);
+        CGFloat yOffset = MAX(0, self.collectionViewLayout.collectionViewContentSize.height - self.collectionView.bounds.size.height - self.mvc.mediaContainerViewHeightConstraint.constant); ; // Тут надо быть повнимательней
+        
         [self.collectionView setContentOffset:CGPointMake(0, yOffset) animated:YES];
         
     }
@@ -151,7 +152,8 @@ static NSString * const reuseIdentifier = @"Cell";
         
     } else if (message.media) {
      
-        cell.imageView.image = [message.media.image scaleImageToFillWidth:cell.bounds.size.width];
+        CGSize sizeToWidth = [message.media.image imageSizeToFitWidth:cell.bounds.size.width];
+        cell.imageView.image = [message.media.image scaleImageToFitWithSize:sizeToWidth];//[message.media.image scaleImageToFitWidth:cell.bounds.size.width];
         NSLog(@"%f", cell.bounds.size.height);
     }
     

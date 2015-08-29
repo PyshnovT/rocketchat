@@ -17,8 +17,6 @@
 - (CGSize)imageSizeToFillSize:(CGSize)newSize;
 - (CGSize)imageSizeToFitSize:(CGSize)newSize;
 
-
-- (UIImage *)scaleImageToFillWidth:(CGFloat)width;
-- (CGSize)imageSizeToFillWidth:(CGFloat)width;
+- (CGSize)imageSizeToFitWidth:(CGFloat)width;
 
 @end
