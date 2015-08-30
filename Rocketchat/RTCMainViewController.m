@@ -15,6 +15,7 @@
 #import "RTCMediaStore.h"
 #import "RTCImagePickerViewController.h"
 #import "RTCMessageImageMediaItem.h"
+#import "RTCPhotoTakerController.h"
 
 @interface RTCMainViewController () <UITextFieldDelegate>
 
@@ -28,7 +29,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 // .ViewController xib
-
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewToMediaPickerToolbarViewConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewHeightConstraint;
@@ -44,6 +44,10 @@
 // Image Picker
 
 @property (strong, nonatomic) RTCImagePickerViewController *imagePickerViewController;
+
+// Photo Taker
+
+@property (strong, nonatomic) RTCPhotoTakerController *photoTakerController;
 
 @end
 
@@ -170,9 +174,10 @@ static NSString * const reuseIdentifier = @"Cell";
     } completion:nil];
 }
 
-#pragma mark - Collection View Controller
+#pragma mark - Displaying Controllers
 
 - (void)displayViewController:(UIViewController *)controller {
+    
     [self addChildViewController:controller];
     
     if (controller == self.collectionViewController) {
@@ -191,15 +196,52 @@ static NSString * const reuseIdentifier = @"Cell";
         
         [self.view layoutIfNeeded];
         
-        [self.mediaContainerView addSubview:self.imagePickerViewController.view];
+        void (^completionBlock)() = ^void() {
+          //  self.mediaContainerView.hidden = NO;
+            NSLog(@"CompletionBlock!");
+            [self.mediaContainerView addSubview:self.imagePickerViewController.view];
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                [self setConstraintsForImagePickerViewController];
+                [self.view layoutIfNeeded];
+            }];
+        };
         
-        [UIView animateWithDuration:0.2 animations:^{
-            [self setConstraintsForImagePickerViewController];
+        if ([RTCMediaStore sharedStore].currentMediaType == MediaTypePhoto) {
+            [self closePhotoTakerController];
+        } else {
+            if (completionBlock) {
+                completionBlock();
+            }
+        }
+        
+    } else if (controller == self.photoTakerController) {
+        [self setupPhotoTakerController];
+        
+        [self.view layoutIfNeeded];
+        
+        if ([RTCMediaStore sharedStore].currentMediaType == MediaTypeImage) {
+            [self closeImagePickerController];
+            
+        } else {
+            
+        }
+        
+        [self.mediaContainerView addSubview:self.photoTakerController.view];
+        self.photoTakerController.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.mediaContainerViewHeightConstraint.constant = self.view.bounds.size.width;
+            //   [self setConstraintsForPhotoTakerController];
+            
             [self.view layoutIfNeeded];
+        } completion:^(BOOL finished) {
             
         }];
+      //  [self presentViewController:self.photoTakerController animated:YES completion:nil];
+       // [self.mediaContainerView addSubview:self.photoTakerController.view];
         
-        
+       // [self setConstraintsForPhotoTakerController];
+
     }
     
     [controller didMoveToParentViewController:self];
@@ -230,6 +272,20 @@ static NSString * const reuseIdentifier = @"Cell";
                               };
     NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[collectionView]-0-|" options:0 metrics:nil views:nameMap];
     NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[collectionView]-0-|" options:0 metrics:nil views:nameMap];
+    
+    [self.controllerCollectionView addConstraints:horizontalConstraints];
+    [self.controllerCollectionView addConstraints:verticalConstraints];
+}
+
+- (void)setConstraintsForPhotoTakerController {
+    if (![self.collectionViewController.view superview]) return;
+    
+    self.photoTakerController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSDictionary *nameMap = @{@"photoTakerView": self.photoTakerController.view,
+                              };
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[photoTakerView]-0-|" options:0 metrics:nil views:nameMap];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[photoTakerView]-0-|" options:0 metrics:nil views:nameMap];
     
     [self.controllerCollectionView addConstraints:horizontalConstraints];
     [self.controllerCollectionView addConstraints:verticalConstraints];
@@ -315,10 +371,10 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)pressMediaButton:(UIButton *)sender {
-    if (sender.selected) { // Если уже был выбран, то закрыть
+    if (sender.selected) { // Если повторное нажатие на кнопку, то закрыть
         [self resetMediaButtonsAndMediaToolbarContainer];
-    } else {
-        self.mediaContainerView.hidden = NO;
+    } else { // Иначе открыть
+       // self.mediaContainerView.hidden = NO;
         
         NSArray *mediaButtons = [self.mediaPickerToolbarView subviews];
         
@@ -334,6 +390,13 @@ static NSString * const reuseIdentifier = @"Cell";
         
         if (sender == self.photoTakingMediaButton) {
             [RTCMediaStore sharedStore].currentMediaType = MediaTypePhoto;
+            
+            if (!self.photoTakerController) {
+                self.photoTakerController = [[RTCPhotoTakerController alloc] init];
+            }
+            
+            [self displayViewController:self.photoTakerController];
+            
         } else if (sender == self.imageGalleryMediaButton) { // Add gallery view
             [RTCMediaStore sharedStore].currentMediaType = MediaTypeImage;
             
@@ -350,7 +413,9 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
-- (void)resetMediaButtonsAndMediaToolbarContainer {
+- (void)resetMediaButtonsAndMediaToolbarContainer { // close media containers and unselect media buttons
+    
+    [RTCMediaStore sharedStore].currentMediaType = MediaTypeNone;
     
     NSArray *mediaButtons = [self.mediaPickerToolbarView subviews];
     
@@ -362,7 +427,14 @@ static NSString * const reuseIdentifier = @"Cell";
             
             if (mediaButton.selected) {
                 mediaButton.selected = NO;
-                [self closeImagePickerController];
+                
+                if (mediaButton == self.imageGalleryMediaButton) {
+                    [self closeImagePickerController];
+                } else if (mediaButton == self.photoTakingMediaButton) {
+                    [self closePhotoTakerController];
+                } else if (mediaButton == self.locationMediaButton) {
+                
+                }
             }
             
         }
@@ -382,9 +454,47 @@ static NSString * const reuseIdentifier = @"Cell";
         
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        self.mediaContainerView.hidden = YES;
+      //  self.mediaContainerView.hidden = YES;
     }];
 }
 
+#pragma mark - Photo Taker Controller
+
+- (void)closePhotoTakerController {
+    if (!self.photoTakerController) return;
+    
+
+    
+    [self.view layoutIfNeeded];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.mediaContainerViewHeightConstraint.constant = 0;
+        
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [self.photoTakerController.view removeFromSuperview];
+      //  self.mediaContainerView.hidden = YES;
+        self.photoTakerController = nil;
+    }];
+}
+
+- (void)setupPhotoTakerController {
+    if (!self.photoTakerController) return;
+    
+    if ([RTCPhotoTakerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        self.photoTakerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+    } else {
+        self.photoTakerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    
+    self.photoTakerController.showsCameraControls = NO;
+    
+ //   UIView *overlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
+   // overlayView.backgroundColor = [UIColor whiteColor];
+  //  self.photoTakerController.cameraOverlayView = overlayView;
+
+    
+  //  [self.mediaContainerViewHeightConstraint.constant =
+
+}
 
 @end
