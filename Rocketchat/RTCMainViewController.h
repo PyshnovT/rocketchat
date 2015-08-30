@@ -10,6 +10,7 @@
 
 @interface RTCMainViewController : UIViewController 
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusBarHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaContainerViewHeightConstraint;
 
 

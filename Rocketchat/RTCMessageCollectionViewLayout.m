@@ -39,7 +39,7 @@ static NSInteger const tailHeight = 8;
 - (void)setupLayout {
     self.cellBottomY = [NSMutableDictionary dictionary];
     
-    self.collectionViewInsets = UIEdgeInsetsMake(30, 0, 10, 8);
+    self.collectionViewInsets = UIEdgeInsetsMake(10, 0, 10, 8);
     self.messageBubbleInsets = UIEdgeInsetsMake(15, 15, 15, 15); // Данные из .xib
     self.messageSize = CGSizeMake(240, 240); // Второй параметр имеет значение только для медиа-сообщений
     self.interMessageSpacingY = 8;

@@ -24,6 +24,7 @@
                 <outlet property="messageTextField" destination="RuS-rP-fl8" id="NM7-pS-EMo"/>
                 <outlet property="photoTakingMediaButton" destination="h9O-Aa-DW6" id="Yyw-Ch-fjp"/>
                 <outlet property="sendButton" destination="14C-rI-6zj" id="0Sr-5W-kGZ"/>
+                <outlet property="statusBarHeightConstraint" destination="s6g-6k-ULR" id="w8F-WL-Hz8"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -164,21 +165,31 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mv9-OJ-l28" userLabel="Controller Collection View">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="390"/>
+                    <rect key="frame" x="0.0" y="20" width="320" height="370"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cnv-Qh-gcZ" userLabel="Status Bar View" customClass="RTCStatusBarView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="21"/>
+                    <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="s6g-6k-ULR"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="cnv-Qh-gcZ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="3Xh-qt-NgH"/>
                 <constraint firstAttribute="trailing" secondItem="TpC-2m-4qn" secondAttribute="trailing" id="7q5-oa-bWH"/>
-                <constraint firstItem="mv9-OJ-l28" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8eQ-DJ-li8"/>
                 <constraint firstItem="TpC-2m-4qn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Bcq-5v-apa"/>
                 <constraint firstItem="TpC-2m-4qn" firstAttribute="top" secondItem="mv9-OJ-l28" secondAttribute="bottom" id="HST-5Y-LUX"/>
                 <constraint firstItem="mv9-OJ-l28" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="InD-lz-gks"/>
+                <constraint firstItem="mv9-OJ-l28" firstAttribute="top" secondItem="cnv-Qh-gcZ" secondAttribute="bottom" constant="-1" id="TXf-ca-2pM"/>
                 <constraint firstAttribute="bottom" secondItem="6gq-2w-QiJ" secondAttribute="bottom" id="dHn-dl-4Yq"/>
                 <constraint firstItem="6gq-2w-QiJ" firstAttribute="top" secondItem="TpC-2m-4qn" secondAttribute="bottom" id="iQU-zl-JLX"/>
                 <constraint firstAttribute="trailing" secondItem="mv9-OJ-l28" secondAttribute="trailing" id="kwp-Du-Yyv"/>
+                <constraint firstAttribute="trailing" secondItem="cnv-Qh-gcZ" secondAttribute="trailing" id="olo-Xb-TO3"/>
                 <constraint firstAttribute="trailing" secondItem="6gq-2w-QiJ" secondAttribute="trailing" id="qjn-EH-aOy"/>
+                <constraint firstItem="cnv-Qh-gcZ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="tAn-RX-kMV"/>
                 <constraint firstItem="6gq-2w-QiJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="xg6-mk-rbI"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>

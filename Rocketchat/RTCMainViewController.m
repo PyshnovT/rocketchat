@@ -29,6 +29,7 @@
 
 // .ViewController xib
 
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewToMediaPickerToolbarViewConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaPickerToolbarViewHeightConstraint;
@@ -382,9 +383,7 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         self.mediaContainerView.hidden = YES;
-       // [self.collectionViewController scrollToNewestMessage];
     }];
-  //  [self.collectionViewController scrollToNewestMessage];
 }
 
 

@@ -63,7 +63,7 @@ static NSString * const reuseIdentifier = @"Cell";
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleRotation:)
+                                                 selector:@selector(handleRotationNotification:)
                                                      name:UIDeviceOrientationDidChangeNotification
                                                    object:nil];
     }
@@ -80,12 +80,24 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - Rotation
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-    [self handleRotation:nil];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    [self handleRotationNotification:nil forSize:size];
 }
 
-- (void)handleRotation:(NSNotification *)note {
+- (void)handleRotationNotification:(NSNotification *)note {
+    NSLog(@"Handle");
+    [self handleRotationNotification:note forSize:CGSizeZero];
+}
+
+- (void)handleRotationNotification:(NSNotification *)note forSize:(CGSize)size {
     [self.collectionView.collectionViewLayout invalidateLayout];
-    //[self scrollToNewestMessage];
+    
+    if (size.width > size.height) {
+        self.mvc.statusBarHeightConstraint.constant = 0;
+    } else {
+        self.mvc.statusBarHeightConstraint.constant = 21;
+    }
 }
 
 #pragma mark - Adding messages
