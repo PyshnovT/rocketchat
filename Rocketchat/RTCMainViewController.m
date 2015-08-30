@@ -187,6 +187,8 @@ static NSString * const reuseIdentifier = @"Cell";
         [self setConstraintsForCollectionViewController];
         
     } else if (controller == self.imagePickerViewController) {
+        [RTCMediaStore sharedStore].currentMediaType = MediaTypeImage;
+        
         
         if ([[RTCMediaStore sharedStore] imageGalleryItems].count) {
             [self setActiveSendButtonColor];
@@ -196,51 +198,32 @@ static NSString * const reuseIdentifier = @"Cell";
         
         [self.view layoutIfNeeded];
         
-        void (^completionBlock)() = ^void() {
-          //  self.mediaContainerView.hidden = NO;
-            NSLog(@"CompletionBlock!");
-            [self.mediaContainerView addSubview:self.imagePickerViewController.view];
-            
-            [UIView animateWithDuration:0.2 animations:^{
-                [self setConstraintsForImagePickerViewController];
-                [self.view layoutIfNeeded];
-            }];
-        };
+        [self.mediaContainerView addSubview:self.imagePickerViewController.view];
         
-        if ([RTCMediaStore sharedStore].currentMediaType == MediaTypePhoto) {
-            [self closePhotoTakerController];
-        } else {
-            if (completionBlock) {
-                completionBlock();
-            }
-        }
+        [UIView animateWithDuration:0.2 animations:^{
+            [self setConstraintsForImagePickerViewController];
+            [self.view layoutIfNeeded];
+        }];
         
     } else if (controller == self.photoTakerController) {
+        [RTCMediaStore sharedStore].currentMediaType = MediaTypePhoto;
+        
+        
+        self.photoTakerController = nil;
+        
         [self setupPhotoTakerController];
         
         [self.view layoutIfNeeded];
         
-        if ([RTCMediaStore sharedStore].currentMediaType == MediaTypeImage) {
-            [self closeImagePickerController];
-            
-        } else {
-            
-        }
+        UIView *subview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width)];
+        subview.backgroundColor = [UIColor blueColor];
         
-        [self.mediaContainerView addSubview:self.photoTakerController.view];
-        self.photoTakerController.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [UIView animateWithDuration:0.3 animations:^{
+        [self.mediaContainerView addSubview:subview];
+        
+        [UIView animateWithDuration:0.2 animations:^{
             self.mediaContainerViewHeightConstraint.constant = self.view.bounds.size.width;
-            //   [self setConstraintsForPhotoTakerController];
-            
             [self.view layoutIfNeeded];
-        } completion:^(BOOL finished) {
-            
         }];
-      //  [self presentViewController:self.photoTakerController animated:YES completion:nil];
-       // [self.mediaContainerView addSubview:self.photoTakerController.view];
-        
-       // [self setConstraintsForPhotoTakerController];
 
     }
     
@@ -287,8 +270,8 @@ static NSString * const reuseIdentifier = @"Cell";
     NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[photoTakerView]-0-|" options:0 metrics:nil views:nameMap];
     NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[photoTakerView]-0-|" options:0 metrics:nil views:nameMap];
     
-    [self.controllerCollectionView addConstraints:horizontalConstraints];
-    [self.controllerCollectionView addConstraints:verticalConstraints];
+    [self.mediaContainerView addConstraints:horizontalConstraints];
+    [self.mediaContainerView addConstraints:verticalConstraints];
 }
 
 #pragma mark - IBActions
@@ -300,7 +283,7 @@ static NSString * const reuseIdentifier = @"Cell";
         self.messageTextField.text = @"";
     }
     
-    if (self.imageGalleryMediaButton.selected) {
+    if ([RTCMediaStore sharedStore].currentMediaType == MediaTypeImage) {
         NSArray *uploadedImages = [[RTCMediaStore sharedStore] imageGalleryItems];
         
         if (uploadedImages.count) {
@@ -313,7 +296,7 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.imagePickerViewController updateScrollView];
         
         if (uploadedImages.count) {
-            [self resetMediaButtonsAndMediaToolbarContainer];
+            [self closeOpenedMediaContainerIfNeeded];
         }
     }
     
@@ -346,7 +329,7 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - Text Send Button
 
 - (void)setSendButtonColor {
-    if ((self.imageGalleryMediaButton.selected && ([[RTCMediaStore sharedStore] imageGalleryItems].count > 0)) || ![self.messageTextField.text isEqualToString:@""]) {
+    if (([RTCMediaStore sharedStore].currentMediaType == MediaTypeImage && ([[RTCMediaStore sharedStore] imageGalleryItems].count > 0)) || ![self.messageTextField.text isEqualToString:@""]) {
         NSLog(@"Activate");
         [self setActiveSendButtonColor];
     } else {
@@ -372,9 +355,13 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)pressMediaButton:(UIButton *)sender {
     if (sender.selected) { // Если повторное нажатие на кнопку, то закрыть
-        [self resetMediaButtonsAndMediaToolbarContainer];
-    } else { // Иначе открыть
-       // self.mediaContainerView.hidden = NO;
+        [self closeOpenedMediaContainerIfNeeded];
+    } else { // Иначе закрыть старый контейнер, если он был, и открыть новый
+        
+        [self closeOpenedMediaContainerIfNeeded];
+        
+        sender.selected = YES;
+        sender.alpha = 1.0;
         
         NSArray *mediaButtons = [self.mediaPickerToolbarView subviews];
         
@@ -385,20 +372,16 @@ static NSString * const reuseIdentifier = @"Cell";
             }
         }
         
-        sender.selected = YES;
-        sender.alpha = 1.0;
         
         if (sender == self.photoTakingMediaButton) {
-            [RTCMediaStore sharedStore].currentMediaType = MediaTypePhoto;
-            
+
             if (!self.photoTakerController) {
                 self.photoTakerController = [[RTCPhotoTakerController alloc] init];
             }
             
             [self displayViewController:self.photoTakerController];
-            
+    
         } else if (sender == self.imageGalleryMediaButton) { // Add gallery view
-            [RTCMediaStore sharedStore].currentMediaType = MediaTypeImage;
             
             if (!self.imagePickerViewController) {
                 self.imagePickerViewController = [[RTCImagePickerViewController alloc] init];
@@ -407,16 +390,33 @@ static NSString * const reuseIdentifier = @"Cell";
             [self displayViewController:self.imagePickerViewController];
             
         } else if (sender == self.locationMediaButton) {
-            [RTCMediaStore sharedStore].currentMediaType = MediaTypeLocation;
+            
         }
         
     }
 }
 
-- (void)resetMediaButtonsAndMediaToolbarContainer { // close media containers and unselect media buttons
+#pragma mark - Closing Containers
+
+- (void)closeOpenedMediaContainerIfNeeded { // close media containers and unselect media buttons
+    
+    [self cleanMediaButtons];
+    
+    MediaType currentMediaOpened = [RTCMediaStore sharedStore].currentMediaType;
+    
+    if (currentMediaOpened == MediaTypeNone) return;
+    else if (currentMediaOpened == MediaTypeImage) {
+        [self closeImagePickerController];
+    } else if (currentMediaOpened == MediaTypePhoto) {
+        [self closePhotoTakerController];
+    } else if (currentMediaOpened == MediaTypeLocation) {
+        // закрыть контейнер с локацией
+    }
     
     [RTCMediaStore sharedStore].currentMediaType = MediaTypeNone;
-    
+}
+
+- (void)cleanMediaButtons {
     NSArray *mediaButtons = [self.mediaPickerToolbarView subviews];
     
     for (int i = 0; i < mediaButtons.count; i++) {
@@ -424,46 +424,40 @@ static NSString * const reuseIdentifier = @"Cell";
             UIButton *mediaButton = (UIButton *)mediaButtons[i];
             
             mediaButton.alpha = 1;
-            
-            if (mediaButton.selected) {
-                mediaButton.selected = NO;
-                
-                if (mediaButton == self.imageGalleryMediaButton) {
-                    [self closeImagePickerController];
-                } else if (mediaButton == self.photoTakingMediaButton) {
-                    [self closePhotoTakerController];
-                } else if (mediaButton == self.locationMediaButton) {
-                
-                }
-            }
+            mediaButton.selected = NO;
             
         }
     }
-    
 }
 
 - (void)closeImagePickerController {
-
+    
     [self setSendButtonColor];
     
-    [self.imagePickerViewController.view removeFromSuperview];
-    
     [self.view layoutIfNeeded];
+    
+    NSArray *mediaSubviews = self.mediaContainerView.subviews;
+    
+    for (UIView *subview in mediaSubviews) {
+        [subview removeFromSuperview];
+        NSLog(@"Subview remove from mediaContainer");
+    }
+    
+ //   [self.imagePickerViewController.view removeFromSuperview];
+
     [UIView animateWithDuration:0.3 animations:^{
         self.mediaContainerViewHeightConstraint.constant = 0;
         
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-      //  self.mediaContainerView.hidden = YES;
+
     }];
 }
 
-#pragma mark - Photo Taker Controller
+
 
 - (void)closePhotoTakerController {
-    if (!self.photoTakerController) return;
-    
-
+    //if (!self.photoTakerController) return;
     
     [self.view layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
@@ -472,10 +466,11 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         [self.photoTakerController.view removeFromSuperview];
-      //  self.mediaContainerView.hidden = YES;
         self.photoTakerController = nil;
     }];
 }
+
+#pragma mark - Photo Taker Controller
 
 - (void)setupPhotoTakerController {
     if (!self.photoTakerController) return;
@@ -487,13 +482,6 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     self.photoTakerController.showsCameraControls = NO;
-    
- //   UIView *overlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
-   // overlayView.backgroundColor = [UIColor whiteColor];
-  //  self.photoTakerController.cameraOverlayView = overlayView;
-
-    
-  //  [self.mediaContainerViewHeightConstraint.constant =
 
 }
 

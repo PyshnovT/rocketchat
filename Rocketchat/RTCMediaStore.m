@@ -43,6 +43,7 @@ static NSString * const photoGalleryIdentifier = @"photoGalleryMediaItems";
     if (self) {
         _privateMediaData = [NSMutableDictionary dictionaryWithDictionary:@{photoGalleryIdentifier:
                                                                                 [NSMutableArray array]}];
+        _currentMediaType = MediaTypeNone;
     }
     return self;
 }
