@@ -255,7 +255,9 @@ static NSString * const reuseIdentifier = @"Cell";
         [[RTCMediaStore sharedStore] cleanImageGallery];
         [self.imagePickerViewController updateScrollView];
         
-        [self resetMediaButtonsAndMediaToolbarContainer];
+        if (uploadedImages.count) {
+            [self resetMediaButtonsAndMediaToolbarContainer];
+        }
     }
     
     [self setSendButtonColor];
