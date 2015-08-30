@@ -40,6 +40,9 @@ static NSString * const reuseIdentifier = @"Cell";
     self.imageView.image = nil;
 }
 
+- (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    return layoutAttributes;
+}
 
 
 @end

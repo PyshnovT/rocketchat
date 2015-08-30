@@ -152,10 +152,11 @@ static NSString * const reuseIdentifier = @"Cell";
         
     } else if (message.media) {
      
-        CGSize sizeToWidth = [message.media.image imageSizeToFitWidth:cell.bounds.size.width];
-        cell.imageView.image = [message.media.image scaleImageToFitWithSize:sizeToWidth];//[message.media.image scaleImageToFitWidth:cell.bounds.size.width];
-        NSLog(@"%f", cell.bounds.size.height);
+        cell.imageView.image = message.media.thumbnailImage;//[message.media.image scaleImageToFitWidth:cell.bounds.size.width]; // тут надо постаивть thumbnail..
     }
+    
+    cell.layer.shouldRasterize = YES;
+    cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
     
     return cell;
 }

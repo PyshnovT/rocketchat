@@ -65,7 +65,7 @@ static NSInteger const tailHeight = 8;
     NSMutableDictionary *cellLayoutInfo = [NSMutableDictionary dictionary];
     
     NSInteger sectionCount = [self.collectionView numberOfSections];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    NSIndexPath *indexPath;
     
     for (NSInteger section = 0; section < sectionCount; section++) {
         NSInteger itemCount = [self.collectionView numberOfItemsInSection:section];
@@ -140,7 +140,7 @@ static NSInteger const tailHeight = 8;
     RTCMessage *message = [[[RTCMessageStore sharedStore] allMessages] objectAtIndex:indexPath.row];
     
     CGFloat width = self.messageSize.width;
-    CGFloat height;
+    CGFloat height = 0;
     
     if (message.media) {
         CGFloat imageHeight = [message.media.image imageSizeToFitWidth:self.messageSize.width].height;// message.media.thumbnailImage.size.height;// [message.media.image imageSizeToFitSize:self.messageSize].height;

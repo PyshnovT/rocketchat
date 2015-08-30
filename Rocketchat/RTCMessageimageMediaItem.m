@@ -19,6 +19,7 @@
     self = [super init];
     if (self) {
         _image = image;
+        _thumbnailImage = [image scaleImageToFitWithSize:[image imageSizeToFitWidth:240]];
     }
     return self;
 }
