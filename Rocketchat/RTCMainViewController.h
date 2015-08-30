@@ -13,7 +13,9 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusBarHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaContainerViewHeightConstraint;
 
-
 - (void)setSendButtonColor;
+
+- (void)setPhotoTakerControllerFullScreenMode;
+- (void)setPhotoTakerControllerShortScreenMode;
 
 @end
