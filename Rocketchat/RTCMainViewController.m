@@ -34,8 +34,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewToMediaPickerToolbarViewConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaPickerToolbarViewHeightConstraint;
-
-@property (weak, nonatomic) IBOutlet RTCTextToolbarView *inputToolbarView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusBarHeightConstraint;
 
 // Media Buttons
 
@@ -72,6 +71,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self setPhotoPickerControllerAbilityForViewSize:self.view.bounds.size];
     [self registerForKeyboardNotifications];
 }
 
@@ -175,6 +175,71 @@ static NSString * const reuseIdentifier = @"Cell";
         
         [self.view layoutIfNeeded];
     } completion:nil];
+}
+
+#pragma mark - Notifications
+
+- (void)registerForRotationNotifications {
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleRotationNotification:)
+                                                     name:UIDeviceOrientationDidChangeNotification
+                                                   object:nil];
+    }
+}
+
+- (void)deregisterForRotationNotifications {
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:UIDeviceOrientationDidChangeNotification
+                                                      object:nil];
+    }
+}
+
+#pragma mark - Rotation
+
+- (BOOL)shouldAutorotate {
+    CGSize viewSize = self.view.bounds.size;
+    
+    if (viewSize.width > viewSize.height) {
+        return YES;
+    } else {
+        if ([RTCMediaStore sharedStore].currentMediaType == MediaTypePhoto) {
+            return NO;
+        }
+    }
+    
+    return YES;;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    [self handleRotationNotification:nil forSize:size];
+}
+
+- (void)handleRotationNotification:(NSNotification *)note {
+    [self handleRotationNotification:note forSize:CGSizeZero];
+}
+
+- (void)handleRotationNotification:(NSNotification *)note forSize:(CGSize)size {
+    
+    [self setPhotoPickerControllerAbilityForViewSize:size]; // такс, при iOS 7 тут не будет размера
+    
+    if (size.width > size.height) {
+        self.statusBarHeightConstraint.constant = 0;
+    } else {
+        self.statusBarHeightConstraint.constant = 21;
+    }
+}
+
+- (void)setPhotoPickerControllerAbilityForViewSize:(CGSize)viewSize {
+    if (viewSize.width > viewSize.height) {
+        self.photoTakingMediaButton.enabled = NO;
+    } else {
+        self.photoTakingMediaButton.enabled = YES;
+    }
 }
 
 #pragma mark - Displaying Controllers

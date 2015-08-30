@@ -92,12 +92,6 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)handleRotationNotification:(NSNotification *)note forSize:(CGSize)size {
     [self.collectionView.collectionViewLayout invalidateLayout];
-    
-    if (size.width > size.height) {
-        self.mvc.statusBarHeightConstraint.constant = 0;
-    } else {
-        self.mvc.statusBarHeightConstraint.constant = 21;
-    }
 }
 
 #pragma mark - Adding messages
