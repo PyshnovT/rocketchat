@@ -276,25 +276,27 @@ static NSString * const reuseIdentifier = @"Cell";
     } else if (controller == self.photoTakerController) { // здесь стоит плейсхолдер
         [RTCMediaStore sharedStore].currentMediaType = MediaTypePhoto;
         
-        
-        self.photoTakerController = nil;
+      
+      //  self.photoTakerController = nil;
         
         [self setupPhotoTakerController];
         
         [self.view layoutIfNeeded];
         
-        UIView *subview = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.width)];
-        subview.backgroundColor = [UIColor blueColor];
+       // UIView *subview = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.width)];
+     //   subview.backgroundColor = [UIColor blueColor];
         
-        [self.view addSubview:subview];
+
         
         [UIView animateWithDuration:0.2 animations:^{
-            self.mediaContainerViewHeightConstraint.constant = subview.bounds.size.width;
-            [self setPhotoTakerControllerFullScreenMode];
+            self.mediaContainerViewHeightConstraint.constant = self.photoTakerController.view.bounds.size.width;
+          //  [self setPhotoTakerControllerFullScreenMode];
             [self setPhotoTakerControllerShortScreenMode];
             //self.mediaContainerViewHeightConstraint.constant = self.view.bounds.size.width;
             [self.view layoutIfNeeded];
         }];
+        
+                [self.view addSubview:self.photoTakerController.view];
 
     }
     
@@ -367,19 +369,19 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)setPhotoTakerControllerFullScreenMode; { //  тут плейсхолдер
     
    // [self.mediaContainerView removeConstraints:self.photoTakerControllerConstraints];
-    UIView *subview = [[self.view subviews] lastObject];
+    UIView *photoTakerView = self.photoTakerController.view;
     
    // [subview removeFromSuperview];
     
-    subview.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    photoTakerView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
 }
 
 - (void)setPhotoTakerControllerShortScreenMode; {
-    UIView *subview = [[self.view subviews] lastObject];
+    UIView *photoTakerView = self.photoTakerController.view;
     
     // [subview removeFromSuperview];
     
-    subview.frame = CGRectMake(0, self.view.bounds.size.height - self.view.bounds.size.width, self.view.bounds.size.width, self.view.bounds.size.width);
+    photoTakerView.frame = CGRectMake(0, self.view.bounds.size.height - self.view.bounds.size.width, self.view.bounds.size.width, self.view.bounds.size.width);
 }
 
 #pragma mark - IBActions
@@ -400,12 +402,13 @@ static NSString * const reuseIdentifier = @"Cell";
             }
         }
         
-        [[RTCMediaStore sharedStore] cleanImageGallery];
-        [self.imagePickerViewController updateScrollView];
-        
         if (uploadedImages.count) {
             [self closeOpenedMediaContainerIfNeeded];
         }
+        
+        [[RTCMediaStore sharedStore] cleanImageGallery];
+        [self.imagePickerViewController updateScrollView];
+        
     }
     
     [self setSendButtonColor];
@@ -559,19 +562,18 @@ static NSString * const reuseIdentifier = @"Cell";
 
 
 - (void)closePhotoTakerController { // здесь стоит плейсхолдер
-    //if (!self.photoTakerController) return;
+    if (!self.photoTakerController) return;
     
-    UIView *subview = [[self.view subviews] lastObject];
+    UIView *photoTakerView = self.photoTakerController.view;
     
     
     [self.view layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
         self.mediaContainerViewHeightConstraint.constant = 0;
-        subview.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.width);
+        photoTakerView.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.width);
         
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        [subview removeFromSuperview];
         [self.photoTakerController.view removeFromSuperview];
         self.photoTakerController = nil;
     }];
