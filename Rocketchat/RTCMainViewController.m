@@ -286,6 +286,7 @@ static NSString * const reuseIdentifier = @"Cell";
     } else if (controller == self.photoTakerController) { // здесь стоит плейсхолдер
         [RTCMediaStore sharedStore].currentMediaType = MediaTypePhoto;
         
+        self.photoTakerController.mvc = self;
         
         [self setupPhotoTakerController];
         
@@ -549,7 +550,6 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.imagePickerViewController.view removeFromSuperview];
     
     [UIView animateWithDuration:0.3 animations:^{
-      //    [self updateConstraintsForKeyboardHeight];
         self.mediaContainerViewHeightConstraint.constant = 0;
         [self.view layoutIfNeeded];
         
@@ -567,7 +567,6 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [self.view layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
-      //    [self updateConstraintsForKeyboardHeight];
         self.mediaContainerViewHeightConstraint.constant = 0;
 
         self.photoTakerController.view.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.width);
@@ -607,13 +606,23 @@ static NSString * const reuseIdentifier = @"Cell";
     
     if ([RTCPhotoTakerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         self.photoTakerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self.photoTakerController.showsCameraControls = NO;
+       // self.photoTakerController.showsCameraControls = NO;
     } else {
         self.photoTakerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
+    
+    self.photoTakerController.delegate = self.photoTakerController;
 
 }
 
-#pragma mark - Location Controller
+- (void)sendTakenPhoto {
+    RTCMessageImageMediaItem *photoItem = [[RTCMediaStore sharedStore] takenPhoto];
+
+    if (photoItem) {
+            NSLog(@"addMessageWithData");
+        [self.collectionViewController addMessageWithDate:[NSDate date] media:photoItem];
+
+    }
+}
 
 @end

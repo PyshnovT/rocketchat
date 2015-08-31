@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class RTCMainViewController;
+
 @interface RTCPhotoTakerController : UIImagePickerController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+
+@property (nonatomic, weak) RTCMainViewController *mvc;
 
 @end

@@ -163,7 +163,7 @@
 
 - (void)takeSnapshotOnTimer:(NSTimer *)t {
     NSLog(@"timer!");
-   // if (self.didShowLocation) {
+    if (self.didShowLocation) {
 
         [self snapshotImage];
         
@@ -176,7 +176,7 @@
        
 
         
-   // }
+    }
 }
 
 - (void)addSnapshot {

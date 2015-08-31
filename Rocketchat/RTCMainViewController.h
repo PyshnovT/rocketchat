@@ -22,6 +22,7 @@
 
 - (void)setPhotoTakerControllerFullScreenMode;
 - (void)setPhotoTakerControllerShortScreenMode;
+- (void)sendTakenPhoto;
 
 - (void)closeOpenedMediaContainerIfNeededWithCompletion:(void (^)())completion;
 

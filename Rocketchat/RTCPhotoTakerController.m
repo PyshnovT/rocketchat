@@ -7,6 +7,14 @@
 //
 
 #import "RTCPhotoTakerController.h"
+#import "RTCMainViewController.h"
+#import "RTCMediaStore.h"
+
+@interface RTCPhotoTakerController ()
+
+
+
+@end
 
 @implementation RTCPhotoTakerController 
 
@@ -16,6 +24,21 @@
 
     }
     return self;
+}
+
+#pragma mark - <UIImagePickerControllerDelegate>
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *originalPhoto = info[UIImagePickerControllerOriginalImage];
+    [[RTCMediaStore sharedStore] addTakenPhoto:originalPhoto];
+    
+
+    [self.mvc closeOpenedMediaContainerIfNeededWithCompletion:nil];
+    [self.mvc sendTakenPhoto];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self.mvc closeOpenedMediaContainerIfNeededWithCompletion:nil];
 }
 
 @end

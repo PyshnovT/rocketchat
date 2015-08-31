@@ -35,6 +35,10 @@ typedef enum {
 
 + (instancetype)sharedStore;
 
+- (void)addTakenPhoto:(UIImage *)photo;
+- (void)cleanTakenPhoto;
+- (RTCMessageImageMediaItem *)takenPhoto;
+
 - (void)addImageFromGallery:(UIImage *)image;
 - (void)cleanImageGallery;
 - (NSArray *)imageGalleryItems;

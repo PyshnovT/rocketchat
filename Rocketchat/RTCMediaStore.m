@@ -19,6 +19,7 @@
 
 @implementation RTCMediaStore
 
+static NSString * const takenPhotoIdentifier = @"takenPhotoMediaItem";
 static NSString * const photoGalleryIdentifier = @"photoGalleryMediaItems";
 static NSString * const locationSnapshotIdentifier = @"locationSnapshotMediaItem";
 
@@ -45,7 +46,8 @@ static NSString * const locationSnapshotIdentifier = @"locationSnapshotMediaItem
     if (self) {
         _privateMediaData = [NSMutableDictionary dictionaryWithDictionary:@{photoGalleryIdentifier:
                                                                                 [NSMutableArray array],
-                                                                            locationSnapshotIdentifier: [NSMutableArray array]}];
+                                                                            locationSnapshotIdentifier: [NSMutableArray array],
+                                                                            takenPhotoIdentifier: [NSMutableArray array]}];
         _currentMediaType = MediaTypeNone;
     }
     return self;
@@ -61,9 +63,12 @@ static NSString * const locationSnapshotIdentifier = @"locationSnapshotMediaItem
     return self.privateMediaData[photoGalleryIdentifier];
 }
 
-
 - (RTCMessageLocationMediaItem *)locationSnapshot {
     return [self.privateMediaData[locationSnapshotIdentifier] lastObject];
+}
+
+- (RTCMessageImageMediaItem *)takenPhoto {
+    return [self.privateMediaData[takenPhotoIdentifier] lastObject];
 }
 
 #pragma mark - Cleaning
@@ -76,12 +81,16 @@ static NSString * const locationSnapshotIdentifier = @"locationSnapshotMediaItem
     [self.privateMediaData[locationSnapshotIdentifier] removeAllObjects];
 }
 
+- (void)cleanTakenPhoto {
+    [self.privateMediaData[takenPhotoIdentifier] removeAllObjects];
+}
+
 #pragma mark - Adding Media Items
 
 - (void)addImageFromGallery:(UIImage *)image {
-    RTCMessageImageMediaItem *photoItem = [RTCMessageImageMediaItem itemWithImage:image];
+    RTCMessageImageMediaItem *imageItem = [RTCMessageImageMediaItem itemWithImage:image];
     
-    [self.privateMediaData[photoGalleryIdentifier] addObject:photoItem];
+    [self.privateMediaData[photoGalleryIdentifier] addObject:imageItem];
 }
 
 - (void)addLocationSnapshotWithImage:(UIImage *)snapshotImage andLocation:(CLLocation *)location {
@@ -92,6 +101,14 @@ static NSString * const locationSnapshotIdentifier = @"locationSnapshotMediaItem
     
     [self.privateMediaData[locationSnapshotIdentifier] addObject:locationItem];
     
+}
+
+- (void)addTakenPhoto:(UIImage *)photo {
+    [self cleanTakenPhoto];
+    
+    RTCMessageImageMediaItem *photoItem = [RTCMessageImageMediaItem itemWithImage:photo];
+    
+    [self.privateMediaData[takenPhotoIdentifier] addObject:photoItem];
 }
 
 @end
