@@ -15,17 +15,22 @@
 #import "RTCMediaStore.h"
 #import "RTCImagePickerViewController.h"
 #import "RTCMessageImageMediaItem.h"
+#import "RTCMessageLocationMediaItem.h"
 #import "RTCPhotoTakerController.h"
 #import "RTCTextToolbarView.h"
+#import "RTCMapViewController.h"
 
 @interface RTCMainViewController () <UITextFieldDelegate>
 
+
+// Collection View
 @property (weak, nonatomic) IBOutlet UIView *controllerCollectionView;
 @property (strong, nonatomic) RTCCollectionViewController *collectionViewController;
+
+// Views
+
 @property (weak, nonatomic) IBOutlet UIView *mediaContainerView;
 @property (weak, nonatomic) IBOutlet UIView *mediaPickerToolbarView;
-
-
 @property (weak, nonatomic) IBOutlet UITextField *messageTextField;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
@@ -48,8 +53,10 @@
 
 // Photo Taker
 
-@property (strong, nonatomic) NSArray *photoTakerControllerConstraints;
+@property (strong, nonatomic) NSMutableArray *currentMediaContainerConstraints;
 @property (strong, nonatomic) RTCPhotoTakerController *photoTakerController;
+
+
 
 @end
 
@@ -59,6 +66,8 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.currentMediaContainerConstraints = [NSMutableArray array];
     
     RTCMessageCollectionViewLayout *messageLayout = [[RTCMessageCollectionViewLayout alloc] init];
     self.collectionViewController = [[RTCCollectionViewController alloc]
@@ -276,28 +285,29 @@ static NSString * const reuseIdentifier = @"Cell";
     } else if (controller == self.photoTakerController) { // здесь стоит плейсхолдер
         [RTCMediaStore sharedStore].currentMediaType = MediaTypePhoto;
         
-      
-      //  self.photoTakerController = nil;
         
         [self setupPhotoTakerController];
         
         [self.view layoutIfNeeded];
         
-       // UIView *subview = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.width)];
-     //   subview.backgroundColor = [UIColor blueColor];
-        
-
         
         [UIView animateWithDuration:0.2 animations:^{
             self.mediaContainerViewHeightConstraint.constant = self.photoTakerController.view.bounds.size.width;
-          //  [self setPhotoTakerControllerFullScreenMode];
-            [self setPhotoTakerControllerShortScreenMode];
-            //self.mediaContainerViewHeightConstraint.constant = self.view.bounds.size.width;
+
             [self.view layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            [self setPhotoTakerControllerShortScreenMode];
+            [self.view addSubview:self.photoTakerController.view];
         }];
         
-                [self.view addSubview:self.photoTakerController.view];
+    } else if (controller == self.mapViewController) {
+        [RTCMediaStore sharedStore].currentMediaType = MediaTypeLocation;
+        self.mapViewController.mvc = self;
+        
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.mapViewController];
 
+        
+        [self presentViewController:navController animated:YES completion:nil];
     }
     
     [controller didMoveToParentViewController:self];
@@ -317,6 +327,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [self.mediaContainerView addConstraints:horizontalConstraints];
     [self.mediaContainerView addConstraints:verticalConstraints];
+    
     
 }
 - (void)setConstraintsForCollectionViewController {
@@ -397,13 +408,13 @@ static NSString * const reuseIdentifier = @"Cell";
         NSArray *uploadedImages = [[RTCMediaStore sharedStore] imageGalleryItems];
         
         if (uploadedImages.count) {
-            for (int i = 0; i < uploadedImages.count; i++) {
-                [self.collectionViewController addMessageWithDate:[NSDate date] media:uploadedImages[i]];
-            }
+            [self closeOpenedMediaContainerIfNeededWithCompletion:nil];
         }
         
         if (uploadedImages.count) {
-            [self closeOpenedMediaContainerIfNeeded];
+            for (int i = 0; i < uploadedImages.count; i++) {
+                [self.collectionViewController addMessageWithDate:[NSDate date] media:uploadedImages[i]];
+            }
         }
         
         [[RTCMediaStore sharedStore] cleanImageGallery];
@@ -466,65 +477,88 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)pressMediaButton:(UIButton *)sender {
     if (sender.selected) { // Если повторное нажатие на кнопку, то закрыть
-        [self closeOpenedMediaContainerIfNeeded];
+        [self closeOpenedMediaContainerIfNeededWithCompletion:nil];
     } else { // Иначе закрыть старый контейнер, если он был, и открыть новый
         
-        [self closeOpenedMediaContainerIfNeeded];
-        
-        sender.selected = YES;
-        sender.alpha = 1.0;
-        
-        NSArray *mediaButtons = [self.mediaPickerToolbarView subviews];
-        
-        for (int i = 0; i < mediaButtons.count; i++) {
-            if ([mediaButtons[i] isKindOfClass:[UIButton class]] && (mediaButtons[i] != sender)) {
-                ((UIButton *)mediaButtons[i]).alpha = 0.5;
-                ((UIButton *)mediaButtons[i]).selected = NO;
-            }
-        }
-        
-        
-        if (sender == self.photoTakingMediaButton) {
-
-            if (!self.photoTakerController) {
-                self.photoTakerController = [[RTCPhotoTakerController alloc] init];
+        void (^onCompletion)() = ^void() {
+            NSLog(@"Completion block playing!");
+            
+            sender.selected = YES;
+            sender.alpha = 1.0;
+            
+            NSArray *mediaButtons = [self.mediaPickerToolbarView subviews];
+            
+            for (int i = 0; i < mediaButtons.count; i++) {
+                if ([mediaButtons[i] isKindOfClass:[UIButton class]] && (mediaButtons[i] != sender)) {
+                    ((UIButton *)mediaButtons[i]).alpha = 0.5;
+                    ((UIButton *)mediaButtons[i]).selected = NO;
+                }
             }
             
-            [self displayViewController:self.photoTakerController];
-    
-        } else if (sender == self.imageGalleryMediaButton) { // Add gallery view
-            
-            if (!self.imagePickerViewController) {
-                self.imagePickerViewController = [[RTCImagePickerViewController alloc] init];
+            if (sender == self.photoTakingMediaButton) {
+                NSLog(@"First");
+                if (!self.photoTakerController) {
+                    NSLog(@"Creating new photo picker");
+                    self.photoTakerController = [[RTCPhotoTakerController alloc] init];
+                }
+                NSLog(@"Second");
+                [self displayViewController:self.photoTakerController];
+                
+            } else if (sender == self.imageGalleryMediaButton) { // Add gallery view
+                
+                if (!self.imagePickerViewController) {
+                    self.imagePickerViewController = [[RTCImagePickerViewController alloc] init];
+                }
+                
+                [self displayViewController:self.imagePickerViewController];
+                
+            } else if (sender == self.locationMediaButton) {
+                
+                if (!self.mapViewController) {
+                    self.mapViewController = [[RTCMapViewController alloc] init];
+                }
+                
+                [self displayViewController:self.mapViewController];
+                
             }
-            
-            [self displayViewController:self.imagePickerViewController];
-            
-        } else if (sender == self.locationMediaButton) {
-            
-        }
+        };
+        
+        [self closeOpenedMediaContainerIfNeededWithCompletion:onCompletion];
         
     }
 }
 
 #pragma mark - Closing Containers
 
-- (void)closeOpenedMediaContainerIfNeeded { // close media containers and unselect media buttons
+- (void)closeOpenedMediaContainerIfNeededWithCompletion:(void (^)())completion { // close media containers and unselect media buttons
+    NSLog(@"Close");
     
     [self cleanMediaButtons];
     
     MediaType currentMediaOpened = [RTCMediaStore sharedStore].currentMediaType;
     
-    if (currentMediaOpened == MediaTypeNone) return;
-    else if (currentMediaOpened == MediaTypeImage) {
-        [self closeImagePickerController];
+    [RTCMediaStore sharedStore].currentMediaType = MediaTypeNone;
+    
+    
+    if (currentMediaOpened == MediaTypeNone) {
+        
+        if (completion) {
+            completion();
+        }
+        
+    } else if (currentMediaOpened == MediaTypeImage) {
+        [self closeImagePickerControllerWithCompletion:completion];
     } else if (currentMediaOpened == MediaTypePhoto) {
-        [self closePhotoTakerController];
+        NSLog(@"Photo!");
+        [self closePhotoTakerControllerWithCompletion:completion];
     } else if (currentMediaOpened == MediaTypeLocation) {
-        // закрыть контейнер с локацией
+        NSLog(@"LOCATION!");
+        [self closeMapViewControllerWithCompletion:completion];
     }
     
-    [RTCMediaStore sharedStore].currentMediaType = MediaTypeNone;
+
+    
+
 }
 
 - (void)cleanMediaButtons {
@@ -541,42 +575,61 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
-- (void)closeImagePickerController {
+- (void)closeImagePickerControllerWithCompletion:(void (^)())completion {
     
     [self setSendButtonColor];
     
     [self.view layoutIfNeeded];
     
-    
     [self.imagePickerViewController.view removeFromSuperview];
-
+    
     [UIView animateWithDuration:0.3 animations:^{
         self.mediaContainerViewHeightConstraint.constant = 0;
-        
         [self.view layoutIfNeeded];
+        
     } completion:^(BOOL finished) {
-
+        if (completion) {
+            completion();
+        }
     }];
 }
 
 
 
-- (void)closePhotoTakerController { // здесь стоит плейсхолдер
+- (void)closePhotoTakerControllerWithCompletion:(void (^)())completion { // здесь стоит плейсхолдер
     if (!self.photoTakerController) return;
-    
-    UIView *photoTakerView = self.photoTakerController.view;
-    
     
     [self.view layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
         self.mediaContainerViewHeightConstraint.constant = 0;
-        photoTakerView.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.width);
+
+        self.photoTakerController.view.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.width);
         
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         [self.photoTakerController.view removeFromSuperview];
         self.photoTakerController = nil;
+        
+        
+        if (completion) {
+            completion();
+        }
     }];
+}
+
+- (void)closeMapViewControllerWithCompletion:(void (^)())completion {
+    RTCMessageLocationMediaItem *locationItem = [[RTCMediaStore sharedStore] locationSnapshot];
+    
+    if (locationItem) {
+        [self.collectionViewController addMessageWithDate:[NSDate date] media:locationItem];
+    }
+    
+    
+    self.mapViewController = nil;
+    
+    if (completion) {
+        completion();
+    }
 }
 
 #pragma mark - Photo Taker Controller
@@ -586,12 +639,13 @@ static NSString * const reuseIdentifier = @"Cell";
     
     if ([RTCPhotoTakerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         self.photoTakerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        self.photoTakerController.showsCameraControls = NO;
     } else {
         self.photoTakerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
-    
-    self.photoTakerController.showsCameraControls = NO;
 
 }
+
+#pragma mark - Location Controller
 
 @end

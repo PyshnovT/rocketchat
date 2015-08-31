@@ -8,13 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+@class RTCMapViewController;
+
 @interface RTCMainViewController : UIViewController 
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaContainerViewHeightConstraint;
+
+// Location
+
+@property (strong, nonatomic) RTCMapViewController *mapViewController;
 
 - (void)setSendButtonColor;
 
 - (void)setPhotoTakerControllerFullScreenMode;
 - (void)setPhotoTakerControllerShortScreenMode;
+
+- (void)closeOpenedMediaContainerIfNeededWithCompletion:(void (^)())completion;
 
 @end

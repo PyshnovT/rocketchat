@@ -9,17 +9,22 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class CLLocation;
+
 @protocol RTCMessageMedia <NSObject>
 
 @required
 
-@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) UIImage *thumbnailImage;
 
 @optional
 
-@property (nonatomic, strong) UIImage *thumbnailImage;
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) CLLocation *location;
 
+/*
 + (instancetype)itemWithImage:(UIImage *)image;
 - (instancetype)initWithImage:(UIImage *)image;
-
+*/
+ 
 @end

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+
+@class CLLocation;
 @class RTCMessageImageMediaItem;
 @class RTCMessageLocationMediaItem;
 
@@ -36,5 +38,10 @@ typedef enum {
 - (void)addImageFromGallery:(UIImage *)image;
 - (void)cleanImageGallery;
 - (NSArray *)imageGalleryItems;
+
+
+- (void)addLocationSnapshotWithImage:(UIImage *)snapshotImage andLocation:(CLLocation *)location;
+- (RTCMessageLocationMediaItem *)locationSnapshot;
+- (void)cleanLocationSnapshot;
 
 @end

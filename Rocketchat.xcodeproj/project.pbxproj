@@ -40,6 +40,9 @@
 		09AD40481B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40471B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m */; };
 		09AD404F1B88F76800ED55AA /* RTCMessageStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD404E1B88F76800ED55AA /* RTCMessageStore.m */; };
 		09AD40551B88FA1900ED55AA /* RTCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40541B88FA1900ED55AA /* RTCMessage.m */; };
+		09F794F31B94694C002C1A9E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09F794F21B94694C002C1A9E /* MapKit.framework */; };
+		09F794F61B9469F5002C1A9E /* RTCMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09F794F51B9469F5002C1A9E /* RTCMapViewController.m */; };
+		09F794F81B947306002C1A9E /* RTCMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09F794F71B947306002C1A9E /* RTCMapViewController.xib */; };
 		09FD78191B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD78181B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m */; };
 		09FD78211B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD78201B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m */; };
 		09FD78281B8A4AEA00F2AEDC /* RTCMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09FD78271B8A4AEA00F2AEDC /* RTCMessageCollectionViewCell.xib */; };
@@ -107,6 +110,10 @@
 		09AD404E1B88F76800ED55AA /* RTCMessageStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageStore.m; sourceTree = "<group>"; };
 		09AD40531B88FA1900ED55AA /* RTCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessage.h; sourceTree = "<group>"; };
 		09AD40541B88FA1900ED55AA /* RTCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessage.m; sourceTree = "<group>"; };
+		09F794F21B94694C002C1A9E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		09F794F41B9469F5002C1A9E /* RTCMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMapViewController.h; sourceTree = "<group>"; };
+		09F794F51B9469F5002C1A9E /* RTCMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMapViewController.m; sourceTree = "<group>"; };
+		09F794F71B947306002C1A9E /* RTCMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RTCMapViewController.xib; sourceTree = "<group>"; };
 		09FD78171B89C21B00F2AEDC /* RTCMessageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessageCollectionViewCell.h; sourceTree = "<group>"; };
 		09FD78181B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageCollectionViewCell.m; sourceTree = "<group>"; };
 		09FD781F1B8A154500F2AEDC /* RTCMessageCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessageCollectionViewLayout.h; sourceTree = "<group>"; };
@@ -129,6 +136,7 @@
 				09AD402C1B88C80A00ED55AA /* Security.framework in Frameworks */,
 				09AD402E1B88C80A00ED55AA /* SystemConfiguration.framework in Frameworks */,
 				09AD401A1B88C7B100ED55AA /* Parse.framework in Frameworks */,
+				09F794F31B94694C002C1A9E /* MapKit.framework in Frameworks */,
 				09AD40191B88C7B100ED55AA /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,6 +223,7 @@
 		09AD402F1B88C81A00ED55AA /* Frameworks and libs */ = {
 			isa = PBXGroup;
 			children = (
+				09F794F21B94694C002C1A9E /* MapKit.framework */,
 				09AD401B1B88C80A00ED55AA /* AudioToolbox.framework */,
 				09AD401C1B88C80A00ED55AA /* CFNetwork.framework */,
 				09AD401D1B88C80A00ED55AA /* CoreGraphics.framework */,
@@ -258,6 +267,9 @@
 				09A15CED1B909A0C000B663C /* RTCImagePickerViewController.xib */,
 				093415D31B930B45008999DA /* RTCPhotoTakerController.h */,
 				093415D41B930B45008999DA /* RTCPhotoTakerController.m */,
+				09F794F41B9469F5002C1A9E /* RTCMapViewController.h */,
+				09F794F51B9469F5002C1A9E /* RTCMapViewController.m */,
+				09F794F71B947306002C1A9E /* RTCMapViewController.xib */,
 				0964F6841B91E8140074AB33 /* UIImage+Scale.h */,
 				0964F6851B91E8140074AB33 /* UIImage+Scale.m */,
 			);
@@ -356,6 +368,9 @@
 							com.apple.InAppPurchase = {
 								enabled = 0;
 							};
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
 						};
 					};
 					09AD40061B88C72700ED55AA = {
@@ -396,6 +411,7 @@
 				09AD40021B88C72600ED55AA /* LaunchScreen.xib in Resources */,
 				09AD3FFF1B88C72600ED55AA /* Images.xcassets in Resources */,
 				09AD403B1B88D5BA00ED55AA /* RTCMainViewController.xib in Resources */,
+				09F794F81B947306002C1A9E /* RTCMapViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +437,7 @@
 				09AD40481B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m in Sources */,
 				09AD40451B88EA9900ED55AA /* RTCMessageimageMediaItem.m in Sources */,
 				09AD40551B88FA1900ED55AA /* RTCMessage.m in Sources */,
+				09F794F61B9469F5002C1A9E /* RTCMapViewController.m in Sources */,
 				096D71041B8F6C140026A2CE /* RTCCollectionViewController.m in Sources */,
 				090A28B61B8CBF5B00EBA5F6 /* RTCTextToolbarView.m in Sources */,
 				09AD403A1B88D5BA00ED55AA /* RTCMainViewController.m in Sources */,

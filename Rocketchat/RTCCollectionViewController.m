@@ -127,7 +127,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
     if (self.collectionViewLayout.collectionViewContentSize.height > self.collectionView.bounds.size.height) {
         
-        CGFloat yOffset = MAX(0, self.collectionViewLayout.collectionViewContentSize.height - self.collectionView.bounds.size.height - self.mvc.mediaContainerViewHeightConstraint.constant); ; // Тут надо быть повнимательней
+        CGFloat yOffset = MAX(0, self.collectionViewLayout.collectionViewContentSize.height - self.collectionView.bounds.size.height);
         
         [self.collectionView setContentOffset:CGPointMake(0, yOffset) animated:YES];
         
@@ -159,6 +159,12 @@ static NSString * const reuseIdentifier = @"Cell";
     } else if (message.media) {
      
         cell.imageView.image = message.media.thumbnailImage;//[message.media.image scaleImageToFitWidth:cell.bounds.size.width]; // тут надо постаивть thumbnail..
+        
+        if ([message.media respondsToSelector:@selector(location)]) {
+            if (message.media.location) {
+                cell.location = message.media.location;
+            }
+        }
     }
     
     cell.layer.shouldRasterize = YES;

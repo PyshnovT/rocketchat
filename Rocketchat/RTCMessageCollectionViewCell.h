@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class CLLocation;
+
 @interface RTCMessageCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, weak) IBOutlet UITextView *textLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 
 @property (nonatomic) BOOL isMediaCell;
+@property (nonatomic, strong) CLLocation *location;
 
 @end
