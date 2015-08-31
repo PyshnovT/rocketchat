@@ -24,6 +24,7 @@
 
 
 // Collection View
+
 @property (weak, nonatomic) IBOutlet UIView *controllerCollectionView;
 @property (strong, nonatomic) RTCCollectionViewController *collectionViewController;
 
@@ -57,6 +58,9 @@
 @property (strong, nonatomic) RTCPhotoTakerController *photoTakerController;
 
 
+// Keyboard
+
+@property (nonatomic) BOOL isKeyboardShown;
 
 @end
 
@@ -67,6 +71,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.isKeyboardShown = NO;
     self.currentMediaContainerConstraints = [NSMutableArray array];
     
     RTCMessageCollectionViewLayout *messageLayout = [[RTCMessageCollectionViewLayout alloc] init];
@@ -151,10 +156,13 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)keyboardWillBeShown:(NSNotification *)note {
+    self.isKeyboardShown = YES;
     [self updateConstraintsForKeyboardNotification:note];
 }
 
+
 - (void)keyboardWillBeHidden:(NSNotification *)note {
+    self.isKeyboardShown = YES;
     [self updateConstraintsForKeyboardNotification:note];
 }
 
@@ -168,17 +176,10 @@ static NSString * const reuseIdentifier = @"Cell";
     double animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     float keyboardHeight = CGRectGetMaxY(self.view.bounds) - CGRectGetMinY([self.view convertRect:[userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil]);
     
-    NSLog(@"%f", keyboardHeight);
-    
     [self.view layoutIfNeeded];
-    
-    
     
     [UIView animateWithDuration:animationDuration delay:0.0 options:(animationCurve << 16) animations:^{
         
-        if (self.mediaContainerViewHeightConstraint.constant > 0) {
-            // self.mediaContainerViewHeightConstraint.constant = 0;
-        }
         
         self.inputToolbarViewToMediaPickerToolbarViewConstraint.constant = MAX(keyboardHeight - self.mediaPickerToolbarViewHeightConstraint.constant - self.mediaContainerViewHeightConstraint.constant, 0);
         
@@ -344,53 +345,15 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.controllerCollectionView addConstraints:verticalConstraints];
 }
 
-- (void)setConstraintsForPhotoTakerController { // здесь стоит плейсхолдер
- //   if (![self.collectionViewController.view superview]) return;
-    
-  //  NSArray *mediaSubviews = self.mediaContainerView.subviews;
-    
 
-    
-    //subview.translatesAutoresizingMaskIntoConstraints = NO;
-    /*
-    NSDictionary *nameMap = @{@"photoTakerView": subview,
-                              };
-    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[photoTakerView]-0-|" options:0 metrics:nil views:nameMap];
-    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[photoTakerView]-0-|" options:0 metrics:nil views:nameMap];
-    
-    [self.photoTakerControllerConstraints arrayByAddingObjectsFromArray:horizontalConstraints];
-    [self.photoTakerControllerConstraints arrayByAddingObjectsFromArray:verticalConstraints];
-    
-    [self.mediaContainerView addConstraints:horizontalConstraints];
-    [self.mediaContainerView addConstraints:verticalConstraints];
-    */
-    /*
-    self.photoTakerController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    NSDictionary *nameMap = @{@"photoTakerView": self.photoTakerController.view,
-                              };
-    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[photoTakerView]-0-|" options:0 metrics:nil views:nameMap];
-    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[photoTakerView]-0-|" options:0 metrics:nil views:nameMap];
-    
-    [self.mediaContainerView addConstraints:horizontalConstraints];
-    [self.mediaContainerView addConstraints:verticalConstraints];
-    */
-}
-
-- (void)setPhotoTakerControllerFullScreenMode; { //  тут плейсхолдер
-    
-   // [self.mediaContainerView removeConstraints:self.photoTakerControllerConstraints];
+- (void)setPhotoTakerControllerFullScreenMode; {
     UIView *photoTakerView = self.photoTakerController.view;
-    
-   // [subview removeFromSuperview];
     
     photoTakerView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
 }
 
 - (void)setPhotoTakerControllerShortScreenMode; {
     UIView *photoTakerView = self.photoTakerController.view;
-    
-    // [subview removeFromSuperview];
     
     photoTakerView.frame = CGRectMake(0, self.view.bounds.size.height - self.view.bounds.size.width, self.view.bounds.size.width, self.view.bounds.size.width);
 }
@@ -521,6 +484,7 @@ static NSString * const reuseIdentifier = @"Cell";
                 [self displayViewController:self.mapViewController];
                 
             }
+            
         };
         
         [self closeOpenedMediaContainerIfNeededWithCompletion:onCompletion];
@@ -538,7 +502,8 @@ static NSString * const reuseIdentifier = @"Cell";
     MediaType currentMediaOpened = [RTCMediaStore sharedStore].currentMediaType;
     
     [RTCMediaStore sharedStore].currentMediaType = MediaTypeNone;
-    
+
+
     
     if (currentMediaOpened == MediaTypeNone) {
         
@@ -556,9 +521,9 @@ static NSString * const reuseIdentifier = @"Cell";
         [self closeMapViewControllerWithCompletion:completion];
     }
     
-
-    
-
+    if (self.isKeyboardShown) {
+        [self.messageTextField resignFirstResponder];
+    }
 }
 
 - (void)cleanMediaButtons {
@@ -584,6 +549,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.imagePickerViewController.view removeFromSuperview];
     
     [UIView animateWithDuration:0.3 animations:^{
+      //    [self updateConstraintsForKeyboardHeight];
         self.mediaContainerViewHeightConstraint.constant = 0;
         [self.view layoutIfNeeded];
         
@@ -601,6 +567,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [self.view layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
+      //    [self updateConstraintsForKeyboardHeight];
         self.mediaContainerViewHeightConstraint.constant = 0;
 
         self.photoTakerController.view.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.width);
