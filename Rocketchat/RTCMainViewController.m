@@ -622,8 +622,9 @@ static NSString * const reuseIdentifier = @"Cell";
     
     if (locationItem) {
         [self.collectionViewController addMessageWithDate:[NSDate date] media:locationItem];
+        [[RTCMediaStore sharedStore] cleanLocationSnapshot];
     }
-    
+
     
     self.mapViewController = nil;
     

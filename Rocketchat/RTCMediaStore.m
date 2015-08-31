@@ -89,11 +89,9 @@ static NSString * const locationSnapshotIdentifier = @"locationSnapshotMediaItem
     
     RTCMessageLocationMediaItem *locationItem = [RTCMessageLocationMediaItem itemWithImage:snapshotImage andLocation:location];
     
-    NSLog(@"Adding %@", locationItem);
     
     [self.privateMediaData[locationSnapshotIdentifier] addObject:locationItem];
     
-    NSLog(@"Checking %@", self.privateMediaData[locationSnapshotIdentifier]);
 }
 
 @end

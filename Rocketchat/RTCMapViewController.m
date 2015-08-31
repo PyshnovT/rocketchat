@@ -26,6 +26,7 @@
 @property (strong, nonatomic) UIImage *snapshot;
 
 @property (strong, nonatomic) NSTimer *t;
+@property (strong, nonatomic) MKMapSnapshotter *snapshotter;
 
 @end
 
@@ -76,9 +77,9 @@
 - (void)setupMapView {
     self.mapView.delegate = self;
     
-    self.mapView.zoomEnabled = NO;
-    self.mapView.scrollEnabled = NO;
-    self.mapView.userInteractionEnabled = NO;
+    //self.mapView.zoomEnabled = NO;
+    //self.mapView.scrollEnabled = NO;
+    //self.mapView.userInteractionEnabled = NO;
     
     self.isGotLocation = NO;
     self.didEndRenderingMap = NO;
@@ -90,16 +91,12 @@
 #pragma mark - Bar Buttons Actions
 
 - (void)closeButtonPressed:(id)sender {
-
     [self closeItself];
 }
 
 - (void)doneButtonPressed:(id)sender {
     
-    [self takeSnapshotWithCompletion:^{
-        [self closeItself];
-    }];
-    
+    [self addSnapshot];
 
 }
 
@@ -145,7 +142,7 @@
 }
 
 #pragma mark - Map View Delegate 
-
+/*
 - (void)mapViewWillStartRenderingMap:(MKMapView *)mapView {
     NSLog(@"Will start");
     self.didEndRenderingMap = NO;
@@ -155,149 +152,41 @@
         NSLog(@"did finish");
     self.didEndRenderingMap = YES;
 }
-
+*/
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
         NSLog(@"Got location");
     self.didShowLocation = YES;
 }
 
 #pragma mark - Snapshot
-/*
-- (UIImage *)snapshotImage {
 
-    //UIGraphicsBeginImageContextWithOptions(wholeRect.size, YES, [UIScreen mainScreen].scale);
-    UIGraphicsBeginImageContextWithOptions(self.mapView.frame.size, NO, 0.0);
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    [[UIColor blackColor] set];
-    CGContextFillRect(ctx, CGRectMake(0, 100, self.view.bounds.size.width, self.view.bounds.size.width));
-    [self.view.layer renderInContext:ctx];
-    
-    UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-   // UIGraphicsEndImageContext();
-    
-    return image;
-}
 
 - (void)takeSnapshotOnTimer:(NSTimer *)t {
     NSLog(@"timer!");
-    if (self.didEndRenderingMap && self.didShowLocation) {
-        self.snapshot = [self snapshotImage];
-        
-        self.t = nil;
-        [t invalidate];
-        [self takeSnapshotWithCompletion:^{
-            [self closeItself];
-        }];
-    }
-}
+   // if (self.didShowLocation) {
 
-- (void)takeSnapshotWithCompletion:(void (^)())completion {
-
-    if (self.snapshot) {
-        [[RTCMediaStore sharedStore] addLocationSnapshotWithImage:self.snapshot andLocation:self.locationManager.location];
+        [self snapshotImage];
         
-        if (completion) {
-            completion();
-        }
-    } else {
-        if (!self.t) {
-            self.t = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(takeSnapshotOnTimer:) userInfo:nil repeats:YES];
-        }
-    }
-    
-}
- */
-/*
-- (void)takeSnapshotWithCompletion:(void (^)())completion {
-    [self moveMapToLocation:self.locationManager.location];
-    
-    MKMapSnapshotOptions *options = [[MKMapSnapshotOptions alloc] init];
-    options.region = self.mapView.region;
-    options.scale = [UIScreen mainScreen].scale;
-    options.size = CGSizeMake(280, 280); // такс такс
-    
-    MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
-    
-    [snapshotter startWithCompletionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
-        
-        UIImage *image = snapshot.image;
-        
-        CGRect finalImageRect = CGRectMake(0, 0, image.size.width, image.size.height);
-        
-        // Get a standard annotation view pin. Clearly, Apple assumes that we'll only want to draw standard annotation pins!
-        
-        MKAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:nil reuseIdentifier:@""];
-        UIImage *pinImage = pin.image;
-        
-        // ok, let's start to create our final image
-        
-        UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
-        
-        // first, draw the image from the snapshotter
-        
-        [image drawAtPoint:CGPointMake(0, 0)];
-        
-        // now, let's iterate through the annotations and draw them, too
-        
-        for (id<MKAnnotation>annotation in self.mapView.annotations)
-        {
-            CGPoint point = [snapshot pointForCoordinate:annotation.coordinate];
-            if (CGRectContainsPoint(finalImageRect, point)) // this is too conservative, but you get the idea
-            {
-                CGPoint pinCenterOffset = pin.centerOffset;
-                point.x -= pin.bounds.size.width / 2.0;
-                point.y -= pin.bounds.size.height / 2.0;
-                point.x += pinCenterOffset.x;
-                point.y += pinCenterOffset.y;
-                
-                [pinImage drawAtPoint:point];
-            }
-        }
-        
-        // grab the final image
-        
-        UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        [[RTCMediaStore sharedStore] addLocationSnapshotWithImage:finalImage andLocation:self.locationManager.location];
-        
-        if (completion) {
-            completion();
-        }
-
-    }];
-    
- 
-    
-}
-*/
-
-- (void)takeSnapshotOnTimer:(NSTimer *)t {
-    NSLog(@"timer!");
-    if (self.didEndRenderingMap && self.didShowLocation) {
-
-        [self snapshotImageWithCompletion:^{
-            self.t = nil;
+        if (!self.snapshotter.loading) {
+            NSLog(@"Больше не грузит!");
             [t invalidate];
-            [self takeSnapshotWithCompletion:^{
-                [self closeItself];
-            }];
-        }];
+       //     self.t = nil;
+            [self addSnapshot];
+        }
+       
 
         
-    }
+   // }
 }
 
-- (void)takeSnapshotWithCompletion:(void (^)())completion {
+- (void)addSnapshot {
     
     if (self.snapshot) {
+        NSLog(@"adding snapshot from add Snapshot");
         [[RTCMediaStore sharedStore] addLocationSnapshotWithImage:self.snapshot andLocation:self.locationManager.location];
         
-        if (completion) {
-            completion();
-        }
+        [self closeItself];
+        
     } else {
         if (!self.t) {
             self.t = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(takeSnapshotOnTimer:) userInfo:nil repeats:YES];
@@ -306,8 +195,9 @@
     
 }
 
-- (void)snapshotImageWithCompletion:(void (^)())completion {
-  //  [self moveMapToLocation:self.locationManager.location];
+- (void)snapshotImage {
+    if (self.snapshotter) return;
+    
     
     MKMapSnapshotOptions *options = [[MKMapSnapshotOptions alloc] init];
     options.region = self.mapView.region;
@@ -315,6 +205,8 @@
     options.size = CGSizeMake(280, 280); // такс такс
     
     MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
+    
+    self.snapshotter = snapshotter;
     
     [snapshotter startWithCompletionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
         
@@ -347,16 +239,15 @@
 
         
         self.snapshot = finalImage;
-        [snapshotter cancel];
-        if (completion) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion();
-                
-            });
 
-        }
+        [snapshotter cancel];
+
+
+        
         
     }];
+    
+    //[snapshotter cancel];
 
     
 }
