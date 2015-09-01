@@ -7,11 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
+@class CLLocation;
 @class RTCMainViewController;
 
 @interface RTCMapViewController : UIViewController
 
 @property (weak, nonatomic) RTCMainViewController *mvc;
+@property (strong, nonatomic) CLLocation *sentLocation;
+
+- (instancetype)initForSendingLocation:(BOOL)isForSending;
 
 @end

@@ -20,6 +20,8 @@
 
 #import "UIImage+Scale.h"
 
+#import "RTCMapViewController.h"
+
 @interface RTCCollectionViewController ()
 
 @end
@@ -174,6 +176,23 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 #pragma mark - <UICollectionViewDelegate>
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    RTCMessageCollectionViewCell *cell = (RTCMessageCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
+    if (cell.isMediaCell) {
+        if (cell.location) { // локация
+            RTCMapViewController *mapViewController = [[RTCMapViewController alloc] initForSendingLocation:NO];
+            mapViewController.sentLocation = cell.location;
+            
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:mapViewController];
+            
+            [self presentViewController:navController animated:YES completion:nil];
+        } else { // просто картиночка
+            
+        }
+    }
+}
 
 /*
 // Uncomment this method to specify if the specified item should be highlighted during tracking

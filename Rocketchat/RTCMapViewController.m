@@ -21,46 +21,65 @@
 
 @property (nonatomic) BOOL isGotLocation;
 @property (nonatomic) BOOL didShowLocation;
-@property (nonatomic) BOOL didEndRenderingMap;
 
 @property (strong, nonatomic) UIImage *snapshot;
 
 @property (strong, nonatomic) NSTimer *t;
 @property (strong, nonatomic) MKMapSnapshotter *snapshotter;
 
+@property (nonatomic) BOOL isForSendingLocation;
+
 @end
 
 @implementation RTCMapViewController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    @throw [NSException exceptionWithName:@"Wrong initializer" reason:@"Use initForSendingLocation" userInfo:nil];
+}
+
+- (instancetype)init {
+    @throw [NSException exceptionWithName:@"Wrong initializer" reason:@"Use initForSendingLocation" userInfo:nil];
+}
+
+- (instancetype)initForSendingLocation:(BOOL)isForSending {
+    self = [super initWithNibName:nil bundle:nil];
     if (self) {
+        self.isForSendingLocation = isForSending;
         
-        [self setupNavigation];
+        [self setupNavigationForSending:isForSending];
         
-        [self setupLocation];
-        
+        if (isForSending) {
+            [self setupLocation];
+        }
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
-    [self setupMapView];
-   //
+    if (self.isForSendingLocation) {
+        [self setupMapView];
+    } else {
+        if (self.sentLocation) {
+            [self moveMapToLocation:self.sentLocation];
+            [self addSentLocationAnnotation];
+        }
+    }
 }
 
 - (void)dealloc {
     NSLog(@"Dealloc");
 }
 
-- (void)setupNavigation {
+- (void)setupNavigationForSending:(BOOL)isForSending {
     self.navigationItem.title = @"Карта";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(closeButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    if (isForSending) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
 }
 
 - (void)setupLocation {
@@ -77,12 +96,7 @@
 - (void)setupMapView {
     self.mapView.delegate = self;
     
-    //self.mapView.zoomEnabled = NO;
-    //self.mapView.scrollEnabled = NO;
-    //self.mapView.userInteractionEnabled = NO;
-    
     self.isGotLocation = NO;
-    self.didEndRenderingMap = NO;
     self.didShowLocation = NO;
     
     self.mapView.showsUserLocation = YES;
@@ -103,12 +117,27 @@
 #pragma mark - Close 
 
 - (void)closeItself {
-    [self.t invalidate];
-    [self.locationManager stopUpdatingLocation];
+    if (self.isForSendingLocation) {
+        [self.t invalidate];
+        [self.locationManager stopUpdatingLocation];
+        
+        [self.mvc dismissViewControllerAnimated:YES completion:^{
+            [self.mvc closeOpenedMediaContainerIfNeededWithCompletion:nil];
+        }];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+#pragma mark - Adding Pin Location
+
+- (void)addSentLocationAnnotation {
     
-    [self.mvc dismissViewControllerAnimated:YES completion:^{
-        [self.mvc closeOpenedMediaContainerIfNeededWithCompletion:nil];
-    }];
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    [annotation setCoordinate:self.sentLocation.coordinate];
+    [annotation setTitle:@"Я был тут"];
+    [self.mapView addAnnotation:annotation];
+    
 }
 
 #pragma mark - Location Manager
@@ -142,17 +171,7 @@
 }
 
 #pragma mark - Map View Delegate 
-/*
-- (void)mapViewWillStartRenderingMap:(MKMapView *)mapView {
-    NSLog(@"Will start");
-    self.didEndRenderingMap = NO;
-}
 
-- (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
-        NSLog(@"did finish");
-    self.didEndRenderingMap = YES;
-}
-*/
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
         NSLog(@"Got location");
     self.didShowLocation = YES;
@@ -198,7 +217,7 @@
 - (void)snapshotImage {
     if (self.snapshotter) return;
     
-    
+    [self moveMapToLocation:self.locationManager.location];
     MKMapSnapshotOptions *options = [[MKMapSnapshotOptions alloc] init];
     options.region = self.mapView.region;
     options.scale = [UIScreen mainScreen].scale;
@@ -246,9 +265,6 @@
         
         
     }];
-    
-    //[snapshotter cancel];
-
     
 }
 
