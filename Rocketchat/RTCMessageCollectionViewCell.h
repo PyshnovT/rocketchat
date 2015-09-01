@@ -13,6 +13,7 @@
 
 @interface RTCMessageCollectionViewCell : UICollectionViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *ticketView;
 @property (nonatomic, weak) IBOutlet UITextView *textLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIView *bubbleView;

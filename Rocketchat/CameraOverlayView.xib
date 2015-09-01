@@ -6,7 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTCPhotoTakerController">
             <connections>
-                <outlet property="overlayView" destination="gyX-fJ-hJt" id="cps-Ho-gqf"/>
+                <outlet property="overlayView" destination="gyX-fJ-hJt" id="kid-OF-bqa"/>
+                <outlet property="screenModeButton" destination="G6Z-zz-vkC" id="p1m-wl-Ked"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -14,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="326" height="71"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c7i-Le-AM3">
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c7i-Le-AM3" customClass="RTCSendPhotoButton">
                     <rect key="frame" x="136" y="8" width="55" height="55"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="55" id="RxG-E9-xnD"/>
@@ -28,7 +29,7 @@
                         <action selector="takePhoto:" destination="-1" eventType="touchUpInside" id="1JL-m0-z5I"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffo-Al-xhV">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffo-Al-xhV" userLabel="Switch Camera">
                     <rect key="frame" x="279" y="24" width="29" height="24"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="29" id="27E-d4-1vr"/>
@@ -41,7 +42,7 @@
                         <action selector="switchCamera:" destination="-1" eventType="touchUpInside" id="M9g-Pf-ijp"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G6Z-zz-vkC">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G6Z-zz-vkC" userLabel="Screen Mode">
                     <rect key="frame" x="18" y="24" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="24" id="qWD-KW-Grg"/>

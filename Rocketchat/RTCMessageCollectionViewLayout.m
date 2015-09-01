@@ -37,11 +37,13 @@ static NSInteger const tailHeight = 0;//8;
 }
 
 - (void)setupLayout {
+    self.ticketOffset = 0;
+    
     self.cellBottomY = [NSMutableDictionary dictionary];
     
     self.collectionViewInsets = UIEdgeInsetsMake(10, 0, 10, 8);
     self.messageBubbleInsets = UIEdgeInsetsMake(15, 15, 15, 15);
-    self.messageSize = CGSizeMake(240, 240); // Второй параметр имеет значение только для медиа-сообщений
+    self.messageSize = CGSizeMake(240 + self.ticketOffset, 240); // Второй параметр имеет значение только для медиа-сообщений
     self.interMessageSpacingY = 8;
     self.messageFont = [UIFont fontWithName:@"PFAgoraSansPro-Regular" size:16]; 
 }
@@ -142,7 +144,7 @@ static NSInteger const tailHeight = 0;//8;
     CGFloat height = 0;
     
     if (message.media) {
-        CGFloat imageHeight = [message.media.image imageSizeToFitWidth:self.messageSize.width].height;
+        CGFloat imageHeight = [message.media.image imageSizeToFitWidth:(self.messageSize.width - self.ticketOffset)].height;
         
         height = imageHeight + tailHeight;
     } else if (message.text) {

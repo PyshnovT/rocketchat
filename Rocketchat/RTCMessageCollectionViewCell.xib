@@ -12,15 +12,31 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="IPW-Tq-VLE" customClass="RTCMessageCollectionViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="59"/>
+            <rect key="frame" x="5" y="0.0" width="240" height="51"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="240" height="59"/>
+                <rect key="frame" x="0.0" y="0.0" width="240" height="51"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ex-fo-jfE" userLabel="BubbleView">
                         <rect key="frame" x="0.0" y="0.0" width="240" height="51"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ticket" translatesAutoresizingMaskIntoConstraints="NO" id="gB8-fe-BsE" userLabel="Ticker View">
+                                <rect key="frame" x="218" y="29" width="14" height="14"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="C9H-n5-ooi"/>
+                                    <constraint firstAttribute="height" constant="14" id="gi2-m8-5bW"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.zPosition">
+                                        <integer key="value" value="1000"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gI7-hj-Ki1" userLabel="Text">
                                 <rect key="frame" x="15" y="15" width="210" height="21"/>
                                 <constraints>
@@ -37,12 +53,14 @@
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="Lof-cA-RUI" secondAttribute="bottom" id="44Y-ag-v7S"/>
+                            <constraint firstAttribute="bottom" secondItem="gB8-fe-BsE" secondAttribute="bottom" constant="8" id="78W-LY-wsw"/>
                             <constraint firstItem="gI7-hj-Ki1" firstAttribute="leading" secondItem="2ex-fo-jfE" secondAttribute="leading" constant="15" id="84S-sa-7nq"/>
                             <constraint firstAttribute="trailing" secondItem="Lof-cA-RUI" secondAttribute="trailing" id="F9l-M9-h0W"/>
                             <constraint firstItem="Lof-cA-RUI" firstAttribute="leading" secondItem="2ex-fo-jfE" secondAttribute="leading" id="NUB-ox-E1g"/>
                             <constraint firstItem="gI7-hj-Ki1" firstAttribute="top" secondItem="2ex-fo-jfE" secondAttribute="top" constant="15" id="Wkp-aD-jqn"/>
                             <constraint firstAttribute="bottom" secondItem="gI7-hj-Ki1" secondAttribute="bottom" constant="15" id="ayZ-7n-Zgp"/>
                             <constraint firstAttribute="width" constant="240" id="fiE-AS-aiz"/>
+                            <constraint firstAttribute="trailing" secondItem="gB8-fe-BsE" secondAttribute="trailing" constant="8" id="iQo-rw-5AM"/>
                             <constraint firstAttribute="trailing" secondItem="gI7-hj-Ki1" secondAttribute="trailing" constant="15" id="nm7-cL-dPU"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="42" id="xh2-Zl-1vF"/>
                             <constraint firstItem="Lof-cA-RUI" firstAttribute="top" secondItem="2ex-fo-jfE" secondAttribute="top" id="xsN-Pq-9Xc"/>
@@ -64,16 +82,18 @@
                 <constraint firstItem="2ex-fo-jfE" firstAttribute="top" secondItem="IPW-Tq-VLE" secondAttribute="top" id="hHw-II-qYM"/>
                 <constraint firstAttribute="trailing" secondItem="2ex-fo-jfE" secondAttribute="trailing" id="ppP-C0-7fZ"/>
             </constraints>
-            <size key="customSize" width="244" height="59"/>
+            <size key="customSize" width="249" height="51"/>
             <connections>
                 <outlet property="bubbleView" destination="2ex-fo-jfE" id="HiM-hi-OZo"/>
                 <outlet property="imageView" destination="Lof-cA-RUI" id="9w1-Di-Z8k"/>
                 <outlet property="textLabel" destination="gI7-hj-Ki1" id="uUZ-lQ-5Ar"/>
+                <outlet property="ticketView" destination="gB8-fe-BsE" id="rhl-dE-8dB"/>
             </connections>
-            <point key="canvasLocation" x="373" y="93.5"/>
+            <point key="canvasLocation" x="370" y="89.5"/>
         </collectionViewCell>
     </objects>
     <resources>
         <image name="bubble_tail" width="44" height="43"/>
+        <image name="ticket" width="50" height="50"/>
     </resources>
 </document>

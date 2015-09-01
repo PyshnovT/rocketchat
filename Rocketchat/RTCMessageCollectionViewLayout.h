@@ -11,7 +11,9 @@
 
 @interface RTCMessageCollectionViewLayout : UICollectionViewLayout
 
-@property (nonatomic, strong) NSMutableDictionary *cellBottomY; 
+@property (nonatomic, strong) NSMutableDictionary *cellBottomY;
+
+@property (nonatomic) CGFloat ticketOffset;
 
 @property (nonatomic) UIEdgeInsets collectionViewInsets;
 @property (nonatomic) UIEdgeInsets messageBubbleInsets;

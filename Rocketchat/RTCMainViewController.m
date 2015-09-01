@@ -328,7 +328,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
         self.photoTakerController.mvc = self;
         
-       // [self setupPhotoTakerController];
+       //[self setupPhotoTakerController];
         
         [self.view layoutIfNeeded];
         
@@ -536,6 +536,8 @@ static NSString * const reuseIdentifier = @"Cell";
                     self.imagePickerViewController = [[RTCImagePickerViewController alloc] init];
                 }
                 
+                
+                
                 [self displayViewController:self.imagePickerViewController];
                 
             } else if (sender == self.locationMediaButton) {
@@ -633,6 +635,7 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         [self.photoTakerController.view removeFromSuperview];
+        [self.photoTakerController removeFromParentViewController];
         self.photoTakerController = nil;
         
         
@@ -812,7 +815,16 @@ static NSString * const reuseIdentifier = @"Cell";
     CGRect rectInCollectionView = [self.collectionViewController.collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
     CGRect rectInSuperview = [self.collectionViewController.collectionView convertRect:rectInCollectionView toView:self.view];
     
-    return rectInSuperview;
+    
+    CGFloat ticketOffset = ((RTCMessageCollectionViewLayout *)self.collectionViewController.collectionViewLayout).ticketOffset;
+    
+    CGRect bubbleRect = CGRectMake(rectInSuperview.origin.x + ticketOffset, rectInSuperview.origin.y, rectInSuperview.size.width - ticketOffset, rectInSuperview.size.height);
+    
+    NSLog(@"superView x %f,y %f,width %f,height %f", rectInSuperview.origin.x, rectInSuperview.origin.y, rectInSuperview.size.width, rectInSuperview.size.height);
+    NSLog(@"bubbleRect x %f,y %f,width %f,height %f", bubbleRect.origin.x, bubbleRect.origin.y, bubbleRect.size.width, bubbleRect.size.height);
+    
+    
+    return bubbleRect;
 }
 
 @end

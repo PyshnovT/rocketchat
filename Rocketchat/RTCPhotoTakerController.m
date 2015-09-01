@@ -14,6 +14,7 @@
 @interface RTCPhotoTakerController ()
 
 @property (strong, nonatomic) IBOutlet UIView *overlayView;
+@property (weak, nonatomic) IBOutlet UIButton *screenModeButton;
 
 @end
 
@@ -27,6 +28,18 @@
         [self setupPhotoTakerController];
     }
     return self;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [self setupPhotoTakerController];
+    }
+    return self;
+}
+
+- (void)dealloc {
+    NSLog(@"Dealloc");
 }
 
 #pragma mark - <UIImagePickerControllerDelegate>
@@ -54,18 +67,34 @@
 
 - (void)setupPhotoTakerController {
     if ([RTCPhotoTakerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+
         self.sourceType = UIImagePickerControllerSourceTypeCamera;
         self.showsCameraControls = NO;
         
-        self.overlayView.frame = CGRectMake(0, self.view.bounds.size.width - self.overlayView.bounds.size.height, self.view.bounds.size.width, self.overlayView.bounds.size.height);
+        
+
+        [[NSBundle mainBundle] loadNibNamed:@"CameraOverlayView" owner:self options:nil];
+        [self setupOverlayViewFrame];
         self.cameraOverlayView = self.overlayView;
-        self.overlayView = nil;
+        
+        [self setupTransformForHeight:self.view.bounds.size.width];
     } else {
         self.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
     
     self.delegate = self;
     
+}
+
+- (void)setupTransformForHeight:(CGFloat)height {
+    CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, (568 - 426) / 2.0); //This slots the preview exactly in the middle of the screen by moving it down 71 points
+    self.cameraViewTransform = translate;
+    
+    CGFloat scaleFactor = 1.333333;
+    CGAffineTransform scale = CGAffineTransformScale(translate, scaleFactor, scaleFactor);
+    self.cameraViewTransform = scale;
+    
+    NSLog(@"set transform");
 }
 
 - (void)setupOverlayViewFrame {
@@ -76,10 +105,14 @@
     height = self.overlayView.bounds.size.height;
     
     if (self.screenMode == PhotoScreenModeFull) {
-        y = self.view.bounds.size.width - self.overlayView.bounds.size.height;
+        NSLog(@"WIDE");
+        y = self.view.bounds.size.height - self.overlayView.bounds.size.height;
+        NSLog(@"%f", y);
         
-        self.overlayView.frame = CGRectMake(0, y, width, height);
+        self.overlayView.frame = CGRectMake(x, y, width, height);
+        NSLog(@"%@", self.overlayView);
     } else {
+        NSLog(@"Short");
         y = self.view.bounds.size.width - self.overlayView.bounds.size.height;
         
         self.overlayView.frame = CGRectMake(x, y, width, height);
@@ -93,17 +126,26 @@
 - (IBAction)changePhotoTakerScreenMode:(id)sender {
     [self setupOverlayViewFrame];
     
+    NSLog(@"sender %@", sender);
     if (self.screenMode == PhotoScreenModeShort) {
         
-        ((UIButton *)sender).imageView.image = [UIImage imageNamed:@"fullscreen_close"];
+        [self setupTransformForHeight:self.view.bounds.size.height];
+        
+        [self.screenModeButton setImage:[UIImage imageNamed:@"fullscreen_close"] forState:UIControlStateNormal];
+
         [self.mvc setPhotoTakerControllerFullScreenMode];
         
     } else if (self.screenMode == PhotoScreenModeFull) {
         
-        ((UIButton *)sender).imageView.image = [UIImage imageNamed:@"camera_interface_fullscreen"];
+        [self setupTransformForHeight:self.view.bounds.size.width];
+        
+        [self.screenModeButton setImage:[UIImage imageNamed:@"camera_interface_fullscreen"] forState:UIControlStateNormal];
         [self.mvc setPhotoTakerControllerShortScreenMode];
         
     }
+    
+    [self setupOverlayViewFrame];
+    //[self setupTransform];
 }
 
 - (IBAction)switchCamera:(id)sender {

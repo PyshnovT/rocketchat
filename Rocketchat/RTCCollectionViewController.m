@@ -163,7 +163,7 @@ static NSString * const reuseIdentifier = @"Cell";
     } else if (message.media) {
      
         cell.bubbleView.backgroundColor = [UIColor clearColor];
-        
+        cell.ticketView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.1];
         cell.imageView.image = message.media.thumbnailImage;
         
         if ([message.media respondsToSelector:@selector(location)]) {
@@ -194,7 +194,6 @@ static NSString * const reuseIdentifier = @"Cell";
             
             [self presentViewController:navController animated:YES completion:nil];
         } else { // просто картиночка
-
             [self.mvc presentImageLookerControllerForCellAtIndexPath:indexPath];
         }
     }
