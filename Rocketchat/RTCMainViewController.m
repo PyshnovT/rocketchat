@@ -699,7 +699,6 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - Image Viewing
 
 - (void)presentImageLookerControllerForCellAtIndexPath:(NSIndexPath *)indexPath {
-  //  self.imageViewPlaceholderCellRect = fromRect;
     
     CGRect fromRect = [self frameForCellAtIndexPath:indexPath];
     
@@ -714,6 +713,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:fromRect];
     imageView.image = fullImage;
+    imageView.clipsToBounds = YES;
     
     self.imageViewPlaceholder = imageView;
     
@@ -756,11 +756,22 @@ static NSString * const reuseIdentifier = @"Cell";
     } else if ((gr.state == UIGestureRecognizerStateEnded) || (gr.state == UIGestureRecognizerStateEnded)) {
         
         if ((direction == ImageViewPlaceholderPanDirectionBottom) || (direction == ImageViewPlaceholderPanDirectionTop) ) {
+            
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"cornerRadius"];
+            animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+            animation.fromValue = [NSNumber numberWithFloat:0.0];
+            animation.toValue = [NSNumber numberWithFloat:20.0];
+            animation.duration = 0.2;
+            
+            [self.imageViewPlaceholder.layer addAnimation:animation forKey:@"cornerRadius"];
+            
             [UIView animateWithDuration:0.2 animations:^{
                 
                 self.imageViewPlaceholder.frame = [self frameForCellAtIndexPath:self.indexPathForViewingCell];
             } completion:^(BOOL finished) {
-               // cell.imageView.hidden = NO;
+                
+                self.imageLookerController = nil; // ну чтоб уж точно
+                
                 RTCMessageCollectionViewCell *cell = (RTCMessageCollectionViewCell *)[self.collectionViewController.collectionView cellForItemAtIndexPath:self.indexPathForViewingCell];
                 self.indexPathForViewingCell = nil;
                 cell.imageView.hidden = NO;
