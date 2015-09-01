@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class RTCMainViewController;
+
 @interface RTCImageLookerViewController : UIViewController
 
 @property (nonatomic) BOOL isSaving;
+
+@property (nonatomic, weak) RTCMainViewController *mvc;
 
 - (instancetype)initWithImage:(UIImage *)image;
 

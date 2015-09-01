@@ -42,6 +42,7 @@
 		09AD40481B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40471B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m */; };
 		09AD404F1B88F76800ED55AA /* RTCMessageStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD404E1B88F76800ED55AA /* RTCMessageStore.m */; };
 		09AD40551B88FA1900ED55AA /* RTCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40541B88FA1900ED55AA /* RTCMessage.m */; };
+		09C65D641B96567400C79B97 /* SavingImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09C65D631B96567400C79B97 /* SavingImageView.xib */; };
 		09F6905F1B94EC2E0068DF66 /* CameraOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09F6905E1B94EC2E0068DF66 /* CameraOverlayView.xib */; };
 		09F690621B94F7930068DF66 /* RTCSendPhotoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 09F690611B94F7930068DF66 /* RTCSendPhotoButton.m */; };
 		09F794F31B94694C002C1A9E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09F794F21B94694C002C1A9E /* MapKit.framework */; };
@@ -117,6 +118,7 @@
 		09AD404E1B88F76800ED55AA /* RTCMessageStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageStore.m; sourceTree = "<group>"; };
 		09AD40531B88FA1900ED55AA /* RTCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessage.h; sourceTree = "<group>"; };
 		09AD40541B88FA1900ED55AA /* RTCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessage.m; sourceTree = "<group>"; };
+		09C65D631B96567400C79B97 /* SavingImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SavingImageView.xib; sourceTree = "<group>"; };
 		09F6905E1B94EC2E0068DF66 /* CameraOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraOverlayView.xib; sourceTree = "<group>"; };
 		09F690601B94F7930068DF66 /* RTCSendPhotoButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCSendPhotoButton.h; sourceTree = "<group>"; };
 		09F690611B94F7930068DF66 /* RTCSendPhotoButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCSendPhotoButton.m; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 				093415D11B92F983008999DA /* RTCStatusBarView.m */,
 				090A28B41B8CBF5B00EBA5F6 /* RTCTextToolbarView.h */,
 				090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */,
+				09C65D631B96567400C79B97 /* SavingImageView.xib */,
 			);
 			name = Subviews;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 				09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */,
 				09FD78281B8A4AEA00F2AEDC /* RTCMessageCollectionViewCell.xib in Resources */,
 				09A15CEF1B909A0C000B663C /* RTCImagePickerViewController.xib in Resources */,
+				09C65D641B96567400C79B97 /* SavingImageView.xib in Resources */,
 				097526651B95CB7D009EAD0B /* RTCImageLookerViewController.xib in Resources */,
 				09AD40021B88C72600ED55AA /* LaunchScreen.xib in Resources */,
 				09AD3FFF1B88C72600ED55AA /* Images.xcassets in Resources */,

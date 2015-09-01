@@ -8,6 +8,7 @@
 
 #import "RTCImageLookerViewController.h"
 #import "UIImage+Scale.h"
+#import "RTCMainViewController.h"
 
 @interface RTCImageLookerViewController () <UIScrollViewDelegate>
 
@@ -47,23 +48,13 @@
     didFinishSavingWithError: (NSError *) error
                  contextInfo: (void *) contextInfo {
     self.isSaving = NO;
-    
-    NSLog(@"Сохранилось");
 
     if (error) {
-        self.savingLabel.text = @"Ошипка..";
+        [self.mvc showSavingImageViewAfterSuccess:NO];
     } else {
-        self.savingLabel.text = @"Сохранилось!";
+        [self.mvc showSavingImageViewAfterSuccess:YES];
     }
     
-    self.savingLabel.alpha = 0.0;
-    self.savingLabel.hidden = NO;
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        self.savingLabel.alpha = 1.0;
-    } completion:^(BOOL finished) {
-        
-    }];
 }
 
 /*

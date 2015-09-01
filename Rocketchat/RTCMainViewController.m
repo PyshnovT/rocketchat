@@ -88,6 +88,11 @@ typedef enum {
 
 @property (nonatomic) BOOL isKeyboardShown;
 
+// Saving View
+
+@property (strong, nonatomic) IBOutlet UIView *savingImageView;
+@property (weak, nonatomic) IBOutlet UILabel *savingImageLabel;
+
 @end
 
 @implementation RTCMainViewController
@@ -353,6 +358,8 @@ static NSString * const reuseIdentifier = @"Cell";
         [self presentViewController:navController animated:YES completion:nil];
         
     } else if (controller == self.imageLookerController) {
+        self.imageLookerController.mvc = self;
+        
         
         self.imageLookerController.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
         self.imageLookerController.view.alpha = 0.0;
@@ -379,9 +386,9 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGRect)imageViewPlaceholderFrameForWidth:(CGFloat)width {
-    CGSize newImageViewSize = [self.imageViewPlaceholder.image imageSizeToFitWidth:width];
+    CGSize newImageViewSize = [self.imageViewPlaceholder.image imageSizeToFitSize:self.view.bounds.size];//[self.imageViewPlaceholder.image imageSizeToFitWidth:width];
     
-    CGFloat x = 0;
+    CGFloat x = self.view.bounds.size.width * 0.5 - newImageViewSize.width / 2.0;
     CGFloat y = self.view.bounds.size.height * 0.5 - newImageViewSize.height / 2.0;
     
     return CGRectMake(x, y, newImageViewSize.width, newImageViewSize.height);
@@ -818,16 +825,56 @@ static NSString * const reuseIdentifier = @"Cell";
     CGRect rectInCollectionView = [self.collectionViewController.collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
     CGRect rectInSuperview = [self.collectionViewController.collectionView convertRect:rectInCollectionView toView:self.view];
     
-    
     CGFloat ticketOffset = ((RTCMessageCollectionViewLayout *)self.collectionViewController.collectionViewLayout).ticketOffset;
     
     CGRect bubbleRect = CGRectMake(rectInSuperview.origin.x + ticketOffset, rectInSuperview.origin.y, rectInSuperview.size.width - ticketOffset, rectInSuperview.size.height);
-    
-    NSLog(@"superView x %f,y %f,width %f,height %f", rectInSuperview.origin.x, rectInSuperview.origin.y, rectInSuperview.size.width, rectInSuperview.size.height);
-    NSLog(@"bubbleRect x %f,y %f,width %f,height %f", bubbleRect.origin.x, bubbleRect.origin.y, bubbleRect.size.width, bubbleRect.size.height);
-    
+
     
     return bubbleRect;
+}
+
+- (void)showSavingImageViewAfterSuccess:(BOOL)afterSuccess {
+    
+    [[NSBundle mainBundle] loadNibNamed:@"SavingImageView" owner:self options:nil];
+    
+    UIView *savingView = self.savingImageView;
+    
+    CGSize viewSize = savingView.bounds.size;
+    
+    CGFloat x = self.view.bounds.size.width * 0.5 - viewSize.width / 2.0;
+    CGFloat y = self.view.bounds.size.height * 0.5 - viewSize.height / 2.0;
+    
+    CGRect viewRect = CGRectMake(x, y, viewSize.width, viewSize.height);
+    
+    savingView.frame = viewRect;
+    savingView.alpha = 0.0;
+
+    
+    if (afterSuccess) {
+        self.savingImageLabel.text = @"Сохранено";
+    } else {
+        self.savingImageLabel.text = @"Ашипка";
+    }
+    
+    [self.view addSubview:savingView];
+    
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        savingView.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        __unused NSTimer *t = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(closeSavingImageView:) userInfo:nil repeats:NO];
+    }];
+}
+
+- (void)closeSavingImageView:(NSTimer *)t {
+    [UIView animateWithDuration:0.3 animations:^{
+        self.savingImageView.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [self.savingImageView removeFromSuperview];
+        self.savingImageView = nil;
+    }];
+
+    [t invalidate];
 }
 
 @end

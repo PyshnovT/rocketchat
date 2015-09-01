@@ -31,4 +31,6 @@
 
 - (void)closeOpenedMediaContainerIfNeededWithCompletion:(void (^)())completion;
 
+- (void)showSavingImageViewAfterSuccess:(BOOL)afterSuccess;
+
 @end
