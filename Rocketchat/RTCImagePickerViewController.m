@@ -7,11 +7,12 @@
 //
 
 #import "RTCImagePickerViewController.h"
-#import "RTCMediaStore.h"
+
 #import "RTCCollectionViewController.h"
-#import "RTCImagePickerViewController.h"
-#import "RTCMessageImageMediaItem.h"
 #import "RTCMainViewController.h"
+
+#import "RTCMediaStore.h"
+#import "RTCMessageImageMediaItem.h"
 
 #import "UIImage+Scale.h"
 
@@ -21,7 +22,10 @@
 
 @end
 
+
 @implementation RTCImagePickerViewController
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];

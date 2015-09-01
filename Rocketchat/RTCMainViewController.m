@@ -7,21 +7,28 @@
 //
 
 #import "RTCMainViewController.h"
+
+#import "RTCTextToolbarView.h"
+
 #import "RTCMessageStore.h"
-#import "RTCMessageCollectionViewCell.h"
 #import "RTCMessage.h"
-#import "RTCMessageCollectionViewLayout.h"
-#import "RTCCollectionViewController.h"
+
 #import "RTCMediaStore.h"
-#import "RTCImagePickerViewController.h"
 #import "RTCMessageImageMediaItem.h"
 #import "RTCMessageLocationMediaItem.h"
+
+#import "RTCMessageCollectionViewLayout.h"
+#import "RTCCollectionViewController.h"
+#import "RTCMessageCollectionViewCell.h"
+
+#import "RTCImagePickerViewController.h"
+
 #import "RTCPhotoTakerController.h"
-#import "RTCTextToolbarView.h"
+
 #import "RTCMapViewController.h"
 
-@interface RTCMainViewController () <UITextFieldDelegate>
 
+@interface RTCMainViewController () <UITextFieldDelegate>
 
 // Collection View
 
@@ -41,6 +48,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaPickerToolbarViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusBarHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaContainerViewHeightConstraint;
 
 // Media Buttons
 
@@ -66,6 +74,8 @@
 @implementation RTCMainViewController
 
 static NSString * const reuseIdentifier = @"Cell";
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -345,25 +355,11 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 
-- (void)setPhotoTakerControllerFullScreenMode {
-    self.photoTakerController.screenMode = PhotoScreenModeFull;
-    
-    UIView *photoTakerView = self.photoTakerController.view;
-    
-    photoTakerView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
-}
 
-- (void)setPhotoTakerControllerShortScreenMode {
-    self.photoTakerController.screenMode = PhotoScreenModeShort;
-    
-    UIView *photoTakerView = self.photoTakerController.view;
-    
-    photoTakerView.frame = CGRectMake(0, self.view.bounds.size.height - self.view.bounds.size.width, self.view.bounds.size.width, self.view.bounds.size.width);
-}
 
 #pragma mark - IBActions
 
-- (IBAction)sendMessages:(id)sender { // Нажатие кнопки
+- (IBAction)sendMessages:(id)sender {
     
     if (![self.messageTextField.text isEqualToString:@""]) {
         [self.collectionViewController addMessageWithDate:[NSDate date] text:self.messageTextField.text];
@@ -498,7 +494,6 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - Closing Containers
 
 - (void)closeOpenedMediaContainerIfNeededWithCompletion:(void (^)())completion { // close media containers and unselect media buttons
-    NSLog(@"Close");
     
     [self cleanMediaButtons];
     
@@ -517,10 +512,8 @@ static NSString * const reuseIdentifier = @"Cell";
     } else if (currentMediaOpened == MediaTypeImage) {
         [self closeImagePickerControllerWithCompletion:completion];
     } else if (currentMediaOpened == MediaTypePhoto) {
-        NSLog(@"Photo!");
         [self closePhotoTakerControllerWithCompletion:completion];
     } else if (currentMediaOpened == MediaTypeLocation) {
-        NSLog(@"LOCATION!");
         [self closeMapViewControllerWithCompletion:completion];
     }
     
@@ -595,6 +588,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
     
     self.mapViewController = nil;
+    NSLog(@"%@", self.mapViewController);
     
     if (completion) {
         completion();
@@ -613,49 +607,20 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
-/*
-- (UIView *)cameraOverlayView {
-    if (!_cameraOverlayView) {
-        [[NSBundle mainBundle] loadNibNamed:@"CameraOverlayView" owner:self options:nil];
-    }
+- (void)setPhotoTakerControllerFullScreenMode {
+    self.photoTakerController.screenMode = PhotoScreenModeFull;
     
-    return _cameraOverlayView;
-}
-
-- (void)setupPhotoTakerController {
-    if (!self.photoTakerController) return;
+    UIView *photoTakerView = self.photoTakerController.view;
     
-    if ([RTCPhotoTakerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        self.photoTakerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self.photoTakerController.showsCameraControls = NO;
-        
-        self.cameraOverlayView.frame = CGRectMake(0, self.photoTakerController.view.bounds.size.width - self.cameraOverlayView.bounds.size.height, self.view.bounds.size.width, self.cameraOverlayView.bounds.size.height);
-        self.photoTakerController.cameraOverlayView = self.cameraOverlayView;
-        self.cameraOverlayView = nil;
-    } else {
-        self.photoTakerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    }
+    photoTakerView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+}
+
+- (void)setPhotoTakerControllerShortScreenMode {
+    self.photoTakerController.screenMode = PhotoScreenModeShort;
     
-    self.photoTakerController.delegate = self.photoTakerController;
-
-}
-
-- (void)sendTakenPhoto {
-    RTCMessageImageMediaItem *photoItem = [[RTCMediaStore sharedStore] takenPhoto];
-
-    if (photoItem) {
-            NSLog(@"addMessageWithData");
-        [self.collectionViewController addMessageWithDate:[NSDate date] media:photoItem];
-
-    }
-}
-
-- (IBAction)takePhoto:(id)sender {
-    [self.photoTakerController takePicture];
-}
-
-- (IBAction)changePhotoTakerScreenMode:(id)sender {
+    UIView *photoTakerView = self.photoTakerController.view;
     
+    photoTakerView.frame = CGRectMake(0, self.view.bounds.size.height - self.view.bounds.size.width, self.view.bounds.size.width, self.view.bounds.size.width);
 }
-*/
+
 @end

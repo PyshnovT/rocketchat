@@ -6,13 +6,17 @@
 //  Copyright (c) 2015 Pyshnov. All rights reserved.
 //
 
+#import <MapKit/MapKit.h>
+
+
 #import "RTCMapViewController.h"
 #import "RTCMainViewController.h"
+
 #import "RTCMediaStore.h"
 #import "RTCMessageCollectionViewLayout.h"
+
 #import "UIImage+Scale.h"
 
-#import <MapKit/MapKit.h>
 
 @interface RTCMapViewController () <CLLocationManagerDelegate, MKMapViewDelegate>
 
@@ -32,6 +36,8 @@
 @end
 
 @implementation RTCMapViewController
+
+#pragma mark - Init
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     @throw [NSException exceptionWithName:@"Wrong initializer" reason:@"Use initForSendingLocation" userInfo:nil];
@@ -55,6 +61,8 @@
     return self;
 }
 
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -71,6 +79,8 @@
 - (void)dealloc {
     NSLog(@"Dealloc");
 }
+
+#pragma mark - Setup
 
 - (void)setupNavigationForSending:(BOOL)isForSending {
     self.navigationItem.title = @"Карта";
@@ -120,6 +130,8 @@
     if (self.isForSendingLocation) {
         [self.t invalidate];
         [self.locationManager stopUpdatingLocation];
+        [self.snapshotter cancel];
+        self.snapshotter = nil;
         
         [self.mvc dismissViewControllerAnimated:YES completion:^{
             [self.mvc closeOpenedMediaContainerIfNeededWithCompletion:nil];
@@ -173,7 +185,6 @@
 #pragma mark - Map View Delegate 
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-        NSLog(@"Got location");
     self.didShowLocation = YES;
 }
 
@@ -187,7 +198,6 @@
         [self snapshotImage];
         
         if (!self.snapshotter.loading) {
-            NSLog(@"Больше не грузит!");
             [t invalidate];
        //     self.t = nil;
             [self addSnapshot];
@@ -258,10 +268,6 @@
 
         
         self.snapshot = finalImage;
-
-        [snapshotter cancel];
-
-
         
         
     }];

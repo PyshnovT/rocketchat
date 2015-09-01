@@ -30,6 +30,8 @@
 
 static NSString * const reuseIdentifier = @"Cell";
 
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -88,7 +90,6 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)handleRotationNotification:(NSNotification *)note {
-    NSLog(@"Handle");
     [self handleRotationNotification:note forSize:CGSizeZero];
 }
 
@@ -160,7 +161,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
     } else if (message.media) {
      
-        cell.imageView.image = message.media.thumbnailImage;//[message.media.image scaleImageToFitWidth:cell.bounds.size.width]; // тут надо постаивть thumbnail..
+        cell.imageView.image = message.media.thumbnailImage;
         
         if ([message.media respondsToSelector:@selector(location)]) {
             if (message.media.location) {

@@ -8,6 +8,7 @@
 
 #import "RTCPhotoTakerController.h"
 #import "RTCMainViewController.h"
+
 #import "RTCMediaStore.h"
 
 @interface RTCPhotoTakerController ()
@@ -17,6 +18,8 @@
 @end
 
 @implementation RTCPhotoTakerController 
+
+#pragma mark - Init
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -65,11 +68,31 @@
     
 }
 
+- (void)setupOverlayViewFrame {
+    CGFloat x, y, width, height;
+    
+    x = 0;
+    width = self.view.bounds.size.width;
+    height = self.overlayView.bounds.size.height;
+    
+    if (self.screenMode == PhotoScreenModeFull) {
+        y = self.view.bounds.size.width - self.overlayView.bounds.size.height;
+        
+        self.overlayView.frame = CGRectMake(0, y, width, height);
+    } else {
+        y = self.view.bounds.size.width - self.overlayView.bounds.size.height;
+        
+        self.overlayView.frame = CGRectMake(x, y, width, height);
+    }
+}
+
 - (IBAction)takePhoto:(id)sender {
     [self takePicture];
 }
 
 - (IBAction)changePhotoTakerScreenMode:(id)sender {
+    [self setupOverlayViewFrame];
+    
     if (self.screenMode == PhotoScreenModeShort) {
         
         ((UIButton *)sender).imageView.image = [UIImage imageNamed:@"fullscreen_close"];
@@ -83,5 +106,12 @@
     }
 }
 
+- (IBAction)switchCamera:(id)sender {
+    if (self.cameraDevice == UIImagePickerControllerCameraDeviceFront) {
+        self.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+    } else if (self.cameraDevice == UIImagePickerControllerCameraDeviceRear) {
+        self.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+    }
+}
 
 @end

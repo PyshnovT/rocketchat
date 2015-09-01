@@ -12,17 +12,17 @@
 
 @interface RTCMainViewController : UIViewController 
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaContainerViewHeightConstraint;
-
-// Location
-
 @property (strong, nonatomic) RTCMapViewController *mapViewController;
 
 - (void)setSendButtonColor;
 
+// Photo taker methods
+
 - (void)setPhotoTakerControllerFullScreenMode;
 - (void)setPhotoTakerControllerShortScreenMode;
 - (void)sendTakenPhoto;
+
+// Closing Media Containers
 
 - (void)closeOpenedMediaContainerIfNeededWithCompletion:(void (^)())completion;
 

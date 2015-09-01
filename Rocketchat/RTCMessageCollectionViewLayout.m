@@ -20,7 +20,7 @@
 
 @implementation RTCMessageCollectionViewLayout
 
-static NSInteger const tailHeight = 8;
+static NSInteger const tailHeight = 0;//8;
 
 #pragma mark - Initializing
 
@@ -40,7 +40,7 @@ static NSInteger const tailHeight = 8;
     self.cellBottomY = [NSMutableDictionary dictionary];
     
     self.collectionViewInsets = UIEdgeInsetsMake(10, 0, 10, 8);
-    self.messageBubbleInsets = UIEdgeInsetsMake(15, 15, 15, 15); // Данные из .xib
+    self.messageBubbleInsets = UIEdgeInsetsMake(15, 15, 15, 15);
     self.messageSize = CGSizeMake(240, 240); // Второй параметр имеет значение только для медиа-сообщений
     self.interMessageSpacingY = 8;
     self.messageFont = [UIFont fontWithName:@"PFAgoraSansPro-Regular" size:16]; 
@@ -78,7 +78,6 @@ static NSInteger const tailHeight = 8;
             CGFloat newBottomY = [self.cellBottomY[previousIndexPath] floatValue] + self.interMessageSpacingY + [self sizeForMessageAtIndexPath:indexPath].height;
             
             self.cellBottomY[indexPath] = [NSNumber numberWithFloat:newBottomY];
-          //  NSLog(@"%@", self.cellBottomY);
     
             
             UICollectionViewLayoutAttributes *itemAttributes =
@@ -143,7 +142,7 @@ static NSInteger const tailHeight = 8;
     CGFloat height = 0;
     
     if (message.media) {
-        CGFloat imageHeight = [message.media.image imageSizeToFitWidth:self.messageSize.width].height;// message.media.thumbnailImage.size.height;// [message.media.image imageSizeToFitSize:self.messageSize].height;
+        CGFloat imageHeight = [message.media.image imageSizeToFitWidth:self.messageSize.width].height;
         
         height = imageHeight + tailHeight;
     } else if (message.text) {

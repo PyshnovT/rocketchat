@@ -168,6 +168,104 @@
 			path = RocketchatTests;
 			sourceTree = "<group>";
 		};
+		097526521B95A9FD009EAD0B /* Message Data */ = {
+			isa = PBXGroup;
+			children = (
+				09AD404D1B88F76800ED55AA /* RTCMessageStore.h */,
+				09AD404E1B88F76800ED55AA /* RTCMessageStore.m */,
+				09AD40531B88FA1900ED55AA /* RTCMessage.h */,
+				09AD40541B88FA1900ED55AA /* RTCMessage.m */,
+				09AD40431B88EA9900ED55AA /* RTCMessageImageMediaItem.h */,
+				09AD40441B88EA9900ED55AA /* RTCMessageimageMediaItem.m */,
+				09AD40461B88EAAD00ED55AA /* RTCMessageLocationMediaItem.h */,
+				09AD40471B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m */,
+				09AD40491B88EBCE00ED55AA /* RTCMessageMedia.h */,
+				09A15CE81B90714D000B663C /* RTCMediaStore.h */,
+				09A15CE91B90714D000B663C /* RTCMediaStore.m */,
+			);
+			name = "Message Data";
+			sourceTree = "<group>";
+		};
+		097526531B95AA2E009EAD0B /* UIImage Category */ = {
+			isa = PBXGroup;
+			children = (
+				0964F6841B91E8140074AB33 /* UIImage+Scale.h */,
+				0964F6851B91E8140074AB33 /* UIImage+Scale.m */,
+			);
+			name = "UIImage Category";
+			sourceTree = "<group>";
+		};
+		097526541B95AA4F009EAD0B /* Image Picker Controller */ = {
+			isa = PBXGroup;
+			children = (
+				09A15CEB1B909A0C000B663C /* RTCImagePickerViewController.h */,
+				09A15CEC1B909A0C000B663C /* RTCImagePickerViewController.m */,
+				09A15CED1B909A0C000B663C /* RTCImagePickerViewController.xib */,
+			);
+			name = "Image Picker Controller";
+			sourceTree = "<group>";
+		};
+		097526551B95AA5D009EAD0B /* Photo Taker Controller */ = {
+			isa = PBXGroup;
+			children = (
+				093415D31B930B45008999DA /* RTCPhotoTakerController.h */,
+				093415D41B930B45008999DA /* RTCPhotoTakerController.m */,
+				097526591B95AACF009EAD0B /* Subviews */,
+			);
+			name = "Photo Taker Controller";
+			sourceTree = "<group>";
+		};
+		097526561B95AA67009EAD0B /* Map View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				09F794F41B9469F5002C1A9E /* RTCMapViewController.h */,
+				09F794F51B9469F5002C1A9E /* RTCMapViewController.m */,
+				09F794F71B947306002C1A9E /* RTCMapViewController.xib */,
+			);
+			name = "Map View Controller";
+			sourceTree = "<group>";
+		};
+		097526571B95AA82009EAD0B /* Main Controller */ = {
+			isa = PBXGroup;
+			children = (
+				09AD40371B88D5BA00ED55AA /* RTCMainViewController.h */,
+				09AD40381B88D5BA00ED55AA /* RTCMainViewController.m */,
+				09AD40391B88D5BA00ED55AA /* RTCMainViewController.xib */,
+				097526581B95AABC009EAD0B /* Subviews */,
+			);
+			name = "Main Controller";
+			sourceTree = "<group>";
+		};
+		097526581B95AABC009EAD0B /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				093415D01B92F983008999DA /* RTCStatusBarView.h */,
+				093415D11B92F983008999DA /* RTCStatusBarView.m */,
+				090A28B41B8CBF5B00EBA5F6 /* RTCTextToolbarView.h */,
+				090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */,
+			);
+			name = Subviews;
+			sourceTree = "<group>";
+		};
+		097526591B95AACF009EAD0B /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				09F6905E1B94EC2E0068DF66 /* CameraOverlayView.xib */,
+				09F690601B94F7930068DF66 /* RTCSendPhotoButton.h */,
+				09F690611B94F7930068DF66 /* RTCSendPhotoButton.m */,
+			);
+			name = Subviews;
+			sourceTree = "<group>";
+		};
+		0975265A1B95AAE0009EAD0B /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				09FD781F1B8A154500F2AEDC /* RTCMessageCollectionViewLayout.h */,
+				09FD78201B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m */,
+			);
+			name = Layout;
+			sourceTree = "<group>";
+		};
 		09AD3FEB1B88C72600ED55AA = {
 			isa = PBXGroup;
 			children = (
@@ -191,9 +289,9 @@
 		09AD3FF61B88C72600ED55AA /* Rocketchat */ = {
 			isa = PBXGroup;
 			children = (
-				09AD40311B88CFFB00ED55AA /* Main Controller */,
-				09AD40421B88E9FF00ED55AA /* Messages */,
-				09FD781E1B89E5E900F2AEDC /* Layout */,
+				09AD40311B88CFFB00ED55AA /* Controllers */,
+				097526531B95AA2E009EAD0B /* UIImage Category */,
+				09AD40421B88E9FF00ED55AA /* Messages  */,
 				09AD40301B88CFEA00ED55AA /* Base */,
 			);
 			path = Rocketchat;
@@ -255,71 +353,45 @@
 			name = Base;
 			sourceTree = "<group>";
 		};
-		09AD40311B88CFFB00ED55AA /* Main Controller */ = {
+		09AD40311B88CFFB00ED55AA /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				09AD40371B88D5BA00ED55AA /* RTCMainViewController.h */,
-				09AD40381B88D5BA00ED55AA /* RTCMainViewController.m */,
-				09AD40391B88D5BA00ED55AA /* RTCMainViewController.xib */,
-				096D71021B8F6C140026A2CE /* RTCCollectionViewController.h */,
-				096D71031B8F6C140026A2CE /* RTCCollectionViewController.m */,
-				093415D01B92F983008999DA /* RTCStatusBarView.h */,
-				093415D11B92F983008999DA /* RTCStatusBarView.m */,
-				090A28B41B8CBF5B00EBA5F6 /* RTCTextToolbarView.h */,
-				090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */,
-				09A15CEB1B909A0C000B663C /* RTCImagePickerViewController.h */,
-				09A15CEC1B909A0C000B663C /* RTCImagePickerViewController.m */,
-				09A15CED1B909A0C000B663C /* RTCImagePickerViewController.xib */,
-				093415D31B930B45008999DA /* RTCPhotoTakerController.h */,
-				093415D41B930B45008999DA /* RTCPhotoTakerController.m */,
-				09F6905E1B94EC2E0068DF66 /* CameraOverlayView.xib */,
-				09F690601B94F7930068DF66 /* RTCSendPhotoButton.h */,
-				09F690611B94F7930068DF66 /* RTCSendPhotoButton.m */,
-				09F794F41B9469F5002C1A9E /* RTCMapViewController.h */,
-				09F794F51B9469F5002C1A9E /* RTCMapViewController.m */,
-				09F794F71B947306002C1A9E /* RTCMapViewController.xib */,
-				0964F6841B91E8140074AB33 /* UIImage+Scale.h */,
-				0964F6851B91E8140074AB33 /* UIImage+Scale.m */,
+				097526571B95AA82009EAD0B /* Main Controller */,
+				097526541B95AA4F009EAD0B /* Image Picker Controller */,
+				097526551B95AA5D009EAD0B /* Photo Taker Controller */,
+				097526561B95AA67009EAD0B /* Map View Controller */,
+				09FD781E1B89E5E900F2AEDC /* Collection View Controller */,
 			);
-			name = "Main Controller";
+			name = Controllers;
 			sourceTree = "<group>";
 		};
-		09AD40421B88E9FF00ED55AA /* Messages */ = {
+		09AD40421B88E9FF00ED55AA /* Messages  */ = {
 			isa = PBXGroup;
 			children = (
-				09AD404D1B88F76800ED55AA /* RTCMessageStore.h */,
-				09AD404E1B88F76800ED55AA /* RTCMessageStore.m */,
-				09AD40531B88FA1900ED55AA /* RTCMessage.h */,
-				09AD40541B88FA1900ED55AA /* RTCMessage.m */,
-				09AD40431B88EA9900ED55AA /* RTCMessageImageMediaItem.h */,
-				09AD40441B88EA9900ED55AA /* RTCMessageimageMediaItem.m */,
-				09AD40461B88EAAD00ED55AA /* RTCMessageLocationMediaItem.h */,
-				09AD40471B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m */,
-				09AD40491B88EBCE00ED55AA /* RTCMessageMedia.h */,
-				09A15CE81B90714D000B663C /* RTCMediaStore.h */,
-				09A15CE91B90714D000B663C /* RTCMediaStore.m */,
-				09FD781D1B89D63100F2AEDC /* View */,
+				097526521B95A9FD009EAD0B /* Message Data */,
+				09FD781D1B89D63100F2AEDC /* Message Cell */,
 			);
-			name = Messages;
+			name = "Messages ";
 			sourceTree = "<group>";
 		};
-		09FD781D1B89D63100F2AEDC /* View */ = {
+		09FD781D1B89D63100F2AEDC /* Message Cell */ = {
 			isa = PBXGroup;
 			children = (
 				09FD78171B89C21B00F2AEDC /* RTCMessageCollectionViewCell.h */,
 				09FD78181B89C21B00F2AEDC /* RTCMessageCollectionViewCell.m */,
 				09FD78271B8A4AEA00F2AEDC /* RTCMessageCollectionViewCell.xib */,
 			);
-			name = View;
+			name = "Message Cell";
 			sourceTree = "<group>";
 		};
-		09FD781E1B89E5E900F2AEDC /* Layout */ = {
+		09FD781E1B89E5E900F2AEDC /* Collection View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				09FD781F1B8A154500F2AEDC /* RTCMessageCollectionViewLayout.h */,
-				09FD78201B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m */,
+				096D71021B8F6C140026A2CE /* RTCCollectionViewController.h */,
+				096D71031B8F6C140026A2CE /* RTCCollectionViewController.m */,
+				0975265A1B95AAE0009EAD0B /* Layout */,
 			);
-			name = Layout;
+			name = "Collection View Controller";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

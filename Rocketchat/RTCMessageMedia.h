@@ -21,10 +21,5 @@
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) CLLocation *location;
-
-/*
-+ (instancetype)itemWithImage:(UIImage *)image;
-- (instancetype)initWithImage:(UIImage *)image;
-*/
  
 @end
