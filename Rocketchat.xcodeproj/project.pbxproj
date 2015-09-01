@@ -40,6 +40,8 @@
 		09AD40481B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40471B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m */; };
 		09AD404F1B88F76800ED55AA /* RTCMessageStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD404E1B88F76800ED55AA /* RTCMessageStore.m */; };
 		09AD40551B88FA1900ED55AA /* RTCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AD40541B88FA1900ED55AA /* RTCMessage.m */; };
+		09F6905F1B94EC2E0068DF66 /* CameraOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09F6905E1B94EC2E0068DF66 /* CameraOverlayView.xib */; };
+		09F690621B94F7930068DF66 /* RTCSendPhotoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 09F690611B94F7930068DF66 /* RTCSendPhotoButton.m */; };
 		09F794F31B94694C002C1A9E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09F794F21B94694C002C1A9E /* MapKit.framework */; };
 		09F794F61B9469F5002C1A9E /* RTCMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09F794F51B9469F5002C1A9E /* RTCMapViewController.m */; };
 		09F794F81B947306002C1A9E /* RTCMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09F794F71B947306002C1A9E /* RTCMapViewController.xib */; };
@@ -110,6 +112,9 @@
 		09AD404E1B88F76800ED55AA /* RTCMessageStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessageStore.m; sourceTree = "<group>"; };
 		09AD40531B88FA1900ED55AA /* RTCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMessage.h; sourceTree = "<group>"; };
 		09AD40541B88FA1900ED55AA /* RTCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMessage.m; sourceTree = "<group>"; };
+		09F6905E1B94EC2E0068DF66 /* CameraOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraOverlayView.xib; sourceTree = "<group>"; };
+		09F690601B94F7930068DF66 /* RTCSendPhotoButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCSendPhotoButton.h; sourceTree = "<group>"; };
+		09F690611B94F7930068DF66 /* RTCSendPhotoButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCSendPhotoButton.m; sourceTree = "<group>"; };
 		09F794F21B94694C002C1A9E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		09F794F41B9469F5002C1A9E /* RTCMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCMapViewController.h; sourceTree = "<group>"; };
 		09F794F51B9469F5002C1A9E /* RTCMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCMapViewController.m; sourceTree = "<group>"; };
@@ -267,6 +272,9 @@
 				09A15CED1B909A0C000B663C /* RTCImagePickerViewController.xib */,
 				093415D31B930B45008999DA /* RTCPhotoTakerController.h */,
 				093415D41B930B45008999DA /* RTCPhotoTakerController.m */,
+				09F6905E1B94EC2E0068DF66 /* CameraOverlayView.xib */,
+				09F690601B94F7930068DF66 /* RTCSendPhotoButton.h */,
+				09F690611B94F7930068DF66 /* RTCSendPhotoButton.m */,
 				09F794F41B9469F5002C1A9E /* RTCMapViewController.h */,
 				09F794F51B9469F5002C1A9E /* RTCMapViewController.m */,
 				09F794F71B947306002C1A9E /* RTCMapViewController.xib */,
@@ -403,6 +411,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09F6905F1B94EC2E0068DF66 /* CameraOverlayView.xib in Resources */,
 				09236E791B8B821700F12618 /* AgoraSansProMedium.ttf in Resources */,
 				09236E761B8B807000F12618 /* AgoraSansProLight.ttf in Resources */,
 				09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */,
@@ -437,6 +446,7 @@
 				09AD40481B88EAAD00ED55AA /* RTCMessageLocationMediaItem.m in Sources */,
 				09AD40451B88EA9900ED55AA /* RTCMessageimageMediaItem.m in Sources */,
 				09AD40551B88FA1900ED55AA /* RTCMessage.m in Sources */,
+				09F690621B94F7930068DF66 /* RTCSendPhotoButton.m in Sources */,
 				09F794F61B9469F5002C1A9E /* RTCMapViewController.m in Sources */,
 				096D71041B8F6C140026A2CE /* RTCCollectionViewController.m in Sources */,
 				090A28B61B8CBF5B00EBA5F6 /* RTCTextToolbarView.m in Sources */,

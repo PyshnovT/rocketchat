@@ -54,7 +54,6 @@
 
 // Photo Taker
 
-@property (strong, nonatomic) NSMutableArray *currentMediaContainerConstraints;
 @property (strong, nonatomic) RTCPhotoTakerController *photoTakerController;
 
 
@@ -72,7 +71,6 @@ static NSString * const reuseIdentifier = @"Cell";
     [super viewDidLoad];
     
     self.isKeyboardShown = NO;
-    self.currentMediaContainerConstraints = [NSMutableArray array];
     
     RTCMessageCollectionViewLayout *messageLayout = [[RTCMessageCollectionViewLayout alloc] init];
     self.collectionViewController = [[RTCCollectionViewController alloc]
@@ -288,7 +286,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
         self.photoTakerController.mvc = self;
         
-        [self setupPhotoTakerController];
+       // [self setupPhotoTakerController];
         
         [self.view layoutIfNeeded];
         
@@ -347,13 +345,17 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 
-- (void)setPhotoTakerControllerFullScreenMode; {
+- (void)setPhotoTakerControllerFullScreenMode {
+    self.photoTakerController.screenMode = PhotoScreenModeFull;
+    
     UIView *photoTakerView = self.photoTakerController.view;
     
     photoTakerView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
 }
 
-- (void)setPhotoTakerControllerShortScreenMode; {
+- (void)setPhotoTakerControllerShortScreenMode {
+    self.photoTakerController.screenMode = PhotoScreenModeShort;
+    
     UIView *photoTakerView = self.photoTakerController.view;
     
     photoTakerView.frame = CGRectMake(0, self.view.bounds.size.height - self.view.bounds.size.width, self.view.bounds.size.width, self.view.bounds.size.width);
@@ -479,7 +481,7 @@ static NSString * const reuseIdentifier = @"Cell";
             } else if (sender == self.locationMediaButton) {
                 
                 if (!self.mapViewController) {
-                    self.mapViewController = [[RTCMapViewController alloc] init];
+                    self.mapViewController = [[RTCMapViewController alloc] initForSendingLocation:YES];
                 }
                 
                 [self displayViewController:self.mapViewController];
@@ -601,12 +603,35 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - Photo Taker Controller
 
+- (void)sendTakenPhoto {
+    RTCMessageImageMediaItem *photoItem = [[RTCMediaStore sharedStore] takenPhoto];
+    
+    if (photoItem) {
+        NSLog(@"addMessageWithData");
+        [self.collectionViewController addMessageWithDate:[NSDate date] media:photoItem];
+        
+    }
+}
+
+/*
+- (UIView *)cameraOverlayView {
+    if (!_cameraOverlayView) {
+        [[NSBundle mainBundle] loadNibNamed:@"CameraOverlayView" owner:self options:nil];
+    }
+    
+    return _cameraOverlayView;
+}
+
 - (void)setupPhotoTakerController {
     if (!self.photoTakerController) return;
     
     if ([RTCPhotoTakerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         self.photoTakerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-       // self.photoTakerController.showsCameraControls = NO;
+        self.photoTakerController.showsCameraControls = NO;
+        
+        self.cameraOverlayView.frame = CGRectMake(0, self.photoTakerController.view.bounds.size.width - self.cameraOverlayView.bounds.size.height, self.view.bounds.size.width, self.cameraOverlayView.bounds.size.height);
+        self.photoTakerController.cameraOverlayView = self.cameraOverlayView;
+        self.cameraOverlayView = nil;
     } else {
         self.photoTakerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
@@ -625,4 +650,12 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
+- (IBAction)takePhoto:(id)sender {
+    [self.photoTakerController takePicture];
+}
+
+- (IBAction)changePhotoTakerScreenMode:(id)sender {
+    
+}
+*/
 @end

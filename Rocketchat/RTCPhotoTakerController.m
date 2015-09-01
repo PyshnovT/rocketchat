@@ -12,7 +12,7 @@
 
 @interface RTCPhotoTakerController ()
 
-
+@property (strong, nonatomic) IBOutlet UIView *overlayView;
 
 @end
 
@@ -21,7 +21,7 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-
+        [self setupPhotoTakerController];
     }
     return self;
 }
@@ -40,5 +40,48 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [self.mvc closeOpenedMediaContainerIfNeededWithCompletion:nil];
 }
+
+- (UIView *)cameraOverlayView {
+    if (!_overlayView) {
+        [[NSBundle mainBundle] loadNibNamed:@"CameraOverlayView" owner:self options:nil];
+    }
+    
+    return _overlayView;
+}
+
+- (void)setupPhotoTakerController {
+    if ([RTCPhotoTakerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        self.sourceType = UIImagePickerControllerSourceTypeCamera;
+        self.showsCameraControls = NO;
+        
+        self.overlayView.frame = CGRectMake(0, self.view.bounds.size.width - self.overlayView.bounds.size.height, self.view.bounds.size.width, self.overlayView.bounds.size.height);
+        self.cameraOverlayView = self.overlayView;
+        self.overlayView = nil;
+    } else {
+        self.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    
+    self.delegate = self;
+    
+}
+
+- (IBAction)takePhoto:(id)sender {
+    [self takePicture];
+}
+
+- (IBAction)changePhotoTakerScreenMode:(id)sender {
+    if (self.screenMode == PhotoScreenModeShort) {
+        
+        ((UIButton *)sender).imageView.image = [UIImage imageNamed:@"fullscreen_close"];
+        [self.mvc setPhotoTakerControllerFullScreenMode];
+        
+    } else if (self.screenMode == PhotoScreenModeFull) {
+        
+        ((UIButton *)sender).imageView.image = [UIImage imageNamed:@"camera_interface_fullscreen"];
+        [self.mvc setPhotoTakerControllerShortScreenMode];
+        
+    }
+}
+
 
 @end

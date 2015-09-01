@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+
+typedef enum {
+    PhotoScreenModeShort,
+    PhotoScreenModeFull
+} PhotoScreenMode;
+
 @class RTCMainViewController;
 
 @interface RTCPhotoTakerController : UIImagePickerController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, weak) RTCMainViewController *mvc;
+@property (nonatomic) PhotoScreenMode screenMode;
 
 @end
