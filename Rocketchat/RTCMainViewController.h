@@ -24,7 +24,7 @@
 
 // Image Viewing
 
-- (void)presentImageViewerControllerForCellAtIndexPath:(NSIndexPath *)indexPath fromRect:(CGRect)fromRect;
+- (void)presentImageLookerControllerForCellAtIndexPath:(NSIndexPath *)indexPath;
 - (void)closeImageLookerController;
 
 // Closing Media Containers

@@ -15,6 +15,7 @@
 
 @property (nonatomic, weak) IBOutlet UITextView *textLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIView *bubbleView;
 
 @property (nonatomic) BOOL isMediaCell;
 @property (nonatomic, strong) CLLocation *location;

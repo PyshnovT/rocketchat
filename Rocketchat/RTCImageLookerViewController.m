@@ -28,8 +28,12 @@
     return self;
 }
 
-#pragma mark - View Lifecycle
+- (void)dealloc {
+    NSLog(@"Dealloc photo looker");
+}
 
+#pragma mark - View Lifecycle
+/*
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -138,6 +142,6 @@
     
     zoomView.frame = zoomViewFrame;
 }
-
+*/
 
 @end

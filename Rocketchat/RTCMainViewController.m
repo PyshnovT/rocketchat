@@ -30,6 +30,14 @@
 
 #import "UIImage+Scale.h"
 
+typedef enum {
+    ImageViewPlaceholderPanDirectionLeft,
+    ImageViewPlaceholderPanDirectionTop,
+    ImageViewPlaceholderPanDirectionRight,
+    ImageViewPlaceholderPanDirectionBottom,
+    ImageViewPlaceholderPanDirectionNone
+} ImageViewPlaceholderPanDirection;
+
 @interface RTCMainViewController () <UITextFieldDelegate>
 
 // Collection View
@@ -69,7 +77,12 @@
 // Image Looker
 
 @property (strong, nonatomic) RTCImageLookerViewController *imageLookerController;
-@property (strong, nonatomic) UIImageView *imageViewPlaceHolder;
+@property (strong, nonatomic) UIImageView *imageViewPlaceholder;
+
+//@property (nonatomic) CGRect imageViewPlaceholderCellRect;
+@property (strong, nonatomic) NSIndexPath *indexPathForViewingCell;
+
+@property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
 
 // Keyboard
 
@@ -86,7 +99,10 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.imageViewPlaceHolder = nil;
+    self.imageViewPlaceholder = nil;
+    self.panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveImageViewPlaceholder:)];
+    [self.view addGestureRecognizer:self.panGestureRecognizer];
+    
     self.isKeyboardShown = NO;
     
     RTCMessageCollectionViewLayout *messageLayout = [[RTCMessageCollectionViewLayout alloc] init];
@@ -95,6 +111,8 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [self displayViewController:self.collectionViewController];
     self.messageTextField.delegate = self;
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -267,6 +285,13 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    CGRect newImageViewFrame = [self imageViewPlaceholderFrameForWidth:self.view.bounds.size.width];
+    self.imageViewPlaceholder.frame = newImageViewFrame;
+}
+
 #pragma mark - Displaying Controllers
 
 - (void)displayViewController:(UIViewController *)controller {
@@ -331,17 +356,21 @@ static NSString * const reuseIdentifier = @"Cell";
         
         self.imageLookerController.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
         self.imageLookerController.view.alpha = 0.0;
-        [self.view addSubview:self.imageViewPlaceHolder];
         
         [self.view addSubview:self.imageLookerController.view];
+        
+        [self.view addSubview:self.imageViewPlaceholder];
+        NSLog(@"%@", self.imageViewPlaceholder);
+        
+
         
         [UIView animateWithDuration:0.3 animations:^{
             
             self.imageLookerController.view.alpha = 1.0;
-            self.imageViewPlaceHolder.frame = [self imageViewPlaceholderFrameForWidth:self.view.bounds.size.width];
+            self.imageViewPlaceholder.frame = [self imageViewPlaceholderFrameForWidth:self.view.bounds.size.width];
             
         } completion:^(BOOL finished) {
-            [self.imageViewPlaceHolder removeFromSuperview];
+            
         }];
         
     }
@@ -350,7 +379,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGRect)imageViewPlaceholderFrameForWidth:(CGFloat)width {
-    CGSize newImageViewSize = [self.imageViewPlaceHolder.image imageSizeToFitWidth:width];
+    CGSize newImageViewSize = [self.imageViewPlaceholder.image imageSizeToFitWidth:width];
     
     CGFloat x = 0;
     CGFloat y = self.view.bounds.size.height * 0.5 - newImageViewSize.height / 2.0;
@@ -669,7 +698,15 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - Image Viewing
 
-- (void)presentImageViewerControllerForCellAtIndexPath:(NSIndexPath *)indexPath fromRect:(CGRect)fromRect {
+- (void)presentImageLookerControllerForCellAtIndexPath:(NSIndexPath *)indexPath {
+  //  self.imageViewPlaceholderCellRect = fromRect;
+    
+    CGRect fromRect = [self frameForCellAtIndexPath:indexPath];
+    
+    self.indexPathForViewingCell = indexPath;
+    RTCMessageCollectionViewCell *cell = (RTCMessageCollectionViewCell *)[self.collectionViewController.collectionView cellForItemAtIndexPath:indexPath];
+    cell.imageView.hidden = YES;
+    
     NSInteger row = indexPath.row;
     
     RTCMessage *messageForCell = [[[RTCMessageStore sharedStore] allMessages] objectAtIndex:row];
@@ -678,30 +715,93 @@ static NSString * const reuseIdentifier = @"Cell";
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:fromRect];
     imageView.image = fullImage;
     
-    self.imageViewPlaceHolder = imageView;
+    self.imageViewPlaceholder = imageView;
     
     self.imageLookerController = [[RTCImageLookerViewController alloc] initWithImage:fullImage];
     [self displayViewController:self.imageLookerController];
     
 }
 
-- (void)showImageViewPlaceholderFromRect:(CGRect)rect {
-    if (self.imageViewPlaceHolder) {
-        self.imageViewPlaceHolder.frame = rect;
-        [self.view addSubview:self.imageViewPlaceHolder];
-    }
-}
-
-#pragma mark - Scroll View Delegate
-
-
-/*
-- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
-    if (view == self.imageViewForPresentingSelectedImage) {
-        CGRect frame = [self imageViewForPresentingSelectedImageFrameForWidth:self.view.bounds.size.width];
+- (void)moveImageViewPlaceholder:(UIPanGestureRecognizer *)gr {
+    if (!self.imageViewPlaceholder) return;
+    
+    static CGPoint startOrigin;
+    static ImageViewPlaceholderPanDirection direction;
+    
+    if (gr.state == UIGestureRecognizerStateBegan) {
+        CGPoint startVelocity = [gr velocityInView:self.view];
+        startOrigin = self.view.frame.origin;
         
-        view.frame = CGRectMake(frame.origin.x, frame.origin.y, view.frame.size.width, view.frame.size.height);
+        direction = [self imageViewPlaceholderDirectionWithVelocity:startVelocity andOrigin:startOrigin];
+    } else if (gr.state == UIGestureRecognizerStateChanged) {
+        if ((direction == ImageViewPlaceholderPanDirectionBottom) || (direction == ImageViewPlaceholderPanDirectionTop) ) {
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                self.imageLookerController.view.alpha = 0.0;
+            } completion:^(BOOL finished) {
+                [self.imageLookerController removeFromParentViewController];
+                self.imageLookerController = nil;
+            }];
+
+            
+            CGPoint translation = [gr translationInView:self.view];
+            
+            float newX = self.imageViewPlaceholder.frame.origin.x + translation.x;
+            float newY = self.imageViewPlaceholder.frame.origin.y + translation.y;
+            
+            self.imageViewPlaceholder.frame = CGRectMake(newX, newY, self.imageViewPlaceholder.bounds.size.width, self.imageViewPlaceholder.bounds.size.height);
+            
+            [gr setTranslation:CGPointZero inView:self.view];
+        }
+    } else if ((gr.state == UIGestureRecognizerStateEnded) || (gr.state == UIGestureRecognizerStateEnded)) {
+        
+        if ((direction == ImageViewPlaceholderPanDirectionBottom) || (direction == ImageViewPlaceholderPanDirectionTop) ) {
+            [UIView animateWithDuration:0.2 animations:^{
+                
+                self.imageViewPlaceholder.frame = [self frameForCellAtIndexPath:self.indexPathForViewingCell];
+            } completion:^(BOOL finished) {
+               // cell.imageView.hidden = NO;
+                RTCMessageCollectionViewCell *cell = (RTCMessageCollectionViewCell *)[self.collectionViewController.collectionView cellForItemAtIndexPath:self.indexPathForViewingCell];
+                self.indexPathForViewingCell = nil;
+                cell.imageView.hidden = NO;
+                
+                [self.imageViewPlaceholder removeFromSuperview];
+                self.imageViewPlaceholder = nil;
+            }];
+        }
+        
     }
 }
-*/
+
+- (ImageViewPlaceholderPanDirection)imageViewPlaceholderDirectionWithVelocity:(CGPoint)velocity andOrigin:(CGPoint)origin {
+    if (ABS(velocity.x) > ABS(velocity.y)) { // двигалось либо вправо, либо влево
+        float newX = velocity.x + origin.x;
+        
+        if (newX > origin.x) { // вправо
+            return ImageViewPlaceholderPanDirectionRight;
+        } else {
+            return ImageViewPlaceholderPanDirectionLeft;
+        }
+        
+    } else if (ABS(velocity.x) < ABS(velocity.y)) { // двигалось либо вверх, либо вниз
+        float newY = velocity.y + origin.y;
+        
+        if (newY > origin.y) { // вниз
+            return ImageViewPlaceholderPanDirectionBottom;
+        } else { // вверх
+            return ImageViewPlaceholderPanDirectionTop;
+        }
+    } else {
+        
+        return ImageViewPlaceholderPanDirectionNone;
+    }
+}
+
+- (CGRect)frameForCellAtIndexPath:(NSIndexPath *)indexPath {
+    CGRect rectInCollectionView = [self.collectionViewController.collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+    CGRect rectInSuperview = [self.collectionViewController.collectionView convertRect:rectInCollectionView toView:self.view];
+    
+    return rectInSuperview;
+}
+
 @end

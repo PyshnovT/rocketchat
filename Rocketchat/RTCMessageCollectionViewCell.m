@@ -10,8 +10,6 @@
 
 @interface RTCMessageCollectionViewCell ()
 
-@property (weak, nonatomic) IBOutlet UIView *bubbleView;
-
 @end
 
 @implementation RTCMessageCollectionViewCell
