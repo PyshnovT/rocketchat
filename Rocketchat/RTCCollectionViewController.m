@@ -157,10 +157,13 @@ static NSString * const reuseIdentifier = @"Cell";
     
     if (message.text) {
         
+       // cell.backgroundColor = [UIColor colorWithRed:0 green:0.48 blue:1 alpha:1];
         cell.textLabel.text = message.text;
         
     } else if (message.media) {
      
+        cell.backgroundColor = [UIColor clearColor];
+        
         cell.imageView.image = message.media.thumbnailImage;
         
         if ([message.media respondsToSelector:@selector(location)]) {
@@ -181,7 +184,10 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     RTCMessageCollectionViewCell *cell = (RTCMessageCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     
+
+    
     if (cell.isMediaCell) {
+        
         if (cell.location) { // локация
             RTCMapViewController *mapViewController = [[RTCMapViewController alloc] initForSendingLocation:NO];
             mapViewController.sentLocation = cell.location;
@@ -190,7 +196,14 @@ static NSString * const reuseIdentifier = @"Cell";
             
             [self presentViewController:navController animated:YES completion:nil];
         } else { // просто картиночка
+            NSLog(@"%@", indexPath);
+            CGRect rectInCollectionView = [self.collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+            CGRect rectInSuperview = [self.collectionView convertRect:rectInCollectionView toView:self.mvc.view];
+            //CGPoint originInSuperView = [self.mvc.view convertPoint:cell.bounds.origin fromView:self.collectionView];
+            //NSLog(@"point: x:%f y:%f", rectInSuperview.origin.x, rectInSuperview.origin.y);
             
+           // cell.imageView.
+            [self.mvc presentImageViewerControllerForCellAtIndexPath:indexPath fromRect:rectInSuperview];
         }
     }
 }

@@ -26,7 +26,9 @@
 #import "RTCPhotoTakerController.h"
 
 #import "RTCMapViewController.h"
+#import "RTCImageLookerViewController.h"
 
+#import "UIImage+Scale.h"
 
 @interface RTCMainViewController () <UITextFieldDelegate>
 
@@ -64,6 +66,10 @@
 
 @property (strong, nonatomic) RTCPhotoTakerController *photoTakerController;
 
+// Image Looker
+
+@property (strong, nonatomic) RTCImageLookerViewController *imageLookerController;
+@property (strong, nonatomic) UIImageView *imageViewPlaceHolder;
 
 // Keyboard
 
@@ -80,6 +86,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.imageViewPlaceHolder = nil;
     self.isKeyboardShown = NO;
     
     RTCMessageCollectionViewLayout *messageLayout = [[RTCMessageCollectionViewLayout alloc] init];
@@ -311,6 +318,7 @@ static NSString * const reuseIdentifier = @"Cell";
         }];
         
     } else if (controller == self.mapViewController) {
+        
         [RTCMediaStore sharedStore].currentMediaType = MediaTypeLocation;
         self.mapViewController.mvc = self;
         
@@ -318,9 +326,36 @@ static NSString * const reuseIdentifier = @"Cell";
 
         
         [self presentViewController:navController animated:YES completion:nil];
+        
+    } else if (controller == self.imageLookerController) {
+        
+        self.imageLookerController.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+        self.imageLookerController.view.alpha = 0.0;
+        [self.view addSubview:self.imageViewPlaceHolder];
+        
+        [self.view addSubview:self.imageLookerController.view];
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            self.imageLookerController.view.alpha = 1.0;
+            self.imageViewPlaceHolder.frame = [self imageViewPlaceholderFrameForWidth:self.view.bounds.size.width];
+            
+        } completion:^(BOOL finished) {
+            [self.imageViewPlaceHolder removeFromSuperview];
+        }];
+        
     }
     
     [controller didMoveToParentViewController:self];
+}
+
+- (CGRect)imageViewPlaceholderFrameForWidth:(CGFloat)width {
+    CGSize newImageViewSize = [self.imageViewPlaceHolder.image imageSizeToFitWidth:width];
+    
+    CGFloat x = 0;
+    CGFloat y = self.view.bounds.size.height * 0.5 - newImageViewSize.height / 2.0;
+    
+    return CGRectMake(x, y, newImageViewSize.width, newImageViewSize.height);
 }
 
 - (void)setConstraintsForImagePickerViewController {
@@ -595,13 +630,22 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
+- (void)closeImageLookerController {
+    [UIView animateWithDuration:0.3 animations:^{
+        self.imageLookerController.view.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [self.imageLookerController.view removeFromSuperview];
+        self.imageLookerController = nil;
+    }];
+}
+
 #pragma mark - Photo Taker Controller
 
 - (void)sendTakenPhoto {
     RTCMessageImageMediaItem *photoItem = [[RTCMediaStore sharedStore] takenPhoto];
     
     if (photoItem) {
-        NSLog(@"addMessageWithData");
+
         [self.collectionViewController addMessageWithDate:[NSDate date] media:photoItem];
         
     }
@@ -623,4 +667,41 @@ static NSString * const reuseIdentifier = @"Cell";
     photoTakerView.frame = CGRectMake(0, self.view.bounds.size.height - self.view.bounds.size.width, self.view.bounds.size.width, self.view.bounds.size.width);
 }
 
+#pragma mark - Image Viewing
+
+- (void)presentImageViewerControllerForCellAtIndexPath:(NSIndexPath *)indexPath fromRect:(CGRect)fromRect {
+    NSInteger row = indexPath.row;
+    
+    RTCMessage *messageForCell = [[[RTCMessageStore sharedStore] allMessages] objectAtIndex:row];
+    UIImage *fullImage = ((RTCMessageImageMediaItem *)messageForCell.media).image;
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:fromRect];
+    imageView.image = fullImage;
+    
+    self.imageViewPlaceHolder = imageView;
+    
+    self.imageLookerController = [[RTCImageLookerViewController alloc] initWithImage:fullImage];
+    [self displayViewController:self.imageLookerController];
+    
+}
+
+- (void)showImageViewPlaceholderFromRect:(CGRect)rect {
+    if (self.imageViewPlaceHolder) {
+        self.imageViewPlaceHolder.frame = rect;
+        [self.view addSubview:self.imageViewPlaceHolder];
+    }
+}
+
+#pragma mark - Scroll View Delegate
+
+
+/*
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
+    if (view == self.imageViewForPresentingSelectedImage) {
+        CGRect frame = [self imageViewForPresentingSelectedImageFrameForWidth:self.view.bounds.size.width];
+        
+        view.frame = CGRectMake(frame.origin.x, frame.origin.y, view.frame.size.width, view.frame.size.height);
+    }
+}
+*/
 @end

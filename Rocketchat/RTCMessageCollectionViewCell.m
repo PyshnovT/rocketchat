@@ -38,6 +38,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)prepareForReuse {
     self.textLabel.text = nil;
     self.imageView.image = nil;
+    self.location = nil;
 }
 
 - (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {

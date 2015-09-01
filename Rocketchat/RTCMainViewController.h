@@ -22,6 +22,11 @@
 - (void)setPhotoTakerControllerShortScreenMode;
 - (void)sendTakenPhoto;
 
+// Image Viewing
+
+- (void)presentImageViewerControllerForCellAtIndexPath:(NSIndexPath *)indexPath fromRect:(CGRect)fromRect;
+- (void)closeImageLookerController;
+
 // Closing Media Containers
 
 - (void)closeOpenedMediaContainerIfNeededWithCompletion:(void (^)())completion;
