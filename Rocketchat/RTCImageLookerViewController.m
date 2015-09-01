@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UIImage *image;
+@property (weak, nonatomic) IBOutlet UILabel *savingLabel;
 
 @end
 
@@ -24,6 +25,7 @@
     self = [super init];
     if (self) {
         _image = image;
+        self.isSaving = NO;
     }
     return self;
 }
@@ -33,6 +35,37 @@
 }
 
 #pragma mark - View Lifecycle
+
+#pragma mark - Saving
+
+- (IBAction)saveImageToLibrary:(id)sender {
+    UIImageWriteToSavedPhotosAlbum(self.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    self.isSaving = YES;
+}
+
+- (void)               image: (UIImage *) image
+    didFinishSavingWithError: (NSError *) error
+                 contextInfo: (void *) contextInfo {
+    self.isSaving = NO;
+    
+    NSLog(@"Сохранилось");
+
+    if (error) {
+        self.savingLabel.text = @"Ошипка..";
+    } else {
+        self.savingLabel.text = @"Сохранилось!";
+    }
+    
+    self.savingLabel.alpha = 0.0;
+    self.savingLabel.hidden = NO;
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        self.savingLabel.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
 /*
 - (void)viewDidLoad {
     [super viewDidLoad];

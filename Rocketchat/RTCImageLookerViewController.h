@@ -10,7 +10,7 @@
 
 @interface RTCImageLookerViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (nonatomic) BOOL isSaving;
 
 - (instancetype)initWithImage:(UIImage *)image;
 

@@ -77,7 +77,7 @@
         [self setupOverlayViewFrame];
         self.cameraOverlayView = self.overlayView;
         
-        [self setupTransformForHeight:self.view.bounds.size.width];
+        [self setupTransformForHeight:[UIScreen mainScreen].bounds.size.width];
     } else {
         self.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
@@ -87,14 +87,22 @@
 }
 
 - (void)setupTransformForHeight:(CGFloat)height {
-    CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, (568 - 426) / 2.0); //This slots the preview exactly in the middle of the screen by moving it down 71 points
+    
+    CGFloat scaleFactor;
+    
+    if (height == [UIScreen mainScreen].bounds.size.width) {
+        scaleFactor = 1.0;
+    } else {
+        scaleFactor = height / 426;
+    }
+    
+    
+    CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, (height - 426) / 2.0);
     self.cameraViewTransform = translate;
     
-    CGFloat scaleFactor = 1.333333;
     CGAffineTransform scale = CGAffineTransformScale(translate, scaleFactor, scaleFactor);
     self.cameraViewTransform = scale;
     
-    NSLog(@"set transform");
 }
 
 - (void)setupOverlayViewFrame {
@@ -129,7 +137,8 @@
     NSLog(@"sender %@", sender);
     if (self.screenMode == PhotoScreenModeShort) {
         
-        [self setupTransformForHeight:self.view.bounds.size.height];
+        [self setupTransformForHeight:[UIScreen mainScreen].bounds.size.height];
+
         
         [self.screenModeButton setImage:[UIImage imageNamed:@"fullscreen_close"] forState:UIControlStateNormal];
 
@@ -137,7 +146,7 @@
         
     } else if (self.screenMode == PhotoScreenModeFull) {
         
-        [self setupTransformForHeight:self.view.bounds.size.width];
+        [self setupTransformForHeight:[UIScreen mainScreen].bounds.size.width];
         
         [self.screenModeButton setImage:[UIImage imageNamed:@"camera_interface_fullscreen"] forState:UIControlStateNormal];
         [self.mvc setPhotoTakerControllerShortScreenMode];

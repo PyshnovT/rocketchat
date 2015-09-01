@@ -726,7 +726,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)moveImageViewPlaceholder:(UIPanGestureRecognizer *)gr {
-    if (!self.imageViewPlaceholder) return;
+    if (!self.imageViewPlaceholder || self.imageLookerController.isSaving) return;
     
     static CGPoint startOrigin;
     static ImageViewPlaceholderPanDirection direction;
@@ -767,6 +767,7 @@ static NSString * const reuseIdentifier = @"Cell";
             animation.duration = 0.2;
             
             [self.imageViewPlaceholder.layer addAnimation:animation forKey:@"cornerRadius"];
+            [self.imageViewPlaceholder.layer setCornerRadius:20.0];
             
             [UIView animateWithDuration:0.2 animations:^{
                 
@@ -775,12 +776,14 @@ static NSString * const reuseIdentifier = @"Cell";
                 
                 self.imageLookerController = nil; // ну чтоб уж точно
                 
+                [self.imageViewPlaceholder removeFromSuperview];
+                self.imageViewPlaceholder = nil;
+                
                 RTCMessageCollectionViewCell *cell = (RTCMessageCollectionViewCell *)[self.collectionViewController.collectionView cellForItemAtIndexPath:self.indexPathForViewingCell];
                 self.indexPathForViewingCell = nil;
                 cell.imageView.hidden = NO;
                 
-                [self.imageViewPlaceholder removeFromSuperview];
-                self.imageViewPlaceholder = nil;
+                
             }];
         }
         
