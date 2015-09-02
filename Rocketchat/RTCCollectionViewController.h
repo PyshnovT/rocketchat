@@ -21,8 +21,8 @@
 
 @property (nonatomic, weak) RTCMainViewController *mvc;
 
-- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text;
-- (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media;
+- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text isNew:(BOOL)isNew;
+- (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media isNew:(BOOL)isNew;
 
 - (void)scrollToNewestMessage;
 

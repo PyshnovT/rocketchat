@@ -101,7 +101,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - Adding messages
 
-- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media {
+- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media isNew:(BOOL)isNew {
     if ((text && media) || (!text && !media) || [text isEqualToString:@""]) return;
     
     RTCMessage *newMessage;
@@ -111,25 +111,25 @@ static NSString * const reuseIdentifier = @"Cell";
     } else if (media) {
         newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date media:media];
     }
-    /*
+    
     if (isNew) {
         [self addMessageToParse:newMessage];
     } else {
         newMessage.isSent = YES;
     }
-    */
+    
     [self.collectionView reloadData];
     
     [self scrollToNewestMessage];
     
 }
 
-- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text {
-    [self addMessageWithDate:date text:text media:nil];
+- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text isNew:(BOOL)isNew {
+    [self addMessageWithDate:date text:text media:nil isNew:isNew];
 }
 
-- (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media {
-    [self addMessageWithDate:date text:nil media:media];
+- (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media isNew:(BOOL)isNew {
+    [self addMessageWithDate:date text:nil media:media isNew:isNew];
 }
 
 - (void)addMessageToParse:(RTCMessage *)message {

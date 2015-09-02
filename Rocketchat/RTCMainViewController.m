@@ -30,6 +30,8 @@
 
 #import "UIImage+Scale.h"
 
+#import <Parse/Parse.h>
+
 typedef enum {
     ImageViewPlaceholderPanDirectionLeft,
     ImageViewPlaceholderPanDirectionTop,
@@ -122,6 +124,8 @@ static NSString * const reuseIdentifier = @"Cell";
     self.messageTextField.delegate = self;
     
     
+    [self getParseData];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -144,6 +148,51 @@ static NSString * const reuseIdentifier = @"Cell";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Parse
+
+- (void)getParseData { // Добавляётся всё в главном потоке, это медленно, но для асинхронного надо обмозговать алгоритм, а времени мало
+    PFQuery *query = [PFQuery queryWithClassName:@"Message"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            NSLog(@"Увспешно");
+            
+            for (PFObject *object in objects) {
+                NSLog(@"%@", object.objectId);
+                
+                if (object[@"text"]) {
+                    [self.collectionViewController addMessageWithDate:[NSDate date] text:object[@"text"] isNew:NO];
+                } else if (object[@"image"] && !object[@"location"]) {
+                    
+                    PFFile *imageFile = object[@"image"];
+                    NSData *imageData = [imageFile getData];
+                    UIImage *image = [UIImage imageWithData:imageData];
+                    //[object[@"image"] getData];
+                    
+                    RTCMessageImageMediaItem *imageItem = [RTCMessageImageMediaItem itemWithImage:image];
+                    [self.collectionViewController addMessageWithDate:[NSDate date] media:imageItem isNew:NO];
+                    
+                } else if (object[@"location"] && object[@"image"]) {
+                    
+                    PFFile *imageFile = object[@"image"];
+                    NSData *imageData = [imageFile getData];
+                    UIImage *image = [UIImage imageWithData:imageData];
+                    //[object[@"image"] getData];
+                    
+                    PFGeoPoint *point = object[@"location"];
+                    CLLocation *location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
+                    
+                    RTCMessageLocationMediaItem *imageItem = [RTCMessageLocationMediaItem itemWithImage:image andLocation:location];
+                    [self.collectionViewController addMessageWithDate:[NSDate date] media:imageItem isNew:NO];
+                    
+                }
+            }
+        } else {
+            NSLog(@"Parse error %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
 
 #pragma mark - Keyboard Notification
 
@@ -437,7 +486,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (IBAction)sendMessages:(id)sender {
     
     if (![self.messageTextField.text isEqualToString:@""]) {
-        [self.collectionViewController addMessageWithDate:[NSDate date] text:self.messageTextField.text];
+        [self.collectionViewController addMessageWithDate:[NSDate date] text:self.messageTextField.text isNew:YES];
         self.messageTextField.text = @"";
     }
     
@@ -450,7 +499,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
         if (uploadedImages.count) {
             for (int i = 0; i < uploadedImages.count; i++) {
-                [self.collectionViewController addMessageWithDate:[NSDate date] media:uploadedImages[i]];
+                [self.collectionViewController addMessageWithDate:[NSDate date] media:uploadedImages[i] isNew:YES];
             }
         }
         
@@ -660,7 +709,7 @@ static NSString * const reuseIdentifier = @"Cell";
     RTCMessageLocationMediaItem *locationItem = [[RTCMediaStore sharedStore] locationSnapshot];
     
     if (locationItem) {
-        [self.collectionViewController addMessageWithDate:[NSDate date] media:locationItem];
+        [self.collectionViewController addMessageWithDate:[NSDate date] media:locationItem isNew:YES];
         [[RTCMediaStore sharedStore] cleanLocationSnapshot];
     }
     
@@ -689,7 +738,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     if (photoItem) {
         
-        [self.collectionViewController addMessageWithDate:[NSDate date] media:photoItem];
+        [self.collectionViewController addMessageWithDate:[NSDate date] media:photoItem isNew:YES];
         
     }
 }
