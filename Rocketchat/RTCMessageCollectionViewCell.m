@@ -36,6 +36,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)prepareForReuse {
     self.textLabel.text = nil;
     self.imageView.image = nil;
+    self.ticketView.hidden = YES;
     self.ticketView.backgroundColor = [UIColor clearColor];
     self.location = nil;
 }

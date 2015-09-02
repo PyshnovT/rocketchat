@@ -14,7 +14,6 @@
 
 @property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UIImage *image;
-@property (weak, nonatomic) IBOutlet UILabel *savingLabel;
 
 @end
 
@@ -38,24 +37,6 @@
 #pragma mark - View Lifecycle
 
 #pragma mark - Saving
-
-- (IBAction)saveImageToLibrary:(id)sender {
-    UIImageWriteToSavedPhotosAlbum(self.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-    self.isSaving = YES;
-}
-
-- (void)               image: (UIImage *) image
-    didFinishSavingWithError: (NSError *) error
-                 contextInfo: (void *) contextInfo {
-    self.isSaving = NO;
-
-    if (error) {
-        [self.mvc showSavingImageViewAfterSuccess:NO];
-    } else {
-        [self.mvc showSavingImageViewAfterSuccess:YES];
-    }
-    
-}
 
 /*
 - (void)viewDidLoad {

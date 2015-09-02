@@ -107,6 +107,10 @@ static NSString * const reuseIdentifier = @"Cell";
     self.imageViewPlaceholder = nil;
     self.panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveImageViewPlaceholder:)];
     [self.view addGestureRecognizer:self.panGestureRecognizer];
+   
+    UILongPressGestureRecognizer *gr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(saveImageToLibrary:)];
+    [self.view addGestureRecognizer:gr];
+    
     
     self.isKeyboardShown = NO;
     
@@ -333,14 +337,14 @@ static NSString * const reuseIdentifier = @"Cell";
         
         self.photoTakerController.mvc = self;
         
-       //[self setupPhotoTakerController];
+        //[self setupPhotoTakerController];
         
         [self.view layoutIfNeeded];
         
         
         [UIView animateWithDuration:0.2 animations:^{
             self.mediaContainerViewHeightConstraint.constant = self.photoTakerController.view.bounds.size.width;
-
+            
             [self.view layoutIfNeeded];
         } completion:^(BOOL finished) {
             [self setPhotoTakerControllerShortScreenMode];
@@ -353,7 +357,7 @@ static NSString * const reuseIdentifier = @"Cell";
         self.mapViewController.mvc = self;
         
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.mapViewController];
-
+        
         
         [self presentViewController:navController animated:YES completion:nil];
         
@@ -369,7 +373,7 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.view addSubview:self.imageViewPlaceholder];
         NSLog(@"%@", self.imageViewPlaceholder);
         
-
+        
         
         [UIView animateWithDuration:0.3 animations:^{
             
@@ -573,8 +577,8 @@ static NSString * const reuseIdentifier = @"Cell";
     MediaType currentMediaOpened = [RTCMediaStore sharedStore].currentMediaType;
     
     [RTCMediaStore sharedStore].currentMediaType = MediaTypeNone;
-
-
+    
+    
     
     if (currentMediaOpened == MediaTypeNone) {
         
@@ -636,7 +640,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.view layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
         self.mediaContainerViewHeightConstraint.constant = 0;
-
+        
         self.photoTakerController.view.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.width);
         
         [self.view layoutIfNeeded];
@@ -659,7 +663,7 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.collectionViewController addMessageWithDate:[NSDate date] media:locationItem];
         [[RTCMediaStore sharedStore] cleanLocationSnapshot];
     }
-
+    
     
     self.mapViewController = nil;
     NSLog(@"%@", self.mapViewController);
@@ -684,7 +688,7 @@ static NSString * const reuseIdentifier = @"Cell";
     RTCMessageImageMediaItem *photoItem = [[RTCMediaStore sharedStore] takenPhoto];
     
     if (photoItem) {
-
+        
         [self.collectionViewController addMessageWithDate:[NSDate date] media:photoItem];
         
     }
@@ -752,7 +756,7 @@ static NSString * const reuseIdentifier = @"Cell";
                 [self.imageLookerController removeFromParentViewController];
                 self.imageLookerController = nil;
             }];
-
+            
             
             CGPoint translation = [gr translationInView:self.view];
             
@@ -828,12 +832,12 @@ static NSString * const reuseIdentifier = @"Cell";
     CGFloat ticketOffset = ((RTCMessageCollectionViewLayout *)self.collectionViewController.collectionViewLayout).ticketOffset;
     
     CGRect bubbleRect = CGRectMake(rectInSuperview.origin.x + ticketOffset, rectInSuperview.origin.y, rectInSuperview.size.width - ticketOffset, rectInSuperview.size.height);
-
+    
     
     return bubbleRect;
 }
 
-- (void)showSavingImageViewAfterSuccess:(BOOL)afterSuccess {
+- (void)showSavingImageView {
     
     [[NSBundle mainBundle] loadNibNamed:@"SavingImageView" owner:self options:nil];
     
@@ -848,13 +852,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     savingView.frame = viewRect;
     savingView.alpha = 0.0;
-
     
-    if (afterSuccess) {
-        self.savingImageLabel.text = @"Сохранено";
-    } else {
-        self.savingImageLabel.text = @"Ашипка";
-    }
     
     [self.view addSubview:savingView];
     
@@ -867,14 +865,60 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)closeSavingImageView:(NSTimer *)t {
+    
     [UIView animateWithDuration:0.3 animations:^{
         self.savingImageView.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self.savingImageView removeFromSuperview];
         self.savingImageView = nil;
     }];
-
+    
     [t invalidate];
+}
+
+- (void)saveImageToLibrary:(UILongPressGestureRecognizer *)gr {
+    if (!self.imageViewPlaceholder) return;
+ 
+    if (gr.state == UIGestureRecognizerStateBegan) {
+        UIImageWriteToSavedPhotosAlbum(self.imageViewPlaceholder.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    }
+}
+
+- (void)               image: (UIImage *) image
+    didFinishSavingWithError: (NSError *) error
+                 contextInfo: (void *) contextInfo {
+
+    [[NSBundle mainBundle] loadNibNamed:@"SavingImageView" owner:self options:nil];
+    
+    UIView *savingView = self.savingImageView;
+    
+    CGSize viewSize = savingView.bounds.size;
+    
+    CGFloat x = self.view.bounds.size.width * 0.5 - viewSize.width / 2.0;
+    CGFloat y = self.view.bounds.size.height * 0.5 - viewSize.height / 2.0;
+    
+    CGRect viewRect = CGRectMake(x, y, viewSize.width, viewSize.height);
+    
+    savingView.frame = viewRect;
+    savingView.alpha = 0.0;
+    
+    
+    if (!error) {
+        self.savingImageLabel.text = @"Сохранено";
+    } else {
+        self.savingImageLabel.text = @"Ашипка";
+    }
+    
+    
+    [self.view addSubview:savingView];
+    
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        savingView.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        __unused NSTimer *t = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(closeSavingImageView:) userInfo:nil repeats:NO];
+    }];
+    
 }
 
 @end

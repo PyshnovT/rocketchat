@@ -88,18 +88,10 @@
 
 - (void)setupTransformForHeight:(CGFloat)height {
     
-    CGFloat scaleFactor;
-    
-    if (height == [UIScreen mainScreen].bounds.size.width) {
-        scaleFactor = 1.0;
-    } else {
-        scaleFactor = height / 426;
-    }
-    
-    
     CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, (height - 426) / 2.0);
     self.cameraViewTransform = translate;
     
+    CGFloat scaleFactor = 1.333333;
     CGAffineTransform scale = CGAffineTransformScale(translate, scaleFactor, scaleFactor);
     self.cameraViewTransform = scale;
     
@@ -113,14 +105,10 @@
     height = self.overlayView.bounds.size.height;
     
     if (self.screenMode == PhotoScreenModeFull) {
-        NSLog(@"WIDE");
         y = self.view.bounds.size.height - self.overlayView.bounds.size.height;
-        NSLog(@"%f", y);
         
         self.overlayView.frame = CGRectMake(x, y, width, height);
-        NSLog(@"%@", self.overlayView);
     } else {
-        NSLog(@"Short");
         y = self.view.bounds.size.width - self.overlayView.bounds.size.height;
         
         self.overlayView.frame = CGRectMake(x, y, width, height);

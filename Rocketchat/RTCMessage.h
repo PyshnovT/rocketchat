@@ -12,6 +12,8 @@
 
 @interface RTCMessage : NSObject
 
+@property (nonatomic) NSInteger sortKey;
+@property (nonatomic) BOOL isSent;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) id<RTCMessageMedia> media;

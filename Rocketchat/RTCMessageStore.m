@@ -44,7 +44,7 @@
     return self;
 }
 
-#pragma mark - Property Accessory 
+#pragma mark - Property Accessory
 
 - (NSArray *)allMessages {
     return self.privateMessages;

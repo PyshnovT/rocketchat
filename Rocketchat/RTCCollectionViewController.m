@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Pyshnov. All rights reserved.
 //
 
+#import <Parse/Parse.h>
+
 #import "RTCCollectionViewController.h"
 #import "RTCMainViewController.h"
 
@@ -102,13 +104,20 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media {
     if ((text && media) || (!text && !media) || [text isEqualToString:@""]) return;
     
+    RTCMessage *newMessage;
     
     if (text) {
-        [[RTCMessageStore sharedStore] createMessageWithDate:date text:text];
+        newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date text:text];
     } else if (media) {
-        [[RTCMessageStore sharedStore] createMessageWithDate:date media:media];
+        newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date media:media];
     }
-    
+    /*
+    if (isNew) {
+        [self addMessageToParse:newMessage];
+    } else {
+        newMessage.isSent = YES;
+    }
+    */
     [self.collectionView reloadData];
     
     [self scrollToNewestMessage];
@@ -121,6 +130,60 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media {
     [self addMessageWithDate:date text:nil media:media];
+}
+
+- (void)addMessageToParse:(RTCMessage *)message {
+    PFObject *messageObject = [PFObject objectWithClassName:@"Message"];
+
+
+    
+    if (message.media) {
+        if ([message.media respondsToSelector:@selector(location)]) {
+            if (message.media.location) {
+               
+                CLLocationCoordinate2D coordinate = message.media.location.coordinate;
+                
+                PFGeoPoint *point = [PFGeoPoint geoPointWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+
+                messageObject[@"location"] = point;
+                
+            }
+        } else {
+
+        }
+        
+        NSData *imageData = UIImagePNGRepresentation(message.media.image);
+        PFFile *imageFile = [PFFile fileWithName:@"image.png" data:imageData];
+        
+        messageObject[@"image"] = imageFile;
+
+    } else {
+        messageObject[@"text"] = message.text;
+    }
+    
+    messageObject[@"messageId"] = @([[RTCMessageStore sharedStore] allMessages].count - 1);
+    
+    NSLog(@"На отправку! %@", messageObject);
+    
+    [messageObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            // The object has been saved.
+            NSLog(@"Саксидед");
+            
+            NSUInteger messageIndex = [[[RTCMessageStore sharedStore] allMessages] indexOfObject:message];
+            
+            RTCMessageCollectionViewCell *cell = (RTCMessageCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:messageIndex inSection:0]];
+
+            message.isSent = YES;
+            cell.ticketView.hidden = NO;
+            
+        } else {
+            // There was a problem, check error.description
+            NSLog(@"Не саксидед");
+            NSLog(@"%@", error.description);
+        }
+    }];
+
 }
 
 #pragma mark - Scrolling
@@ -171,6 +234,12 @@ static NSString * const reuseIdentifier = @"Cell";
                 cell.location = message.media.location;
             }
         }
+    }
+    
+    if (message.isSent) {
+        cell.ticketView.hidden = NO;
+    } else {
+        cell.ticketView.hidden = YES;
     }
     
     cell.layer.shouldRasterize = YES;
