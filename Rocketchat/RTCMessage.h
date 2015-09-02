@@ -12,7 +12,7 @@
 
 @interface RTCMessage : NSObject
 
-@property (nonatomic) NSInteger sortKey;
+@property (nonatomic, copy) NSString *parseId;
 @property (nonatomic) BOOL isSent;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSString *text;

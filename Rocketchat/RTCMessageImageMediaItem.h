@@ -17,7 +17,5 @@
 + (instancetype)itemWithImage:(UIImage *)image;
 - (instancetype)initWithImage:(UIImage *)image;
 
-+ (instancetype)itemWithImage:(UIImage *)image thumbnailImage:(UIImage *)thumbnailImage;
-- (instancetype)initWithImage:(UIImage *)image thumbnailImage:(UIImage *)thumbnailImage;
 
 @end

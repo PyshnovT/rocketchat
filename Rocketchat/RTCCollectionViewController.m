@@ -24,7 +24,9 @@
 
 #import "RTCMapViewController.h"
 
-@interface RTCCollectionViewController ()
+#import <Parse/Parse.h>
+
+@interface RTCCollectionViewController () <UIGestureRecognizerDelegate>
 
 @end
 
@@ -43,6 +45,14 @@ static NSString * const reuseIdentifier = @"Cell";
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.alwaysBounceVertical = YES;
     [self.collectionView registerNib:[UINib nibWithNibName:@"RTCMessageCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"Cell"];
+    
+    /*
+    UILongPressGestureRecognizer *lpgr
+    = [[UILongPressGestureRecognizer alloc]
+       initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = .5; //seconds
+    lpgr.delegate = self;
+    [self.collectionView addGestureRecognizer:lpgr]; <-- тут как бы удаление */ 
     
 }
 
@@ -101,7 +111,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - Adding messages
 
-- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media isNew:(BOOL)isNew {
+- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
     if ((text && media) || (!text && !media) || [text isEqualToString:@""]) return;
     
     RTCMessage *newMessage;
@@ -112,7 +122,9 @@ static NSString * const reuseIdentifier = @"Cell";
         newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date media:media];
     }
     
-    if (isNew) {
+    newMessage.parseId = parseId;
+    
+    if (!parseId) {
         [self addMessageToParse:newMessage];
     } else {
         newMessage.isSent = YES;
@@ -124,12 +136,12 @@ static NSString * const reuseIdentifier = @"Cell";
     
 }
 
-- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text isNew:(BOOL)isNew {
-    [self addMessageWithDate:date text:text media:nil isNew:isNew];
+- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text  withParseId:(NSString *)parseId {
+    [self addMessageWithDate:date text:text media:nil withParseId:parseId];
 }
 
-- (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media isNew:(BOOL)isNew {
-    [self addMessageWithDate:date text:nil media:media isNew:isNew];
+- (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
+    [self addMessageWithDate:date text:nil media:media withParseId:parseId];
 }
 
 - (void)addMessageToParse:(RTCMessage *)message {
@@ -267,6 +279,29 @@ static NSString * const reuseIdentifier = @"Cell";
         }
     }
 }
+
+#pragma mark - Long Press
+/*
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.state != UIGestureRecognizerStateEnded) {
+        return;
+    }
+    
+    CGPoint p = [gestureRecognizer locationInView:self.collectionView];
+    
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
+    if (indexPath == nil) {
+        NSLog(@"couldn't find index path");
+    } else {
+        // get the cell at indexPath (the one you long pressed)
+        UICollectionViewCell* cell =
+        [self.collectionView cellForItemAtIndexPath:indexPath];
+        
+        PFObject *object = [PFObject objectWithoutDataWithClassName:@"Message" objectId:<#(nullable NSString *)#>]
+        // do stuff with the cell
+    }
+}
+ */
 
 /*
 // Uncomment this method to specify if the specified item should be highlighted during tracking

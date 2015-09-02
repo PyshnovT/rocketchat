@@ -78,4 +78,10 @@
     return [self createMessageWithDate:date text:nil media:media];
 }
 
+- (void)removeMessageAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger row = indexPath.row;
+    
+    [self.privateMessages removeObjectAtIndex:row];
+}
+
 @end

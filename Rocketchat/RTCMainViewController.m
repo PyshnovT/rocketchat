@@ -124,7 +124,7 @@ static NSString * const reuseIdentifier = @"Cell";
     self.messageTextField.delegate = self;
     
     
-    [self getParseData];
+  //  [self getParseData]; <------ не успел доделать так хорошо, как мог бы, поэтому пока функцию отключаю
     
 }
 
@@ -161,29 +161,27 @@ static NSString * const reuseIdentifier = @"Cell";
                 NSLog(@"%@", object.objectId);
                 
                 if (object[@"text"]) {
-                    [self.collectionViewController addMessageWithDate:[NSDate date] text:object[@"text"] isNew:NO];
+                    [self.collectionViewController addMessageWithDate:[NSDate date] text:object[@"text"] withParseId:object[@"objectId"]];
                 } else if (object[@"image"] && !object[@"location"]) {
                     
                     PFFile *imageFile = object[@"image"];
                     NSData *imageData = [imageFile getData];
                     UIImage *image = [UIImage imageWithData:imageData];
-                    //[object[@"image"] getData];
                     
                     RTCMessageImageMediaItem *imageItem = [RTCMessageImageMediaItem itemWithImage:image];
-                    [self.collectionViewController addMessageWithDate:[NSDate date] media:imageItem isNew:NO];
+                    [self.collectionViewController addMessageWithDate:[NSDate date] media:imageItem withParseId:object[@"objectId"]];
                     
                 } else if (object[@"location"] && object[@"image"]) {
                     
                     PFFile *imageFile = object[@"image"];
                     NSData *imageData = [imageFile getData];
                     UIImage *image = [UIImage imageWithData:imageData];
-                    //[object[@"image"] getData];
                     
                     PFGeoPoint *point = object[@"location"];
                     CLLocation *location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
                     
                     RTCMessageLocationMediaItem *imageItem = [RTCMessageLocationMediaItem itemWithImage:image andLocation:location];
-                    [self.collectionViewController addMessageWithDate:[NSDate date] media:imageItem isNew:NO];
+                    [self.collectionViewController addMessageWithDate:[NSDate date] media:imageItem withParseId:object[@"objectId"]];
                     
                 }
             }
@@ -486,7 +484,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (IBAction)sendMessages:(id)sender {
     
     if (![self.messageTextField.text isEqualToString:@""]) {
-        [self.collectionViewController addMessageWithDate:[NSDate date] text:self.messageTextField.text isNew:YES];
+        [self.collectionViewController addMessageWithDate:[NSDate date] text:self.messageTextField.text withParseId:nil];
         self.messageTextField.text = @"";
     }
     
@@ -499,7 +497,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
         if (uploadedImages.count) {
             for (int i = 0; i < uploadedImages.count; i++) {
-                [self.collectionViewController addMessageWithDate:[NSDate date] media:uploadedImages[i] isNew:YES];
+                [self.collectionViewController addMessageWithDate:[NSDate date] media:uploadedImages[i] withParseId:nil];
             }
         }
         
@@ -709,7 +707,7 @@ static NSString * const reuseIdentifier = @"Cell";
     RTCMessageLocationMediaItem *locationItem = [[RTCMediaStore sharedStore] locationSnapshot];
     
     if (locationItem) {
-        [self.collectionViewController addMessageWithDate:[NSDate date] media:locationItem isNew:YES];
+        [self.collectionViewController addMessageWithDate:[NSDate date] media:locationItem withParseId:nil];
         [[RTCMediaStore sharedStore] cleanLocationSnapshot];
     }
     
@@ -738,7 +736,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     if (photoItem) {
         
-        [self.collectionViewController addMessageWithDate:[NSDate date] media:photoItem isNew:YES];
+        [self.collectionViewController addMessageWithDate:[NSDate date] media:photoItem withParseId:nil];
         
     }
 }

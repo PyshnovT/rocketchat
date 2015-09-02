@@ -26,4 +26,7 @@
 - (RTCMessage *)createMessageWithDate:(NSDate *)date text:(NSString *)text;
 - (RTCMessage *)createMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media;
 
+- (void)removeMessageAtIndexPath:(NSIndexPath *)indexPath;
+
+
 @end

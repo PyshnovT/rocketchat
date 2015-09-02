@@ -20,8 +20,5 @@
 + (instancetype)itemWithImage:(UIImage *)image andLocation:(CLLocation *)location;
 - (instancetype)initWithImage:(UIImage *)image andLocation:(CLLocation *)location;
 
-+ (instancetype)itemWithLocation:(CLLocation *)location andThumbnailImage:(UIImage *)thumbnailImage;
-- (instancetype)initWithLocation:(CLLocation *)location andThumbnailImage:(UIImage *)thumbnailImage;
-
 
 @end
