@@ -16,13 +16,14 @@
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 
 @class RTCMainViewController;
+@class RTCMessage;
 
 @interface RTCCollectionViewController : UICollectionViewController
 
 @property (nonatomic, weak) RTCMainViewController *mvc;
 
-- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text withParseId:(NSString *)parseId;
-- (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId;
+- (RTCMessage *)addMessageWithDate:(NSDate *)date text:(NSString *)text withParseId:(NSString *)parseId;
+- (RTCMessage *)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId;
 
 - (void)scrollToNewestMessage;
 

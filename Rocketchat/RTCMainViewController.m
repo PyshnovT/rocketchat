@@ -32,6 +32,8 @@
 
 #import <Parse/Parse.h>
 
+#import <AdSupport/ASIdentifierManager.h>
+
 typedef enum {
     ImageViewPlaceholderPanDirectionLeft,
     ImageViewPlaceholderPanDirectionTop,
@@ -124,7 +126,7 @@ static NSString * const reuseIdentifier = @"Cell";
     self.messageTextField.delegate = self;
     
     
-  //  [self getParseData]; <------ не успел доделать так хорошо, как мог бы, поэтому пока функцию отключаю
+    [self getParseData];// <------ не успел доделать так хорошо, как мог бы, поэтому пока функцию отключаю
     
 }
 
@@ -153,37 +155,65 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)getParseData { // Добавляётся всё в главном потоке, это медленно, но для асинхронного надо обмозговать алгоритм, а времени мало
     PFQuery *query = [PFQuery queryWithClassName:@"Message"];
+    
+    NSString *adId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    
+    [query whereKey:@"deviceId" equalTo:adId];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            NSLog(@"Увспешно");
+            NSLog(@"Успешно получены данные из Parse.com %@", objects);
             
             for (PFObject *object in objects) {
-                NSLog(@"%@", object.objectId);
                 
                 if (object[@"text"]) {
-                    [self.collectionViewController addMessageWithDate:[NSDate date] text:object[@"text"] withParseId:object[@"objectId"]];
+                    [self.collectionViewController addMessageWithDate:[NSDate date] text:object[@"text"] withParseId:[object objectId]];
                 } else if (object[@"image"] && !object[@"location"]) {
                     
+                    RTCMessage *newMessage = [self.collectionViewController addMessageWithDate:[NSDate date] media:nil withParseId:[object objectId]];
                     PFFile *imageFile = object[@"image"];
-                    NSData *imageData = [imageFile getData];
-                    UIImage *image = [UIImage imageWithData:imageData];
                     
-                    RTCMessageImageMediaItem *imageItem = [RTCMessageImageMediaItem itemWithImage:image];
-                    [self.collectionViewController addMessageWithDate:[NSDate date] media:imageItem withParseId:object[@"objectId"]];
+                    [imageFile getDataInBackgroundWithBlock:^(NSData *result, NSError *error) {
+                        
+                       if (!error) {
+                           
+                            UIImage *image = [UIImage imageWithData:result];
+                            
+                            RTCMessageImageMediaItem *imageItem = [RTCMessageImageMediaItem itemWithImage:image];
+                            newMessage.media = imageItem;
+                           
+                           NSLog(@"message media %@", newMessage.media);
+                           
+                           [self.collectionViewController.collectionView reloadData];
+                        } else {
+                            NSLog(@"Ошибка в получении картинки %@", error);
+                        }
+                    }];
+                    
+                    
                     
                 } else if (object[@"location"] && object[@"image"]) {
-                    
-                    PFFile *imageFile = object[@"image"];
-                    NSData *imageData = [imageFile getData];
-                    UIImage *image = [UIImage imageWithData:imageData];
+                    RTCMessage *newMessage = [self.collectionViewController addMessageWithDate:[NSDate date] media:nil withParseId:[object objectId]];
                     
                     PFGeoPoint *point = object[@"location"];
                     CLLocation *location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
                     
-                    RTCMessageLocationMediaItem *imageItem = [RTCMessageLocationMediaItem itemWithImage:image andLocation:location];
-                    [self.collectionViewController addMessageWithDate:[NSDate date] media:imageItem withParseId:object[@"objectId"]];
+                    PFFile *imageFile = object[@"image"];
                     
+                    [imageFile getDataInBackgroundWithBlock:^(NSData *result, NSError *error) {
+                        if (!error) {
+                            
+                            UIImage *image = [UIImage imageWithData:result];
+                            RTCMessageLocationMediaItem *locationItem = [RTCMessageLocationMediaItem itemWithImage:image andLocation:location];
+                            newMessage.media = locationItem;
+                            
+                            [self.collectionViewController.collectionView reloadData];
+                        } else {
+                             NSLog(@"Ошибка в получении картинки %@", error);
+                        }
+                    }];
+                   
                 }
+                
             }
         } else {
             NSLog(@"Parse error %@ %@", error, [error userInfo]);

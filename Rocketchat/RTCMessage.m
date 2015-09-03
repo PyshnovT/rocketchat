@@ -16,7 +16,7 @@
 
  // Designated initializer
 - (instancetype)initWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media {
-    if ((media && text) || (!media && !text)) return nil;
+    if (media && text) return nil;
 
     self = [super init];
     if (self) {
@@ -24,6 +24,7 @@
         
         self.date = date;
         self.text = text;
+        
         self.media = media;
         
     }

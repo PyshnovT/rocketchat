@@ -54,7 +54,7 @@
 
 
 - (RTCMessage *)createMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media {
-    if ((text && media) || (!text && !media)) return nil;
+    if (text && media) return nil;
     
     RTCMessage *newMessage;
     
@@ -62,8 +62,12 @@
         newMessage = [[RTCMessage alloc] initWithDate:date text:text];
     } else if (media) {
         newMessage = [[RTCMessage alloc] initWithDate:date media:media];
+    } else {
+        
+        newMessage = [[RTCMessage alloc] initWithDate:date media:media];
     }
     
+    NSLog(@"Image object! %@", newMessage);
     [self.privateMessages addObject:newMessage];
     
     return newMessage;

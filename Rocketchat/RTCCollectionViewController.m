@@ -25,6 +25,7 @@
 #import "RTCMapViewController.h"
 
 #import <Parse/Parse.h>
+#import <AdSupport/ASIdentifierManager.h>
 
 @interface RTCCollectionViewController () <UIGestureRecognizerDelegate>
 
@@ -111,8 +112,10 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - Adding messages
 
-- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
-    if ((text && media) || (!text && !media) || [text isEqualToString:@""]) return;
+- (RTCMessage *)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
+    if ((text && media) || [text isEqualToString:@""]) return nil;
+    
+
     
     RTCMessage *newMessage;
     
@@ -120,6 +123,8 @@ static NSString * const reuseIdentifier = @"Cell";
         newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date text:text];
     } else if (media) {
         newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date media:media];
+    } else if (parseId && !text) {
+        newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date media:nil];
     }
     
     newMessage.parseId = parseId;
@@ -129,25 +134,27 @@ static NSString * const reuseIdentifier = @"Cell";
     } else {
         newMessage.isSent = YES;
     }
-    
+  
     [self.collectionView reloadData];
     
     [self scrollToNewestMessage];
     
+    return newMessage;
+    
 }
 
-- (void)addMessageWithDate:(NSDate *)date text:(NSString *)text  withParseId:(NSString *)parseId {
-    [self addMessageWithDate:date text:text media:nil withParseId:parseId];
+- (RTCMessage *)addMessageWithDate:(NSDate *)date text:(NSString *)text withParseId:(NSString *)parseId {
+    return [self addMessageWithDate:date text:text media:nil withParseId:parseId];
 }
 
-- (void)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
-    [self addMessageWithDate:date text:nil media:media withParseId:parseId];
+- (RTCMessage *)addMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
+    return [self addMessageWithDate:date text:nil media:media withParseId:parseId];
 }
 
 - (void)addMessageToParse:(RTCMessage *)message {
+    NSLog(@"Add Message to Parse");
+    
     PFObject *messageObject = [PFObject objectWithClassName:@"Message"];
-
-
     
     if (message.media) {
         if ([message.media respondsToSelector:@selector(location)]) {
@@ -165,17 +172,30 @@ static NSString * const reuseIdentifier = @"Cell";
         }
         
         NSData *imageData = UIImagePNGRepresentation(message.media.image);
-        PFFile *imageFile = [PFFile fileWithName:@"image.png" data:imageData];
+        PFFile *imageFile;
         
-        messageObject[@"image"] = imageFile;
+        if (imageData) {
+            imageFile = [PFFile fileWithName:@"image.png" data:imageData];
+            NSLog(@"%@", imageFile);
+            
+            messageObject[@"image"] = imageFile;
+        }
+        
+
 
     } else {
         messageObject[@"text"] = message.text;
     }
     
-    messageObject[@"messageId"] = @([[RTCMessageStore sharedStore] allMessages].count - 1);
-    
     NSLog(@"На отправку! %@", messageObject);
+    
+    
+    
+    if (!messageObject[@"text"] && !messageObject[@"image"]) return;
+    
+    NSString *adId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    
+    messageObject[@"deviceId"] = adId;
     
     [messageObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
@@ -246,6 +266,8 @@ static NSString * const reuseIdentifier = @"Cell";
                 cell.location = message.media.location;
             }
         }
+    } else { // при получении из интернета
+        cell.bubbleView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
     }
     
     if (message.isSent) {

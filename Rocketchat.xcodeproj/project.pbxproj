@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0906E7F91B97356F005CC684 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0906E7F71B97356F005CC684 /* Fabric.framework */; };
+		0906E7FA1B97356F005CC684 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0906E7F81B97356F005CC684 /* Crashlytics.framework */; };
 		090A28B61B8CBF5B00EBA5F6 /* RTCTextToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */; };
 		09236E761B8B807000F12618 /* AgoraSansProLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E741B8B807000F12618 /* AgoraSansProLight.ttf */; };
 		09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */; };
@@ -64,6 +66,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0906E7F71B97356F005CC684 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		0906E7F81B97356F005CC684 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		090A28B41B8CBF5B00EBA5F6 /* RTCTextToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCTextToolbarView.h; sourceTree = "<group>"; };
 		090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCTextToolbarView.m; sourceTree = "<group>"; };
 		09236E741B8B807000F12618 /* AgoraSansProLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProLight.ttf; sourceTree = "<group>"; };
@@ -144,8 +148,10 @@
 				09AD40281B88C80A00ED55AA /* CoreLocation.framework in Frameworks */,
 				09AD40291B88C80A00ED55AA /* libsqlite3.dylib in Frameworks */,
 				09AD402A1B88C80A00ED55AA /* libz.dylib in Frameworks */,
+				0906E7FA1B97356F005CC684 /* Crashlytics.framework in Frameworks */,
 				09AD402B1B88C80A00ED55AA /* QuartzCore.framework in Frameworks */,
 				09AD402C1B88C80A00ED55AA /* Security.framework in Frameworks */,
+				0906E7F91B97356F005CC684 /* Fabric.framework in Frameworks */,
 				09AD402E1B88C80A00ED55AA /* SystemConfiguration.framework in Frameworks */,
 				09AD401A1B88C7B100ED55AA /* Parse.framework in Frameworks */,
 				09F794F31B94694C002C1A9E /* MapKit.framework in Frameworks */,
@@ -344,6 +350,8 @@
 		09AD402F1B88C81A00ED55AA /* Frameworks and libs */ = {
 			isa = PBXGroup;
 			children = (
+				0906E7F71B97356F005CC684 /* Fabric.framework */,
+				0906E7F81B97356F005CC684 /* Crashlytics.framework */,
 				09F794F21B94694C002C1A9E /* MapKit.framework */,
 				09AD401B1B88C80A00ED55AA /* AudioToolbox.framework */,
 				09AD401C1B88C80A00ED55AA /* CFNetwork.framework */,
@@ -423,6 +431,7 @@
 				09AD3FF01B88C72600ED55AA /* Sources */,
 				09AD3FF11B88C72600ED55AA /* Frameworks */,
 				09AD3FF21B88C72600ED55AA /* Resources */,
+				0906E7F61B973532005CC684 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -525,6 +534,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0906E7F61B973532005CC684 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run b851d53104971a1f05a1f948563690bbce1a38cc 7b4560fe54b2a73603b28e6849781e1a0cdd3b54823285667c9c82e8f40547dd";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		09AD3FF01B88C72600ED55AA /* Sources */ = {
@@ -676,6 +701,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "37c79b1a-169b-4e34-a937-715ee260dda8";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -693,6 +719,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "37c79b1a-169b-4e34-a937-715ee260dda8";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
