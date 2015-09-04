@@ -13,6 +13,8 @@
 @interface RTCMainViewController : UIViewController 
 
 @property (strong, nonatomic) RTCMapViewController *mapViewController;
+@property (weak, nonatomic) IBOutlet UITextField *messageTextField;
+
 
 - (void)setSendButtonColor;
 

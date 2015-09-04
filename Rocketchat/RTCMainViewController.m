@@ -34,6 +34,8 @@
 
 #import <AdSupport/ASIdentifierManager.h>
 
+#import "DAKeyboardControl.h"
+
 typedef enum {
     ImageViewPlaceholderPanDirectionLeft,
     ImageViewPlaceholderPanDirectionTop,
@@ -53,8 +55,8 @@ typedef enum {
 
 @property (weak, nonatomic) IBOutlet UIView *mediaContainerView;
 @property (weak, nonatomic) IBOutlet UIView *mediaPickerToolbarView;
-@property (weak, nonatomic) IBOutlet UITextField *messageTextField;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet RTCTextToolbarView *inputToolbarView;
 
 // .ViewController Constraints
 
@@ -125,8 +127,9 @@ static NSString * const reuseIdentifier = @"Cell";
     [self displayViewController:self.collectionViewController];
     self.messageTextField.delegate = self;
     
+    [self setKeyboardControl];
     
-    [self getParseData];// <------ не успел доделать так хорошо, как мог бы, поэтому пока функцию отключаю
+    [self getParseData];
     
 }
 
@@ -138,6 +141,8 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [self.view removeKeyboardControl];
+    
     [super viewWillDisappear:animated];
     
     [self deregisterFromKeyboardNotifications];
@@ -307,6 +312,23 @@ static NSString * const reuseIdentifier = @"Cell";
         
         [self.view layoutIfNeeded];
     } completion:nil];
+}
+
+- (void)setKeyboardControl {
+    __weak RTCMainViewController *weakSelf = self;
+    
+    self.view.keyboardTriggerOffset = self.inputToolbarViewHeightConstraint.constant;//44.0f;
+    
+    [self.view addKeyboardPanningWithActionHandler:^(CGRect keyboardFrameInView, BOOL opening, BOOL closing) {
+        
+        __strong RTCMainViewController *strongSelf = weakSelf;
+        
+        NSInteger reversedOriginY = [[UIScreen mainScreen] bounds].size.height - keyboardFrameInView.origin.y;
+        
+        strongSelf.inputToolbarViewToMediaPickerToolbarViewConstraint.constant = MAX(reversedOriginY - self.mediaPickerToolbarViewHeightConstraint.constant - self.mediaContainerViewHeightConstraint.constant, 0);
+        
+    }];
+
 }
 
 #pragma mark - Notifications

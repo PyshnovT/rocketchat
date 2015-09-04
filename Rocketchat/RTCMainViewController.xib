@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="controllerCollectionView" destination="mv9-OJ-l28" id="Ile-cF-g5s"/>
                 <outlet property="imageGalleryMediaButton" destination="VTk-8X-XKc" id="Pcx-G2-lsc"/>
+                <outlet property="inputToolbarView" destination="4Xd-1B-TsC" id="jCM-1F-7O2"/>
                 <outlet property="inputToolbarViewHeightConstraint" destination="cpK-vW-nX5" id="Qfg-za-iUr"/>
                 <outlet property="inputToolbarViewToMediaPickerToolbarViewConstraint" destination="jPe-py-1gi" id="UZp-SG-Ndb"/>
                 <outlet property="locationMediaButton" destination="S1L-fS-6Sa" id="7Ad-U1-3Qa"/>

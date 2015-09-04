@@ -27,6 +27,8 @@
 #import <Parse/Parse.h>
 #import <AdSupport/ASIdentifierManager.h>
 
+#import "DAKeyboardControl.h"
+
 @interface RTCCollectionViewController () <UIGestureRecognizerDelegate>
 
 @end
