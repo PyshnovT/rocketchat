@@ -163,6 +163,8 @@ static NSInteger const tailHeight = 0;//8;
         CGFloat textHeight = MAX(21, textSize.height);
         
         height = self.messageBubbleInsets.top + textHeight + self.messageBubbleInsets.bottom + tailHeight;
+    } else {
+        height = self.messageSize.height;
     }
     
     return CGSizeMake(width, height);

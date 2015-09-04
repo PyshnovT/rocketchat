@@ -195,7 +195,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     NSString *adId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     
-    messageObject[@"deviceId"] = adId;
+    messageObject[@"deviceId"] = adId;//@"B1E33427-C0D9-4340-B390-3CEBB6596D18";//adId;
     
     [messageObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
@@ -268,6 +268,7 @@ static NSString * const reuseIdentifier = @"Cell";
         }
     } else { // при получении из интернета
         cell.bubbleView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+        cell.bubbleHeightConstraint.constant = ((RTCMessageCollectionViewLayout *)self.collectionViewLayout).messageSize.height;
     }
     
     if (message.isSent) {

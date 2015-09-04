@@ -34,6 +34,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)prepareForReuse {
+    self.bubbleHeightConstraint.constant = 0;
     self.textLabel.text = nil;
     self.imageView.image = nil;
     self.ticketView.hidden = YES;

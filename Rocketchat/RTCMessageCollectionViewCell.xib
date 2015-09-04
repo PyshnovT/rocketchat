@@ -84,6 +84,7 @@
             </constraints>
             <size key="customSize" width="249" height="51"/>
             <connections>
+                <outlet property="bubbleHeightConstraint" destination="xh2-Zl-1vF" id="gAM-QI-ARK"/>
                 <outlet property="bubbleView" destination="2ex-fo-jfE" id="HiM-hi-OZo"/>
                 <outlet property="imageView" destination="Lof-cA-RUI" id="9w1-Di-Z8k"/>
                 <outlet property="textLabel" destination="gI7-hj-Ki1" id="uUZ-lQ-5Ar"/>

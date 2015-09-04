@@ -158,7 +158,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     NSString *adId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     
-    [query whereKey:@"deviceId" equalTo:adId];
+    [query whereKey:@"deviceId" equalTo:adId];//@"B1E33427-C0D9-4340-B390-3CEBB6596D18"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             NSLog(@"Успешно получены данные из Parse.com %@", objects);
@@ -184,6 +184,7 @@ static NSString * const reuseIdentifier = @"Cell";
                            NSLog(@"message media %@", newMessage.media);
                            
                            [self.collectionViewController.collectionView reloadData];
+                           [self.collectionViewController scrollToNewestMessage];
                         } else {
                             NSLog(@"Ошибка в получении картинки %@", error);
                         }
@@ -207,6 +208,8 @@ static NSString * const reuseIdentifier = @"Cell";
                             newMessage.media = locationItem;
                             
                             [self.collectionViewController.collectionView reloadData];
+                            [self.collectionViewController scrollToNewestMessage];
+                            
                         } else {
                              NSLog(@"Ошибка в получении картинки %@", error);
                         }
