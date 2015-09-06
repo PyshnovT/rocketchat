@@ -22,10 +22,11 @@
                 <outlet property="mediaContainerViewHeightConstraint" destination="wuD-Hf-QkE" id="N9Y-d3-f19"/>
                 <outlet property="mediaPickerToolbarView" destination="BAF-sc-RVB" id="Xqj-eb-qIQ"/>
                 <outlet property="mediaPickerToolbarViewHeightConstraint" destination="GJ2-1s-ncs" id="mC2-ag-ghu"/>
-                <outlet property="messageTextField" destination="RuS-rP-fl8" id="NM7-pS-EMo"/>
+                <outlet property="messageTextView" destination="vGQ-SO-0yG" id="2vs-A6-91i"/>
                 <outlet property="photoTakingMediaButton" destination="h9O-Aa-DW6" id="Yyw-Ch-fjp"/>
                 <outlet property="sendButton" destination="14C-rI-6zj" id="0Sr-5W-kGZ"/>
                 <outlet property="statusBarHeightConstraint" destination="s6g-6k-ULR" id="P9j-1Q-HC5"/>
+                <outlet property="textViewHeightConstraint" destination="1kp-vy-n01" id="SjU-IT-SO4"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -40,13 +41,17 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Xd-1B-TsC" userLabel="InputToolbarView" customClass="RTCTextToolbarView">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                             <subviews>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Ваше сообщение..." adjustsFontSizeToFit="NO" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="RuS-rP-fl8" userLabel="TextField">
-                                    <rect key="frame" x="8" y="10" width="251" height="29"/>
-                                    <fontDescription key="fontDescription" name="PFAgoraSansPro-Regular" family="PF Agora Sans Pro" pointSize="16"/>
-                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
-                                </textField>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vGQ-SO-0yG" customClass="SAMTextView">
+                                    <rect key="frame" x="8" y="4" width="251" height="37"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="37" id="1kp-vy-n01"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="PFAgoraSansPro-Regular" family="PF Agora Sans Pro" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="14C-rI-6zj">
-                                    <rect key="frame" x="267" y="10" width="45" height="29"/>
+                                    <rect key="frame" x="267" y="9" width="45" height="28"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="45" id="DB0-oz-GN7"/>
                                     </constraints>
@@ -61,14 +66,13 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="14C-rI-6zj" firstAttribute="top" secondItem="4Xd-1B-TsC" secondAttribute="top" constant="10" id="3MD-Cs-kr8"/>
-                                <constraint firstItem="14C-rI-6zj" firstAttribute="leading" secondItem="RuS-rP-fl8" secondAttribute="trailing" constant="8" id="Lm5-36-8JW"/>
-                                <constraint firstItem="RuS-rP-fl8" firstAttribute="leading" secondItem="4Xd-1B-TsC" secondAttribute="leading" constant="8" id="ZFa-zP-UOY"/>
-                                <constraint firstAttribute="bottom" secondItem="RuS-rP-fl8" secondAttribute="bottom" constant="6" id="aeo-Tu-C0a"/>
+                                <constraint firstAttribute="bottom" secondItem="vGQ-SO-0yG" secondAttribute="bottom" constant="4" id="ACW-Cd-Nt1"/>
+                                <constraint firstItem="vGQ-SO-0yG" firstAttribute="top" secondItem="4Xd-1B-TsC" secondAttribute="top" constant="4" id="Iky-PT-cQ4"/>
                                 <constraint firstAttribute="trailing" secondItem="14C-rI-6zj" secondAttribute="trailing" constant="8" id="b9H-YZ-yKx"/>
-                                <constraint firstAttribute="height" constant="45" id="cpK-vW-nX5"/>
-                                <constraint firstItem="RuS-rP-fl8" firstAttribute="top" secondItem="4Xd-1B-TsC" secondAttribute="top" constant="10" id="qDg-xh-6lr"/>
-                                <constraint firstAttribute="bottom" secondItem="14C-rI-6zj" secondAttribute="bottom" constant="6" id="wav-ax-53X"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="cpK-vW-nX5"/>
+                                <constraint firstItem="vGQ-SO-0yG" firstAttribute="leading" secondItem="4Xd-1B-TsC" secondAttribute="leading" constant="8" id="dhQ-xf-UDa"/>
+                                <constraint firstItem="14C-rI-6zj" firstAttribute="leading" secondItem="vGQ-SO-0yG" secondAttribute="trailing" constant="8" id="eIc-PH-moL"/>
+                                <constraint firstAttribute="bottom" secondItem="14C-rI-6zj" secondAttribute="bottom" constant="8" id="wav-ax-53X"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BAF-sc-RVB" userLabel="MediaPickerToolbarView">

@@ -11,6 +11,7 @@
 		0906E7FA1B97356F005CC684 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0906E7F81B97356F005CC684 /* Crashlytics.framework */; };
 		090A28B61B8CBF5B00EBA5F6 /* RTCTextToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */; };
 		091FF68E1B99F4560000995A /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 091FF68D1B99F4560000995A /* DAKeyboardControl.m */; };
+		091FF6911B99FDF90000995A /* SAMTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 091FF6901B99FDF90000995A /* SAMTextView.m */; };
 		09236E761B8B807000F12618 /* AgoraSansProLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E741B8B807000F12618 /* AgoraSansProLight.ttf */; };
 		09236E771B8B807000F12618 /* AgoraSansProRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */; };
 		09236E791B8B821700F12618 /* AgoraSansProMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */; };
@@ -73,6 +74,8 @@
 		090A28B51B8CBF5B00EBA5F6 /* RTCTextToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCTextToolbarView.m; sourceTree = "<group>"; };
 		091FF68C1B99F4560000995A /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		091FF68D1B99F4560000995A /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
+		091FF68F1B99FDF90000995A /* SAMTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMTextView.h; sourceTree = "<group>"; };
+		091FF6901B99FDF90000995A /* SAMTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMTextView.m; sourceTree = "<group>"; };
 		09236E741B8B807000F12618 /* AgoraSansProLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProLight.ttf; sourceTree = "<group>"; };
 		09236E751B8B807000F12618 /* AgoraSansProRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProRegular.ttf; sourceTree = "<group>"; };
 		09236E781B8B821700F12618 /* AgoraSansProMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProMedium.ttf; sourceTree = "<group>"; };
@@ -262,6 +265,8 @@
 				09C65D631B96567400C79B97 /* SavingImageView.xib */,
 				091FF68C1B99F4560000995A /* DAKeyboardControl.h */,
 				091FF68D1B99F4560000995A /* DAKeyboardControl.m */,
+				091FF68F1B99FDF90000995A /* SAMTextView.h */,
+				091FF6901B99FDF90000995A /* SAMTextView.m */,
 			);
 			name = Subviews;
 			sourceTree = "<group>";
@@ -580,6 +585,7 @@
 				09FD78211B8A154500F2AEDC /* RTCMessageCollectionViewLayout.m in Sources */,
 				091FF68E1B99F4560000995A /* DAKeyboardControl.m in Sources */,
 				097526641B95CB7D009EAD0B /* RTCImageLookerViewController.m in Sources */,
+				091FF6911B99FDF90000995A /* SAMTextView.m in Sources */,
 				09AD404F1B88F76800ED55AA /* RTCMessageStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -44,7 +44,7 @@ typedef enum {
     ImageViewPlaceholderPanDirectionNone
 } ImageViewPlaceholderPanDirection;
 
-@interface RTCMainViewController () <UITextFieldDelegate>
+@interface RTCMainViewController () <UITextViewDelegate>
 
 // Collection View
 
@@ -62,6 +62,9 @@ typedef enum {
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewToMediaPickerToolbarViewConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputToolbarViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
+
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaPickerToolbarViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusBarHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaContainerViewHeightConstraint;
@@ -117,17 +120,9 @@ static NSString * const reuseIdentifier = @"Cell";
     UILongPressGestureRecognizer *gr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(saveImageToLibrary:)];
     [self.view addGestureRecognizer:gr];
     
-    
-    self.isKeyboardShown = NO;
-    
-    RTCMessageCollectionViewLayout *messageLayout = [[RTCMessageCollectionViewLayout alloc] init];
-    self.collectionViewController = [[RTCCollectionViewController alloc]
-                                     initWithCollectionViewLayout:messageLayout];
-    
-    [self displayViewController:self.collectionViewController];
-    self.messageTextField.delegate = self;
-    
-    [self setKeyboardControl];
+    [self setupKeyboard];
+    [self setupCollectionView];
+    [self setupTextView];
     
     [self getParseData];
     
@@ -154,6 +149,26 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Setup
+
+- (void)setupKeyboard {
+    self.isKeyboardShown = NO;
+    [self setKeyboardControl];
+}
+
+- (void)setupCollectionView {
+    RTCMessageCollectionViewLayout *messageLayout = [[RTCMessageCollectionViewLayout alloc] init];
+    self.collectionViewController = [[RTCCollectionViewController alloc]
+                                     initWithCollectionViewLayout:messageLayout];
+    [self displayViewController:self.collectionViewController];
+}
+
+- (void)setupTextView {
+    self.messageTextView.delegate = self;
+    self.messageTextView.placeholder = @"Ваше сообщение...";
+    self.messageTextView.contentInset = UIEdgeInsetsMake(2,0,0,0);
 }
 
 #pragma mark - Parse
@@ -317,7 +332,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)setKeyboardControl {
     __weak RTCMainViewController *weakSelf = self;
     
-    self.view.keyboardTriggerOffset = self.inputToolbarViewHeightConstraint.constant;//44.0f;
+    self.view.keyboardTriggerOffset = self.inputToolbarViewHeightConstraint.constant;
     
     [self.view addKeyboardPanningWithActionHandler:^(CGRect keyboardFrameInView, BOOL opening, BOOL closing) {
         
@@ -326,9 +341,9 @@ static NSString * const reuseIdentifier = @"Cell";
         NSInteger reversedOriginY = [[UIScreen mainScreen] bounds].size.height - keyboardFrameInView.origin.y;
         
         strongSelf.inputToolbarViewToMediaPickerToolbarViewConstraint.constant = MAX(reversedOriginY - self.mediaPickerToolbarViewHeightConstraint.constant - self.mediaContainerViewHeightConstraint.constant, 0);
-        
-    }];
 
+    }];
+    
 }
 
 #pragma mark - Notifications
@@ -538,9 +553,9 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (IBAction)sendMessages:(id)sender {
     
-    if (![self.messageTextField.text isEqualToString:@""]) {
-        [self.collectionViewController addMessageWithDate:[NSDate date] text:self.messageTextField.text withParseId:nil];
-        self.messageTextField.text = @"";
+    if (![self.messageTextView.text isEqualToString:@""]) {
+        [self.collectionViewController addMessageWithDate:[NSDate date] text:self.messageTextView.text withParseId:nil];
+        self.messageTextView.text = @"";
     }
     
     if ([RTCMediaStore sharedStore].currentMediaType == MediaTypeImage) {
@@ -564,20 +579,35 @@ static NSString * const reuseIdentifier = @"Cell";
     [self setSendButtonColor];
 }
 
-#pragma mark - <UITextFieldDelegate>
+#pragma mark - <UITextViewDelegate>
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (void)textViewDidChange:(UITextView *)textView {
     
-    NSString *newString = [[textField text] stringByReplacingCharactersInRange:range withString:string];
+    CGSize contentSize = [textView contentSize];
     
-    if ([newString isEqualToString:@""]) {
-        self.messageTextField.text = @"";
+    CGFloat animationDuration;
+    
+    if ([textView.text isEqualToString:@""]) {
         [self setSendButtonColor];
+        animationDuration = 0.0;
     } else {
         [self setActiveSendButtonColor];
+        animationDuration = 0.2;
     }
     
-    return YES;
+    [self.view layoutIfNeeded];
+    
+    [UIView animateWithDuration:animationDuration animations:^{
+        self.textViewHeightConstraint.constant = MIN(98, contentSize.height);
+        [self.view layoutIfNeeded];
+    }];
+    
+    [self.inputToolbarView setNeedsDisplay];
+    
+    CGFloat y = contentSize.height - self.textViewHeightConstraint.constant;
+
+    [textView setContentOffset:CGPointMake(0, y) animated:NO];
+    
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -587,11 +617,23 @@ static NSString * const reuseIdentifier = @"Cell";
     return YES;
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
+    NSLog(@"Should change");
+    
+    NSString *newString = [[textView text] stringByReplacingCharactersInRange:range withString:text];
+    
+    if ([newString isEqualToString:@"\n"]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
 #pragma mark - Text Send Button
 
 - (void)setSendButtonColor {
-    if (([RTCMediaStore sharedStore].currentMediaType == MediaTypeImage && ([[RTCMediaStore sharedStore] imageGalleryItems].count > 0)) || ![self.messageTextField.text isEqualToString:@""]) {
-        NSLog(@"Activate");
+    if (([RTCMediaStore sharedStore].currentMediaType == MediaTypeImage && ([[RTCMediaStore sharedStore] imageGalleryItems].count > 0)) || ![self.messageTextView.text isEqualToString:@""]) {
         [self setActiveSendButtonColor];
     } else {
         [self.sendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
@@ -697,7 +739,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
     if (self.isKeyboardShown) {
-        [self.messageTextField resignFirstResponder];
+        [self.messageTextView resignFirstResponder];
     }
 }
 

@@ -15,6 +15,8 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
+    NSLog(@"draw rect");
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextMoveToPoint(context, CGRectGetMinX(rect), CGRectGetMinY(rect));
     CGContextAddLineToPoint(context, CGRectGetMaxX(rect), CGRectGetMinY(rect));
