@@ -120,7 +120,7 @@ static NSString * const reuseIdentifier = @"Cell";
     UILongPressGestureRecognizer *gr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(saveImageToLibrary:)];
     [self.view addGestureRecognizer:gr];
     
-    [self setupKeyboard];
+
     [self setupCollectionView];
     [self setupTextView];
     
@@ -131,24 +131,22 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self setupKeyboard];
     [self setPhotoPickerControllerAbilityForViewSize:self.view.bounds.size];
     [self registerForKeyboardNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [self.view removeKeyboardControl];
-    
     [super viewWillDisappear:animated];
     
     [self deregisterFromKeyboardNotifications];
-    
+    [self.view removeKeyboardControl];
     [super viewWillDisappear:animated];
     
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Setup
@@ -173,12 +171,12 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - Parse
 
-- (void)getParseData { // Добавляётся всё в главном потоке, это медленно, но для асинхронного надо обмозговать алгоритм, а времени мало
+- (void)getParseData {
     PFQuery *query = [PFQuery queryWithClassName:@"Message"];
     
     NSString *adId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     
-    [query whereKey:@"deviceId" equalTo:adId];//@"B1E33427-C0D9-4340-B390-3CEBB6596D18"];
+    [query whereKey:@"deviceId" equalTo:adId];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             NSLog(@"Успешно получены данные из Parse.com %@", objects);
