@@ -42,7 +42,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                             <subviews>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vGQ-SO-0yG" customClass="SAMTextView">
-                                    <rect key="frame" x="8" y="4" width="251" height="37"/>
+                                    <rect key="frame" x="8" y="6" width="251" height="37"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="37" id="1kp-vy-n01"/>
@@ -66,8 +66,8 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="vGQ-SO-0yG" secondAttribute="bottom" constant="4" id="ACW-Cd-Nt1"/>
-                                <constraint firstItem="vGQ-SO-0yG" firstAttribute="top" secondItem="4Xd-1B-TsC" secondAttribute="top" constant="4" id="Iky-PT-cQ4"/>
+                                <constraint firstAttribute="bottom" secondItem="vGQ-SO-0yG" secondAttribute="bottom" constant="2" id="ACW-Cd-Nt1"/>
+                                <constraint firstItem="vGQ-SO-0yG" firstAttribute="top" secondItem="4Xd-1B-TsC" secondAttribute="top" constant="6" id="Iky-PT-cQ4"/>
                                 <constraint firstAttribute="trailing" secondItem="14C-rI-6zj" secondAttribute="trailing" constant="8" id="b9H-YZ-yKx"/>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="cpK-vW-nX5"/>
                                 <constraint firstItem="vGQ-SO-0yG" firstAttribute="leading" secondItem="4Xd-1B-TsC" secondAttribute="leading" constant="8" id="dhQ-xf-UDa"/>

@@ -166,7 +166,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)setupTextView {
     self.messageTextView.delegate = self;
     self.messageTextView.placeholder = @"Ваше сообщение...";
-    self.messageTextView.contentInset = UIEdgeInsetsMake(2,0,0,0);
+    //self.messageTextView.contentInset = UIEdgeInsetsMake(0,0,0,0);
 }
 
 #pragma mark - Parse
@@ -323,8 +323,14 @@ static NSString * const reuseIdentifier = @"Cell";
         
         self.inputToolbarViewToMediaPickerToolbarViewConstraint.constant = MAX(keyboardHeight - self.mediaPickerToolbarViewHeightConstraint.constant - self.mediaContainerViewHeightConstraint.constant, 0);
         
+        if (keyboardHeight) {
+            [self.collectionViewController scrollToNewestMessage];
+        }
+        
         [self.view layoutIfNeeded];
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 - (void)setKeyboardControl {
