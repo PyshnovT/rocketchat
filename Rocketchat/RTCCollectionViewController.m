@@ -31,6 +31,8 @@
 
 @interface RTCCollectionViewController () <UIGestureRecognizerDelegate>
 
+@property (nonatomic, copy) NSString *copiedText;
+
 @end
 
 @implementation RTCCollectionViewController
@@ -302,10 +304,44 @@ static NSString * const reuseIdentifier = @"Cell";
         } else { // просто картиночка
             [self.mvc presentImageLookerControllerForCellAtIndexPath:indexPath];
         }
+    } else {
+        NSLog(@"select");
+        UIMenuController *menuController = [UIMenuController sharedMenuController];
+        
+        
+        if (!menuController.isMenuVisible) {
+            [self becomeFirstResponder];
+
+            RTCMessage *message = [[[RTCMessageStore sharedStore] allMessages] objectAtIndex:indexPath.row];
+            self.copiedText = message.text;
+            
+            UIMenuItem *copyItem = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(copyTextMessage:)];
+            
+            CGRect rectInCollectionView = [self.collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+            [menuController setTargetRect:rectInCollectionView inView:self.collectionView];
+            menuController.menuItems = @[copyItem];
+            
+            [menuController setMenuVisible:YES animated:YES];
+        } else {
+            self.copiedText = nil;
+            [menuController setMenuVisible:NO animated:YES];
+        }
     }
 }
 
-#pragma mark - Long Press
+#pragma mark - Copy
+
+- (void)copyTextMessage:(id)sender {
+    NSLog(@"copy %@", sender);
+    
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    [pasteboard setString:self.copiedText];
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
 /*
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer.state != UIGestureRecognizerStateEnded) {
