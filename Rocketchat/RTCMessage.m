@@ -15,7 +15,7 @@
 @implementation RTCMessage
 
  // Designated initializer
-- (instancetype)initWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media {
+- (instancetype)initWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
     if (media && text) return nil;
 
     self = [super init];
@@ -24,7 +24,7 @@
         
         self.date = date;
         self.text = text;
-        
+        self.parseId = parseId;
         self.media = media;
         
     }
@@ -32,12 +32,12 @@
     
 }
  
-- (instancetype)initWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media {
-    return [self initWithDate:date text:nil media:media];
+- (instancetype)initWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
+    return [self initWithDate:date text:nil media:media withParseId:parseId];
 }
  
-- (instancetype)initWithDate:(NSDate *)date text:(NSString *)text {
-    return [self initWithDate:date text:text media:nil];
+- (instancetype)initWithDate:(NSDate *)date text:(NSString *)text withParseId:(NSString *)parseId {
+    return [self initWithDate:date text:text media:nil withParseId:parseId];
 }
 
 - (instancetype)init {

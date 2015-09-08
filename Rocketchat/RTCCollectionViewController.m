@@ -115,31 +115,29 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - Adding messages
 
 - (RTCMessage *)addMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
+    
     if ((text && media) || [text isEqualToString:@""]) return nil;
     
-
     
     RTCMessage *newMessage;
     
     if (text) {
-        newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date text:text];
+        newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date text:text withParseId:parseId];
     } else if (media) {
-        newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date media:media];
+        newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date media:media withParseId:parseId];
     } else if (parseId && !text) {
-        newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date media:nil];
+        newMessage = [[RTCMessageStore sharedStore] createMessageWithDate:date media:nil withParseId:parseId];
     }
     
-    newMessage.parseId = parseId;
-    
     if (!parseId) {
+        [self scrollToNewestMessage];
+        NSLog(@"SCROLL!");
         [self addMessageToParse:newMessage];
     } else {
         newMessage.isSent = YES;
     }
   
     [self.collectionView reloadData];
-    
-    [self scrollToNewestMessage];
     
     return newMessage;
     
@@ -223,10 +221,13 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - Scrolling
 
 - (void)scrollToNewestMessage {
+    
+
     [self.collectionView.collectionViewLayout prepareLayout];
 
+    NSLog(@"self.collectionViewLayout.collectionViewContentSize.height: %f", self.collectionViewLayout.collectionViewContentSize.height);
     if (self.collectionViewLayout.collectionViewContentSize.height > self.collectionView.bounds.size.height) {
-        
+            NSLog(@"scrollling");
         CGFloat yOffset = MAX(0, self.collectionViewLayout.collectionViewContentSize.height - self.collectionView.bounds.size.height);
         
         [self.collectionView setContentOffset:CGPointMake(0, yOffset) animated:YES];
@@ -234,6 +235,18 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     
 }
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+
+    CGPoint offset = scrollView.contentOffset;
+    
+    if (offset.y <= 200 && !self.mvc.isLoadingParseData) {
+        NSLog(@"Did drag to top");
+        [self.mvc getParseDataWithSkip:self.mvc.skip];
+    }
+}
+
+
 
 #pragma mark - <UICollectionViewDataSource>
 

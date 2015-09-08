@@ -16,6 +16,9 @@
 @property (strong, nonatomic) RTCMapViewController *mapViewController;
 @property (weak, nonatomic) IBOutlet SAMTextView *messageTextView;
 
+@property (nonatomic) NSInteger skip;
+@property (nonatomic) BOOL isLoadingParseData;
+
 
 - (void)setSendButtonColor;
 
@@ -35,5 +38,10 @@
 - (void)closeOpenedMediaContainerIfNeededWithCompletion:(void (^)())completion;
 
 - (void)showSavingImageView;
+
+// Parse
+
+- (void)getParseDataWithSkip:(NSInteger)skip;
+
 
 @end

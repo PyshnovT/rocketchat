@@ -53,33 +53,37 @@
 #pragma mark - Creating new message
 
 
-- (RTCMessage *)createMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media {
+- (RTCMessage *)createMessageWithDate:(NSDate *)date text:(NSString *)text media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
     if (text && media) return nil;
     
     RTCMessage *newMessage;
     
     if (text) {
-        newMessage = [[RTCMessage alloc] initWithDate:date text:text];
+        newMessage = [[RTCMessage alloc] initWithDate:date text:text withParseId:parseId];
     } else if (media) {
-        newMessage = [[RTCMessage alloc] initWithDate:date media:media];
+        newMessage = [[RTCMessage alloc] initWithDate:date media:media withParseId:parseId];
     } else {
-        
-        newMessage = [[RTCMessage alloc] initWithDate:date media:media];
+        newMessage = [[RTCMessage alloc] initWithDate:date media:media withParseId:parseId];
     }
     
     NSLog(@"Image object! %@", newMessage);
-    [self.privateMessages addObject:newMessage];
+    
+    if (!parseId) {
+        [self.privateMessages addObject:newMessage];
+    } else {
+        [self.privateMessages insertObject:newMessage atIndex:0];
+    }
     
     return newMessage;
 }
 
 
-- (RTCMessage *)createMessageWithDate:(NSDate *)date text:(NSString *)text {
-    return [self createMessageWithDate:date text:text media:nil];
+- (RTCMessage *)createMessageWithDate:(NSDate *)date text:(NSString *)text withParseId:(NSString *)parseId {
+    return [self createMessageWithDate:date text:text media:nil withParseId:parseId];
 }
 
-- (RTCMessage *)createMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media {
-    return [self createMessageWithDate:date text:nil media:media];
+- (RTCMessage *)createMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId {
+    return [self createMessageWithDate:date text:nil media:media withParseId:parseId];
 }
 
 - (void)removeMessageAtIndexPath:(NSIndexPath *)indexPath {

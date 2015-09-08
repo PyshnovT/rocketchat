@@ -88,7 +88,6 @@ typedef enum {
 @property (strong, nonatomic) RTCImageLookerViewController *imageLookerController;
 @property (strong, nonatomic) UIImageView *imageViewPlaceholder;
 
-//@property (nonatomic) CGRect imageViewPlaceholderCellRect;
 @property (strong, nonatomic) NSIndexPath *indexPathForViewingCell;
 
 @property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
@@ -124,7 +123,9 @@ static NSString * const reuseIdentifier = @"Cell";
     [self setupCollectionView];
     [self setupTextView];
     
-    [self getParseData];
+    self.skip = 0;
+    self.isLoadingParseData = NO;
+    [self getParseDataWithSkip:self.skip];
     
 }
 
@@ -171,14 +172,26 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - Parse
 
-- (void)getParseData {
+- (void)getParseDataWithSkip:(NSInteger)skip {
+    
     PFQuery *query = [PFQuery queryWithClassName:@"Message"];
     
     NSString *adId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     
     [query whereKey:@"deviceId" equalTo:adId];
+    [query orderByDescending:@"createdAt"];
+    
+    [query setSkip:skip];
+    [query setLimit:10];
+    
+    self.isLoadingParseData = YES;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            //NSArray *reversedObjects = [[objects reverseObjectEnumerator] allObjects];
+            self.skip += objects.count;
             NSLog(@"Успешно получены данные из Parse.com %@", objects);
             
             for (PFObject *object in objects) {
@@ -199,10 +212,9 @@ static NSString * const reuseIdentifier = @"Cell";
                             RTCMessageImageMediaItem *imageItem = [RTCMessageImageMediaItem itemWithImage:image];
                             newMessage.media = imageItem;
                            
-                           NSLog(@"message media %@", newMessage.media);
                            
                            [self.collectionViewController.collectionView reloadData];
-                           [self.collectionViewController scrollToNewestMessage];
+                    //       [self.collectionViewController scrollToNewestMessage];
                         } else {
                             NSLog(@"Ошибка в получении картинки %@", error);
                         }
@@ -226,17 +238,22 @@ static NSString * const reuseIdentifier = @"Cell";
                             newMessage.media = locationItem;
                             
                             [self.collectionViewController.collectionView reloadData];
-                            [self.collectionViewController scrollToNewestMessage];
+                          //  [self.collectionViewController scrollToNewestMessage];
                             
                         } else {
                              NSLog(@"Ошибка в получении картинки %@", error);
                         }
                     }];
                    
+                
                 }
+                
+                self.isLoadingParseData = NO;
                 
             }
         } else {
+            self.isLoadingParseData = NO;
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             NSLog(@"Parse error %@ %@", error, [error userInfo]);
         }
     }];

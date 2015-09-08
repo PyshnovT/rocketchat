@@ -23,8 +23,8 @@
 
 + (instancetype)sharedStore;
 
-- (RTCMessage *)createMessageWithDate:(NSDate *)date text:(NSString *)text;
-- (RTCMessage *)createMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media;
+- (RTCMessage *)createMessageWithDate:(NSDate *)date text:(NSString *)text withParseId:(NSString *)parseId;
+- (RTCMessage *)createMessageWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId;
 
 - (void)removeMessageAtIndexPath:(NSIndexPath *)indexPath;
 

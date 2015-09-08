@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) id<RTCMessageMedia> media;
 
-- (instancetype)initWithDate:(NSDate *)date text:(NSString *)text;
-- (instancetype)initWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media;
+- (instancetype)initWithDate:(NSDate *)date text:(NSString *)text withParseId:(NSString *)parseId;
+- (instancetype)initWithDate:(NSDate *)date media:(id<RTCMessageMedia>)media withParseId:(NSString *)parseId;
 
 @end
